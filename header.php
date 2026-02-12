@@ -12,8 +12,8 @@
             <a class="logo" href="<?php echo home_url(); ?>"><?php bloginfo('name'); ?></a>
             <ul class="nav-links">
                 <li><a href="<?php echo home_url(); ?>">Home</a></li>
-                <li><a href="<?php echo home_url('/shop'); ?>">Shop</a></li>
-                <li><a href="<?php echo home_url('/blog'); ?>">Blog</a></li>
+                <li><a href="<?php echo home_url('/shop'); ?>">Broken Shop</a></li>
+                <li><a href="<?php echo home_url('/blog'); ?>">Empty Blog</a></li>
                 <li><a href="<?php echo home_url('/about-us'); ?>">About Us</a></li>
                 <li><a href="<?php echo home_url('/contact'); ?>">Contact</a></li>
                 <li class="nav-cart">
