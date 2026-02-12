@@ -13,7 +13,7 @@ get_header(); ?>
 
         </div>
         <h1 class="hero-title"><?php bloginfo('name'); ?></h1>
-        <p class="hero-slogan">Where the kingdom, meets clothing.</p>
+        <p class="hero-slogan">Where the kingdom, meets clothing. Testing</p>
     </div>
 </section>
 
