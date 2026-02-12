@@ -1,9 +1,10 @@
 
-Theme Name: PrintShop Theme
+/* 
+Theme Name: King Jesus Clothing Theme
 Description: Custom WooCommerce theme
 Version: 1.0
 Author: Marcus S
-
+ */
 
 /* Paste all the CSS from the <style> tag here */
 
@@ -1332,5 +1333,218 @@ select:focus {
 /* Update Cart Button */
 .woocommerce button[name="update_cart"] {
     padding: 1rem 2.5
+
+}
+
+/* ============================================
+   WOOCOMMERCE CHECKOUT PAGE STYLING
+   ============================================ */
+
+/* Checkout Page Container */
+.woocommerce-checkout {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+}
+
+/* Add spacing around checkout sections */
+.woocommerce-checkout #customer_details {
+    margin-bottom: 2rem;
+}
+
+/* Billing and Shipping Forms */
+.woocommerce-billing-fields,
+.woocommerce-shipping-fields,
+.woocommerce-additional-fields {
+    background: #f9fafb;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+}
+
+.woocommerce-billing-fields h3,
+.woocommerce-shipping-fields h3,
+.woocommerce-additional-fields h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #1f2937;
+}
+
+/* Form Fields */
+.woocommerce-checkout .form-row {
+    margin-bottom: 1.5rem;
+}
+
+.woocommerce-checkout label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: block;
+    color: #374151;
+}
+
+.woocommerce-checkout input.input-text,
+.woocommerce-checkout select,
+.woocommerce-checkout textarea {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    font-size: 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    transition: border-color 0.3s;
+}
+
+.woocommerce-checkout input.input-text:focus,
+.woocommerce-checkout select:focus,
+.woocommerce-checkout textarea:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+/* Order Review Section */
+.woocommerce-checkout-review-order {
+    background: #f9fafb;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-top: 2rem;
+}
+
+#order_review_heading {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #1f2937;
+}
+
+/* Order Review Table */
+.woocommerce-checkout-review-order-table {
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.woocommerce-checkout-review-order-table th,
+.woocommerce-checkout-review-order-table td {
+    padding: 1rem 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.woocommerce-checkout-review-order-table .product-name {
+    font-weight: 600;
+}
+
+.woocommerce-checkout-review-order-table .product-total {
+    text-align: right;
+    font-weight: 600;
+    color: #667eea;
+}
+
+/* Order Total */
+.woocommerce-checkout-review-order-table .order-total th,
+.woocommerce-checkout-review-order-table .order-total td {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #667eea;
+    padding-top: 1.5rem;
+    border-bottom: none;
+}
+
+/* Payment Methods */
+.woocommerce-checkout-payment {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-top: 2rem;
+}
+
+.wc_payment_methods {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+}
+
+.wc_payment_method {
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    background: #f9fafb;
+    border-radius: 8px;
+    border: 2px solid #e5e7eb;
+    transition: all 0.3s;
+}
+
+.wc_payment_method:hover {
+    border-color: #667eea;
+}
+
+.wc_payment_method input[type="radio"] {
+    margin-right: 0.75rem;
+}
+
+.wc_payment_method label {
+    font-weight: 600;
+    font-size: 1.125rem;
+    cursor: pointer;
+}
+
+/* Place Order Button */
+#place_order {
+    width: 100%;
+    padding: 1.5rem 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+#place_order:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+/* Privacy Policy */
+.woocommerce-privacy-policy-text {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+}
+
+.woocommerce-privacy-policy-text a {
+    color: #667eea;
+    text-decoration: underline;
+}
+
+/* Terms and Conditions */
+.woocommerce-terms-and-conditions-wrapper {
+    margin-bottom: 1.5rem;
+}
+
+.woocommerce-terms-and-conditions {
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 1rem;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .woocommerce-checkout {
+        padding: 2rem 1rem;
+    }
+    
+    .woocommerce-billing-fields,
+    .woocommerce-shipping-fields,
+    .woocommerce-additional-fields,
+    .woocommerce-checkout-review-order,
+    .woocommerce-checkout-payment {
+        padding: 1.5rem;
+    }
+}
 
 }
