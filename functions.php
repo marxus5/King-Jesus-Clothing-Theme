@@ -1,10 +1,10 @@
 <?php
-wp_enqueue_style(
-    'main-style',
-    get_stylesheet_uri(),
-    [],
-    filemtime(get_stylesheet_directory() . '/style.css')
-);
+// wp_enqueue_style(
+//     'main-style',
+//     get_stylesheet_uri(),
+//     [],
+//     filemtime(get_stylesheet_directory() . '/style.css')
+// );
 
 // wp_enqueue_script(
 //     'main-js',
