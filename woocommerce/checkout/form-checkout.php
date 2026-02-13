@@ -232,6 +232,21 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
                                 <?php woocommerce_form_field( $key, $field, $checkout->get_value( $key ) ); ?>
                             </div>
                         <?php endforeach; ?>
+                        
+                        <!-- Email Field (if not in billing fields) -->
+                        <?php if ( ! isset( $checkout->get_checkout_fields( 'billing' )['billing_email'] ) ) : ?>
+                            <div class="custom-form-row billing_email">
+                                <?php 
+                                woocommerce_form_field( 'billing_email', array(
+                                    'type'        => 'email',
+                                    'class'       => array( 'form-row-wide' ),
+                                    'label'       => __( 'Email Address', 'woocommerce' ),
+                                    'placeholder' => __( 'you@example.com', 'woocommerce' ),
+                                    'required'    => true,
+                                ), $checkout->get_value( 'billing_email' ) ); 
+                                ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
 
                     <!-- Shipping Details -->
