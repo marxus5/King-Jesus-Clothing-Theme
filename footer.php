@@ -10,7 +10,7 @@
                     <li><a href="<?php echo home_url('/shop'); ?>">Shop</a></li>
                     <li><a href="<?php echo home_url('/about'); ?>">About</a></li>
                     <li><a href="<?php echo home_url('/returns-refunds-policy'); ?>">Returns & Refunds</a></li>
-                    <li><a href="<?php echo home_url('/private-policy'); ?>">Private Policy</a></li>
+                    <li><a href="<?php echo home_url('/privacy-policy'); ?>">Privacy Policy</a></li>
                 </ul>
             </div>
             <div class="footer-section">

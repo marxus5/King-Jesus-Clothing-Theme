@@ -8,7 +8,7 @@ error_log('Custom cart template is loaded!');
 defined( 'ABSPATH' ) || exit;
 
 // Remove default WooCommerce cart messages
-remove_action( 'woocommerce_cart_is_empty', 'wc_empty_cart_message' );
+// remove_action( 'woocommerce_cart_is_empty', 'wc_empty_cart_message' );
 
 do_action( 'woocommerce_before_cart' ); ?>
 
@@ -37,7 +37,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 
 .custom-cart-item {
     display: grid;
-    grid-template-columns: 150px 1fr 70px 50px;
+    grid-template-columns: 120px 1fr 150px 50px;
     gap: 2rem;
     padding: 2rem 0;
     border-bottom: 1px solid #f3f4f6;
@@ -132,8 +132,7 @@ do_action( 'woocommerce_before_cart' ); ?>
     font-size: 1.5rem;
     font-weight: 700;
     color: #1f2937;
-    text-align: start;
-    
+    text-align: right;
 }
 
 .custom-cart-remove {
@@ -218,30 +217,6 @@ do_action( 'woocommerce_before_cart' ); ?>
     color: white;
 }
 
-.custom-empty-cart {
-    text-align: center;
-    padding: 4rem 2rem;
-}
-
-.custom-empty-cart-icon {
-    font-size: 4rem;
-    margin-bottom: 1.5rem;
-    opacity: 0.7;
-}
-
-.custom-empty-cart p {
-    font-size: 1.5rem;
-    color: #1f2937;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-}
-
-.custom-empty-cart-subtext {
-    font-size: 1rem;
-    color: #9ca3af;
-    margin-bottom: 2rem;
-}
-
 .custom-continue-shopping {
     display: inline-block;
     padding: 1rem 2.5rem;
@@ -259,196 +234,35 @@ do_action( 'woocommerce_before_cart' ); ?>
     box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
 }
 
-/* Empty cart featured products section */
-.empty-cart-products-section {
-    margin-top: 4rem;
-    padding-top: 4rem;
-    border-top: 2px solid #e5e7eb;
-}
-
-.empty-cart-products-title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #1f2937;
-    text-align: center;
-    margin-bottom: 3rem;
-}
-
-.empty-cart-products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.empty-cart-product-card {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    transition: all 0.3s;
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    flex-direction: column;
-}
-
-.empty-cart-product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-}
-
-.empty-cart-product-image {
-    width: 100%;
-    height: 220px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 3rem;
-}
-
-.empty-cart-product-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.empty-cart-product-info {
-    padding: 1.5rem;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.empty-cart-product-name {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: #1f2937;
-    margin-bottom: 0.5rem;
-    line-height: 1.4;
-}
-
-.empty-cart-product-price {
-    font-size: 1.375rem;
-    font-weight: 700;
-    color: #667eea;
-    margin-top: auto;
-}
-
-/* Mobile responsive
 @media (max-width: 768px) {
     .custom-cart-item {
-        grid-template-columns: 80px 1fr 80px;
+        grid-template-columns: 80px 1fr;
         gap: 1rem;
     }
-
+    
     .custom-cart-image {
-        grid-column: 1;
         width: 80px;
         height: 80px;
+        grid-row: 1 / 3;
     }
-
+    
     .custom-cart-details {
         grid-column: 2;
     }
-
+    
     .custom-cart-total {
-        grid-column: 3;
-        text-align: right;
+        grid-column: 2;
+        text-align: left;
         font-size: 1.25rem;
+        margin-top: 0.5rem;
     }
-
+    
     .custom-cart-remove {
-        grid-column: 3;
+        grid-column: 2;
+        grid-row: 1;
         justify-self: end;
     }
-} */
-
-    @media (max-width: 585px) {
-        .custom-cart-item {
-            grid-template-columns: 100px 1fr;
-            gap: 0.75rem;
-        }
-
-        .custom-cart-image {
-            grid-column: 1;
-            grid-row: 1 / 3;
-            width: 100px;
-            height: 100px;
-        }
-
-        .custom-cart-details {
-            grid-column: 2;
-            grid-row: 1;
-        }
-
-        .custom-cart-total {
-            grid-column: 2;
-            grid-row: 2;
-            text-align: start;
-            font-size: 1.1rem;
-        }
-
-        .custom-cart-remove {
-            grid-column: 2;
-            grid-row: 1;
-            justify-self: end;
-        }
-    }
-
-    @media (max-width: 400px) {
-        .custom-cart-item {
-            display: grid;
-            grid-template-columns: 1fr;
-            grid-template-rows: auto auto auto;
-            gap: 1rem;
-            padding: 1.5rem;
-        }
-
-    /* Row 1: Image */
-        .custom-cart-image {
-            width: 100%;
-            height: 150px;
-            border-radius: 8px;
-            overflow: hidden;
-            grid-column: 1;
-            grid-row: 1;
-        }
-
-        /* Row 2: Details */
-        .custom-cart-details {
-            grid-column: 1;
-            grid-row: 2;
-        }
-
-        /* Row 3: Total + Remove Button */
-        .custom-cart-total {
-            grid-column: 1;
-            grid-row: 3;
-            text-align: start;
-            font-size: 1.1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .custom-cart-remove-wrapper {
-            display: contents;
-        }
-
-        .custom-cart-remove {
-            width: 32px;
-            height: 32px;
-            font-size: 1.25rem;
-        }
-
-        .custom-cart-container {
-            padding: 2rem 1rem;
-        }
-    }
+}
 </style>
 
 <script>
@@ -479,40 +293,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Clear Cart button handler: use WooCommerce AJAX to remove all items
-    const clearCartBtn = document.querySelector('.custom-clear-cart-button');
-    if (clearCartBtn) {
-        clearCartBtn.addEventListener('click', function() {
-            const removeButtons = document.querySelectorAll('.custom-cart-remove');
-            let removed = 0;
-            let total = removeButtons.length;
-            
-            if (total === 0) {
-                window.location.reload();
-                return;
-            }
-            
-            removeButtons.forEach(function(btn) {
-                const removeUrl = btn.getAttribute('href');
-                if (removeUrl) {
-                    fetch(removeUrl, { method: 'GET' })
-                        .then(() => {
-                            removed++;
-                            if (removed === total) {
-                                window.location.reload();
-                            }
-                        })
-                        .catch(() => {
-                            removed++;
-                            if (removed === total) {
-                                window.location.reload();
-                            }
-                        });
-                }
-            });
-        });
-    }
-
     //Auto-update cart when quantity changes
     const qtyInputs = document.querySelectorAll('.custom-detail-row .qty');
     qtyInputs.forEach(function(input) {
@@ -530,66 +310,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <div class="custom-cart-container">
     <h1 class="custom-cart-title">Shopping Cart</h1>
-
-    
-
-    <?php if ( WC()->cart->is_empty() ) : ?>
-        
-          <div class="custom-empty-cart">
-            <div class="custom-empty-cart-icon">🛒</div>
-            <p><?php esc_html_e( 'Your cart is empty', 'woocommerce' ); ?></p>
-            <div class="custom-empty-cart-subtext"><?php esc_html_e( 'Start shopping to add items to your cart', 'woocommerce' ); ?></div>
-            <a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>" class="custom-continue-shopping">
-                Continue Shopping
-            </a>
-        </div>
-
-        <!-- Featured Products Below Empty Cart -->
-        <?php
-        $args = array(
-            'post_type'      => 'product',
-            'posts_per_page' => 6,
-            'orderby'        => 'date',
-            'order'          => 'DESC',
-        );
-        $products = new WP_Query( $args );
-        if ( $products->have_posts() ) :
-        ?>
-        <div class="empty-cart-products-section">
-            <h2 class="empty-cart-products-title">Explore Our Products</h2>
-            <div class="empty-cart-products-grid">
-                <?php
-                while ( $products->have_posts() ) :
-                    $products->the_post();
-                    $product = wc_get_product( get_the_ID() );
-                    if ( ! $product ) continue;
-                    ?>
-                    <a href="<?php echo esc_url( get_the_permalink() ); ?>" class="empty-cart-product-card">
-                        <div class="empty-cart-product-image">
-                            <?php
-                            if ( has_post_thumbnail() ) {
-                                echo get_the_post_thumbnail( get_the_ID(), 'medium' );
-                            } else {
-                                echo '📦';
-                            }
-                            ?>
-                        </div>
-                        <div class="empty-cart-product-info">
-                            <h3 class="empty-cart-product-name"><?php the_title(); ?></h3>
-                            <div class="empty-cart-product-price"><?php echo $product->get_price_html(); ?></div>
-                        </div>
-                    </a>
-                    <?php
-                endwhile;
-                wp_reset_postdata();
-                ?>
-            </div>
-        </div>
-        <?php
-        endif;
-        ?>
-
-    <?php else : ?>
 
         <form class="woocommerce-cart-form" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">
             <?php wp_nonce_field( 'woocommerce-cart', 'woocommerce-cart-nonce' ); ?>
@@ -688,10 +408,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 <?php endforeach; ?>
             </div>
 
-            <?php if ( ! WC()->cart->is_empty() ) : ?>
-            <!-- <button type="button" class="custom-clear-cart-button" style="display:block;margin:0 auto 2rem auto;padding:1rem 2.5rem;background:#ef4444;color:#fff;border:none;border-radius:50px;font-size:0.9rem;font-weight:600;cursor:pointer;">Clear Cart</button> -->
-            <?php endif; ?>
-
             <!-- Hidden update cart button (triggered automatically by JS) -->
             <button type="submit" class="button" name="update_cart" value="<?php esc_attr_e( 'Update cart', 'woocommerce' ); ?>" style="display: none;" disabled>
                 <?php esc_html_e( 'Update cart', 'woocommerce' ); ?>
@@ -745,8 +461,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 Proceed to Checkout
             </a>
         </div>
-
-    <?php endif; ?>
 </div>
 
 <?php do_action( 'woocommerce_after_cart' ); ?>

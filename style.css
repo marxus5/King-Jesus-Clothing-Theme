@@ -40,7 +40,8 @@ body {
     line-height: 1 !important;
     text-align: center !important;
     padding: 0 !important;
-    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3) !important;
+    /* box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3) !important; */
+    display: none !important; /* Hide by default, will be shown on mobile via media query */
 }
 
 /* Header */
@@ -440,13 +441,20 @@ aside,
     }
 
     .carousel-item-image {
-        width: 100%;
-        height: 380px;
+         width: 100%;
+        height: 280px;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 4rem;
+        overflow: hidden;
+    }
+
+    .carousel-item-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 
     .carousel-item-content {
@@ -458,6 +466,7 @@ aside,
         font-weight: 600;
         margin-bottom: 0.5rem;
         color: #1f2937;
+        text-align: center;
     }
 
     .carousel-item-price {
@@ -465,6 +474,7 @@ aside,
         font-weight: 700;
         color: #667eea;
         margin-bottom: 1rem;
+        text-align: center;
     }
 
     .carousel-nav {
@@ -785,7 +795,7 @@ del {
     text-decoration: line-through;
     text-decoration-color: #000000 !important;
     text-decoration-thickness: 2px;
-    text-underline-offset: 10px;
+    text-underline-offset: -2px;
 }
 
 .woocommerce del {
@@ -793,6 +803,8 @@ del {
     text-decoration: line-through;
     text-decoration-color: #000000 !important;
     text-decoration-thickness: 2px;
+        text-underline-offset: -2px;
+
 }
 
 /* New/current sale price styling - removes yellow background */
@@ -1148,9 +1160,10 @@ select:focus {
 
     /* Sale badge - portable size for mobile */
     .onsale {
-        width: 50px !important;
+        /* width: 50px !important;
         height: 50px !important;
-        font-size: 0.75rem !important;
+        font-size: 0.75rem !important; */
+        display: none !important;
     }
 }
 
@@ -1213,3 +1226,24 @@ select:focus {
     }
 }
 
+
+.custom-view-product {
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    background: #1f2937;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+}
+
+.custom-view-product:hover {
+    background: #667eea;
+    color: white;
+}

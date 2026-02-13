@@ -1,4 +1,19 @@
 <?php
+wp_enqueue_style(
+    'main-style',
+    get_stylesheet_uri(),
+    [],
+    filemtime(get_stylesheet_directory() . '/style.css')
+);
+
+// wp_enqueue_script(
+//     'main-js',
+//     get_template_directory_uri() . '/js/main.js',
+//     [],
+//     filemtime(get_template_directory() . '/js/main.js'),
+//     true
+// );
+
 function printshop_enqueue_styles() {
     wp_enqueue_style('main-style', get_stylesheet_uri());
 }

@@ -50,6 +50,7 @@ get_header(); ?>
                                 <div class="carousel-item-content">
                                     <h3 class="carousel-item-title"><?php the_title(); ?></h3>
                                     <p class="carousel-item-price"><?php echo $product->get_price_html(); ?></p>
+                                    <span class="custom-view-product">View Product</span>
                                 </div>
                             </div>
                         </a>
