@@ -259,7 +259,28 @@ get_header(); ?>
         .message-section {
             padding: 3rem 2rem;
         }
-}
+
+        .social-handle {
+            font-size: 0.7rem;
+            color: #6b7280;
+        }
+    }
+
+    @media (max-width: 370px) {
+        .social-handle {
+            font-size: 0.6rem;
+            color: #6b7280;
+        }
+
+         .social-arrow {
+            display: none;
+        }
+
+        .social-name {
+            margin-bottom: 0;
+        }
+        
+    }
 </style>
 
 <!-- Contact Hero -->
@@ -291,7 +312,7 @@ get_header(); ?>
                     <div class="social-icon facebook fab fa-facebook-f"></div>
                     <div class="social-content">
                         <span class="social-name">Facebook</span>
-                        <span class="social-handle">@Marcus Surjopolos</span>
+                        <span class="social-handle">@kingjesusclothingbrand</span>
                     </div>
                     <span class="social-arrow">→</span>
                 </a>

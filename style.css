@@ -23,6 +23,26 @@ body {
     padding: 0;
 }
 
+.onsale {
+    background: #ef4444 !important;
+    color: white !important;
+    border-radius: 50% !important;
+    width: 50px !important;
+    height: 50px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: absolute !important;
+    top: 10px !important;
+    right: 10px !important;
+    font-size: 0.875rem !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    text-align: center !important;
+    padding: 0 !important;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3) !important;
+}
+
 /* Header */
 header {
     background: #000000;
@@ -89,10 +109,6 @@ nav {
     min-width: 20px;
     text-align: center;
     box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-}
-
-@media (max-width: 768px) {
-    .nav-cart .fa-shopping-cart { font-size: 1rem; }
 }
 
 /* Hero Section */
@@ -253,20 +269,6 @@ footer {
     /* padding-top: 2rem; */
     border-top: 1px solid #8b8b8b;
     color: #ffffff;
-}
-
-@media (max-width: 768px) {
-    .hero h1 {
-        font-size: 2rem;
-    }
-
-    .nav-links {
-        gap: 1rem;
-    }
-
-    .products-grid {
-        grid-template-columns: 1fr;
-    }
 }
 
 /* Hide WooCommerce breadcrumbs */
@@ -527,19 +529,6 @@ aside,
     border-radius: 16px;
     }
 
-    @media (max-width: 768px) {
-        .featured-product-section img {
-            width: 400px;
-            height: 400px;
-            background-position: center;
-            object-fit: cover;
-            margin: 0 auto;
-            display: block;
-        }
-    }
-
-   
-
     /* Featured Product Section */
     .featured-product-section {
         padding: 6rem 2rem;
@@ -657,10 +646,14 @@ aside,
         align-items: center;
         justify-content: center;
         font-size: 3rem;
+        flex-shrink: 0;
     }
 
     .blog-content {
         padding: 2rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
     }
 
     .blog-date {
@@ -682,6 +675,7 @@ aside,
         color: #6b7280;
         margin-bottom: 1.5rem;
         line-height: 1.6;
+        flex-grow: 1;
     }
 
     .blog-read-more {
@@ -692,6 +686,7 @@ aside,
         align-items: center;
         gap: 0.5rem;
         transition: gap 0.3s;
+        align-self: flex-start;
     }
 
     .blog-read-more:hover {
@@ -741,48 +736,6 @@ aside,
     }
 
     /* Responsive Design */
-    @media (max-width: 968px) {
-        .hero-title {
-            font-size: 2.5rem;
-            
-        }
-        
-        .hero-slogan {
-            font-size: 1.125rem;
-        }
-        
-        .featured-product-container {
-            grid-template-columns: 1fr;
-        }
-        
-        .featured-product-title {
-            font-size: 2rem;
-        }
-        
-        .quote-text {
-            font-size: 1.75rem;
-        }
-        
-        .carousel-item {
-            min-width: 280px;
-        }
-    }
-
-    @media (max-width: 640px) {
-        /* .hero-logo {
-            width: 140px;
-            height: 140px;
-        }
-        
-        .hero-logo img {
-            width: 90px;
-            height: 90px;
-        }
-        
-        .blog-grid {
-            grid-template-columns: 1fr;
-        } */
-}
 
 .social-icons {
     display: flex;
@@ -824,6 +777,37 @@ aside,
     font-size: 1.5rem;
     color: #1b1b1b;
     font-weight: 700;
+}
+
+/* Sale price strikethrough styling */
+del {
+    color: #005eff !important;
+    text-decoration: line-through;
+    text-decoration-color: #000000 !important;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 10px;
+}
+
+.woocommerce del {
+    color: #9ca3af !important;
+    text-decoration: line-through;
+    text-decoration-color: #000000 !important;
+    text-decoration-thickness: 2px;
+}
+
+/* New/current sale price styling - removes yellow background */
+ins {
+    background: transparent !important;
+    text-decoration: none !important;
+    color: #000000 !important;
+    font-weight: 700 !important;
+}
+
+.woocommerce ins {
+    background: transparent !important;
+    text-decoration: none !important;
+    color: #000000 !important;
+    font-weight: 700 !important;
 }
 
 /* WooCommerce single product add-to-cart button */
@@ -1005,7 +989,101 @@ select:focus {
     box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
 }
 
+/* ============================================
+   CONSOLIDATED MEDIA QUERIES
+   Organized by breakpoint (largest to smallest)
+   ============================================ */
+
+/* Tablet & Medium Devices: 968px and below */
+@media (max-width: 968px) {
+    /* Hero Section */
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-slogan {
+        font-size: 1.125rem;
+    }
+    
+    /* Featured Product Section */
+    .featured-product-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .featured-product-title {
+        font-size: 2rem;
+    }
+    
+    /* Quote Section */
+    .quote-text {
+        font-size: 1.75rem;
+    }
+    
+    /* Carousel Section */
+    .carousel-item {
+        min-width: 280px;
+    }
+    
+    /* Blog Section */
+    .blog-section {
+        padding: 4rem 1.5rem;
+    }
+
+    .blog-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+    }
+
+    .blog-card {
+        border-radius: 12px;
+    }
+
+    .blog-image {
+        height: 200px;
+        font-size: 2.5rem;
+    }
+
+    .blog-title {
+        font-size: 1.25rem;
+    }
+
+    .section-heading {
+        font-size: 2rem;
+    }
+}
+
+/* Tablets: 768px and below */
 @media (max-width: 768px) {
+    /* Navigation */
+    .nav-cart .fa-shopping-cart {
+        font-size: 1rem;
+    }
+
+    .nav-links {
+        gap: 1rem;
+    }
+
+    /* Hero Section */
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    /* Featured Products Grid */
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Featured Product Section */
+    .featured-product-section img {
+        width: 400px;
+        height: 400px;
+        background-position: center;
+        object-fit: cover;
+        margin: 0 auto;
+        display: block;
+    }
+
+    /* Mission CTA Section */
     .mission-cta-container {
         grid-template-columns: 1fr;
         gap: 2rem;
@@ -1020,6 +1098,118 @@ select:focus {
         height: 300px;
     }
 
- 
+    /* Carousel snap scrolling */
+    .carousel-wrapper {
+        scroll-snap-type: x mandatory;
+        scroll-padding: 0 calc(50vw - 160px);
+    }
+    
+    .carousel-item {
+        scroll-snap-align: center;
+        scroll-snap-stop: always;
+    }
+}
+
+/* Mobile: 640px and below */
+@media (max-width: 640px) {
+    /* Blog Section */
+    .blog-section {
+        padding: 3rem 1rem;
+    }
+
+    .blog-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .blog-content {
+        padding: 1.5rem;
+    }
+
+    .blog-image {
+        height: 180px;
+        font-size: 2rem;
+    }
+
+    .blog-title {
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .blog-excerpt {
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+    }
+
+    .section-heading {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    /* Sale badge - portable size for mobile */
+    .onsale {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 0.75rem !important;
+    }
+}
+
+/* Small Mobile: 570px and below */
+@media (max-width: 570px) {
+    /* Carousel snap scrolling adjustment */
+    .carousel-wrapper {
+        scroll-padding: 0 calc(50vw - 140px);
+    }
+    
+    .carousel-item {
+        min-width: 280px;
+    }
+
+    /* Featured Product Section */
+    .featured-product-section img {
+        width: 300px;
+        height: 300px;
+        background-position: center;
+        object-fit: cover;
+        margin: 0 auto;
+        display: block;
+    }
+}
+
+/* Small Devices: 375px and below */
+@media (max-width: 375px) {
+    /* Blog Section */
+    .blog-section {
+        padding: 2rem 0.75rem;
+    }
+
+    .blog-content {
+        padding: 1rem;
+    }
+
+    .blog-image {
+        height: 150px;
+    }
+
+    .blog-date {
+        font-size: 0.75rem;
+    }
+}
+
+/* Extra Small Devices: 320px and below */
+@media (max-width: 340px) {
+    /* Carousel snap scrolling adjustment */
+    .carousel-wrapper {
+        scroll-padding: 0 calc(50vw - 120px);
+    }
+    
+    .carousel-item {
+        min-width: 240px;
+    }
+
+    .featured-product-section img {
+        width: 250px;
+        height: 250px;
+    }
 }
 

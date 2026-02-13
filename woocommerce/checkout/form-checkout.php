@@ -21,6 +21,14 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
     padding: 3rem 2rem;
 }
 
+.custom-back-to-cart {
+    display: inline-block;
+    margin-bottom: 2rem;
+    color: #667eea;
+    text-decoration: underline;
+    justify-content: center;
+}
+
 .custom-checkout-title {
     font-size: 2.5rem;
     font-weight: 700;
@@ -211,6 +219,7 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 </style>
 
 <div class="custom-checkout-container">
+    <a href="cart" class="custom-back-to-cart">Back to Cart</a>
     <h1 class="custom-checkout-title">Checkout</h1>
 
     <form name="checkout" method="post" class="checkout woocommerce-checkout" action="<?php echo esc_url( wc_get_checkout_url() ); ?>" enctype="multipart/form-data">
@@ -287,6 +296,9 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
             <div class="custom-checkout-right">
                 <div class="custom-order-review">
                     <h3>Your Order</h3>
+
+                    <!-- Coupon Section - Using WooCommerce Built-in Form
+                     <?php woocommerce_checkout_coupon_form(); ?> --> 
 
                     <!-- Order Items -->
                     <?php foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) :
@@ -365,5 +377,19 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 
     </form>
 </div>
+
+<script>
+// Fix navOverlay error if it exists elsewhere on page
+jQuery(document).ready(function($) {
+    const navOverlay = document.getElementById('navOverlay');
+    if (navOverlay) {
+        navOverlay.addEventListener('click', function() {
+            const nav = document.querySelector('nav');
+            nav?.classList.remove('active');
+            navOverlay.classList.remove('active');
+        });
+    }
+});
+</script>
 
 <?php do_action( 'woocommerce_after_checkout_form', $checkout ); ?>

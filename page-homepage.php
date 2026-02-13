@@ -38,7 +38,7 @@ get_header(); ?>
                         $products->the_post();
                         global $product;
                         ?>
-                        <a href="<?php echo get_permalink(); ?>" class="carousel-item" style="text-decoration: none; color: inherit;">
+                        <a href="<?php echo get_permalink(); ?>" class="carousel-item-link" style="text-decoration: none; color: inherit;">
                             <div class="carousel-item">
                                 <div class="carousel-item-image">
                                     <?php if (has_post_thumbnail()) {
@@ -191,16 +191,59 @@ get_header(); ?>
 <script>
 function scrollCarousel(direction) {
     const carousel = document.getElementById('productCarousel');
-    const cardWidth = carousel.querySelector('.carousel-item').offsetWidth;
-    const gap = 32; // 2rem gap in pixels
-    const scrollAmount = cardWidth + gap;
+    const items = carousel.querySelectorAll('.carousel-item');
     
+    if (items.length === 0) return;
+    
+    // Get current scroll position
+    const scrollLeft = carousel.scrollLeft;
+    const containerWidth = carousel.offsetWidth;
+    
+    // Find the index of the currently centered (or closest) item
+    let currentIndex = 0;
+    let minDistance = Infinity;
+    
+    items.forEach((item, index) => {
+        const itemCenter = item.offsetLeft + (item.offsetWidth / 2);
+        const containerCenter = scrollLeft + (containerWidth / 2);
+        const distance = Math.abs(itemCenter - containerCenter);
+        
+        if (distance < minDistance) {
+            minDistance = distance;
+            currentIndex = index;
+        }
+    });
+    
+    // Calculate next index
+    let nextIndex;
     if (direction === 'left') {
-        carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        nextIndex = Math.max(0, currentIndex - 1);
     } else {
-        carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        nextIndex = Math.min(items.length - 1, currentIndex + 1);
     }
+    
+    // Scroll to center the next item
+    const targetItem = items[nextIndex];
+    const targetCenter = targetItem.offsetLeft + (targetItem.offsetWidth / 2);
+    const scrollTo = targetCenter - (containerWidth / 2);
+    
+    carousel.scrollTo({
+        left: scrollTo,
+        behavior: 'smooth'
+    });
 }
+
+// Enable snap scrolling
+window.addEventListener('DOMContentLoaded', function() {
+    const carousel = document.getElementById('productCarousel');
+    if (carousel && window.innerWidth <= 768) {
+        carousel.style.scrollSnapType = 'x mandatory';
+        const items = carousel.querySelectorAll('.carousel-item');
+        items.forEach(item => {
+            item.style.scrollSnapAlign = 'center';
+        });
+    }
+});
 </script>
 
 <?php get_footer(); ?>
