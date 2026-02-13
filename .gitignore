@@ -1,0 +1,34 @@
+# Ignore editor/IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Node.js / build tools (common in modern themes with Tailwind, Webpack, etc.)
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+package-lock.json   # or keep this if you want exact versions locked
+yarn.lock           # same as above
+
+# Build output / dist folders (if you compile Sass/JS)
+dist/
+build/
+assets/build/
+
+# Temporary / cache files
+*.log
+*.cache
+.DS_Store           # Mac junk
+Thumbs.db           # Windows junk
+
+# WordPress-specific stuff that might sneak in
+wp-content/uploads/   # uploads shouldn't be here anyway
+wp-config.php
+*.bak
+*.tmp
+
+# If you have any local testing files
+local/
+dev/
