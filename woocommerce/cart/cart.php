@@ -1,4 +1,5 @@
 <?php
+error_log('Custom cart template is loaded!');
 /**
  * Cart Page Template
  * Override: woocommerce/cart/cart.php
