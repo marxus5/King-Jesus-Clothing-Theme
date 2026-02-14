@@ -182,7 +182,7 @@ nav {
 
 .product-image {
     width: 100%;
-    height: 280px;
+    height: 100%;
     background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
     display: flex;
     align-items: center;
@@ -441,8 +441,8 @@ aside,
     }
 
     .carousel-item-image {
-         width: 100%;
-        height: 280px;
+        width: 100%;
+        height: 300px;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         display: flex;
         align-items: center;
@@ -1022,6 +1022,13 @@ select:focus {
         grid-template-columns: 1fr;
     }
     
+     .featured-product-section img {
+        background-position: center;
+        object-fit: cover;
+        margin: 0 auto;
+        display: block;
+    }
+
     .featured-product-title {
         font-size: 2rem;
     }

@@ -74,6 +74,17 @@ get_header(); ?>
         font-size: 0.95rem;
         color: #666;
     }
+
+    .contact-section {
+        background: #f9fafc;
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin-top: 2rem;
+    }
+
+    .contact-section h3 {
+        color: #667eea;
+    }
 </style>
 
 <div class="policy-header">
@@ -93,6 +104,11 @@ get_header(); ?>
             echo '<p>Please add your privacy policy content to this page.</p>';
         }
         ?>
+    </div>
+    
+    <div class="contact-section">
+        <h3>Questions?</h3>
+        <p>If you have any questions about our returns and refunds policy, please don't hesitate to <a href="<?php echo home_url('/contact'); ?>">contact us</a>.</p>
     </div>
 
     <div class="policy-last-updated">
