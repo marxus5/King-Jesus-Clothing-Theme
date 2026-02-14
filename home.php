@@ -250,8 +250,8 @@ get_header(); ?>
 <!-- Blog Hero -->
 <section class="blog-hero">
     <div class="blog-hero-content">
-        <h1>Our Blog</h1>
-        <p>Style tips, trends, and stories from our community</p>
+        <h1>Blog</h1>
+        <p>Spirit led messages behind our designs.</p>
     </div>
 </section>
 

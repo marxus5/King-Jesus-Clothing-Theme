@@ -107,7 +107,7 @@ get_header(); ?>
             <!-- <p class="featured-product-description">Now as Christ laid down his life as a demonstration of his love and friendship for us, he calls us to do the same...</p> -->
             <div class="container">
                 <!-- <p class="featured-product-price">$50</p> -->
-                <a href="<?php echo get_permalink(wc_get_page_id('shop')); ?>" class="featured-product-btn">Shop Now</a>
+                <a href="<?php echo home_url('/product/friend-of-god-hoodie'); ?>" class="featured-product-btn">Shop Now</a>
                 <!-- <a href="#" class="featured-product-btn">Message Behind the Merch</a> -->
             </div>
         </div>
