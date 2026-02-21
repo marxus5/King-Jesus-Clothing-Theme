@@ -2,6 +2,9 @@
 /**
  * Checkout Form Template
  * Override: woocommerce/checkout/form-checkout.php
+ *
+ * REQUIRES: Add the contents of functions-checkout-fragment.php to your theme's functions.php
+ * That file registers the AJAX fragment that keeps "Your Order" live without page refresh.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -99,7 +102,7 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 
 .custom-order-review {
     background: white;
-    padding: 2.5rem;
+    padding: 1.5rem;
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     position: sticky;
@@ -153,47 +156,109 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
     margin: 2rem 0;
 }
 
-.custom-payment-method {
-    padding: 1.25rem;
-    margin-bottom: 1rem;
-    background: #f9fafb;
-    border-radius: 8px;
-    border: 2px solid #e5e7eb;
-    cursor: pointer;
-    transition: all 0.3s;
+
+
+.woocommerce-remove-coupon {
+    color: #ef4444 !important;
+    text-decoration: none !important;
+    font-size: 0.9rem !important;
+    margin-left: 0.5rem !important;
 }
 
-.custom-payment-method:hover {
-    border-color: #667eea;
+.woocommerce-Price-amount {
+    font-weight: 600 !important;
+    color: #1f2937 !important;
+    font-size: 1.25rem !important;
 }
 
-.custom-payment-method input[type="radio"] {
-    margin-right: 0.75rem;
+/* Override WooCommerce payment box styles */
+.custom-order-review #payment,
+.woocommerce-checkout #payment {
+    background: transparent !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
 }
 
-.custom-payment-method label {
-    font-weight: 600;
-    font-size: 1.125rem;
-    cursor: pointer;
+.custom-order-review #payment ul.payment_methods,
+.woocommerce-checkout #payment ul.payment_methods {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    background: transparent !important;
 }
 
-.custom-place-order {
-    width: 100%;
-    padding: 1.5rem 2rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    border-radius: 50px;
-    font-size: 1.25rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+.custom-order-review #payment ul.payment_methods li,
+.woocommerce-checkout #payment ul.payment_methods li {
+    padding: 1.25rem !important;
+    margin-bottom: 1rem !important;
+    background: #f9fafb !important;
+    border-radius: 8px !important;
+    border: 2px solid #e5e7eb !important;
+    transition: all 0.3s !important;
+    line-height: 1.5 !important;
 }
 
-.custom-place-order:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+.custom-order-review #payment ul.payment_methods li:hover,
+.woocommerce-checkout #payment ul.payment_methods li:hover {
+    border-color: #667eea !important;
+}
+
+.custom-order-review #payment ul.payment_methods li label,
+.woocommerce-checkout #payment ul.payment_methods li label {
+    font-weight: 600 !important;
+    font-size: 1.125rem !important;
+    cursor: pointer !important;
+    color: #1f2937 !important;
+    display: inline !important;
+    margin: 0 !important;
+}
+
+.custom-order-review #payment ul.payment_methods li input[type="radio"],
+.woocommerce-checkout #payment ul.payment_methods li input[type="radio"] {
+    margin-right: 0.75rem !important;
+    vertical-align: middle !important;
+}
+
+.custom-order-review #payment .payment_box,
+.woocommerce-checkout #payment .payment_box {
+    background: #eff6ff !important;
+    border-radius: 6px !important;
+    padding: 0.5rem !important;
+    margin-top: 0.75rem !important;
+    font-size: 0.95rem !important;
+    color: #374151 !important;
+    border: none !important;
+}
+
+.custom-order-review #payment .payment_box::before,
+.woocommerce-checkout #payment .payment_box::before {
+    display: none !important;
+}
+
+.custom-order-review #payment div.place-order,
+.woocommerce-checkout #payment div.place-order {
+    padding: 0 !important;
+    margin-top: 1.5rem !important;
+    background: transparent !important;
+}
+
+.custom-order-review #payment #place_order,
+.woocommerce-checkout #payment #place_order {
+    width: 100% !important;
+    padding: 1.5rem 2rem !important;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 50px !important;
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: all 0.3s !important;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3) !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    margin-top: 1.5rem !important;
 }
 
 .custom-privacy-text {
@@ -295,71 +360,18 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
             <!-- Right Column: Order Review -->
             <div class="custom-checkout-right">
                 <div class="custom-order-review">
-                    <h3>Your Order</h3>
 
-                    <!-- Coupon Section - Using WooCommerce Built-in Form
-                     <?php woocommerce_checkout_coupon_form(); ?> --> 
-
-                    <!-- Order Items -->
-                    <?php foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) :
-                        $_product = apply_filters( 'woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key );
-
-                        if ( $_product && $_product->exists() && $cart_item['quantity'] > 0 ) :
-                            ?>
-                            <div class="custom-order-item">
-                                <div>
-                                    <span class="custom-order-item-name"><?php echo wp_kses_post( $_product->get_name() ); ?></span>
-                                    <span class="custom-order-item-quantity">× <?php echo esc_html( $cart_item['quantity'] ); ?></span>
-                                </div>
-                                <span><?php echo apply_filters( 'woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal( $_product, $cart_item['quantity'] ), $cart_item, $cart_item_key ); ?></span>
-                            </div>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-
-                    <!-- Order Totals -->
-                    <div class="custom-order-totals">
-                        <div class="custom-totals-row">
-                            <span>Subtotal</span>
-                            <span><?php wc_cart_totals_subtotal_html(); ?></span>
-                        </div>
-
-                        <?php foreach ( WC()->cart->get_coupons() as $code => $coupon ) : ?>
-                            <div class="custom-totals-row">
-                                <span>Coupon: <?php echo esc_html( $code ); ?></span>
-                                <span>-<?php wc_cart_totals_coupon_html( $coupon ); ?></span>
-                            </div>
-                        <?php endforeach; ?>
-
-                        <?php if ( WC()->cart->needs_shipping() && WC()->cart->show_shipping() ) : ?>
-                            <div class="custom-totals-row">
-                                <span>Shipping</span>
-                                <span><?php wc_cart_totals_shipping_html(); ?></span>
-                            </div>
-                        <?php endif; ?>
-
-                        <?php foreach ( WC()->cart->get_fees() as $fee ) : ?>
-                            <div class="custom-totals-row">
-                                <span><?php echo esc_html( $fee->name ); ?></span>
-                                <span><?php wc_cart_totals_fee_html( $fee ); ?></span>
-                            </div>
-                        <?php endforeach; ?>
-
-                        <?php if ( wc_tax_enabled() && ! WC()->cart->display_prices_including_tax() ) : ?>
-                            <?php foreach ( WC()->cart->get_tax_totals() as $code => $tax ) : ?>
-                                <div class="custom-totals-row">
-                                    <span><?php echo esc_html( $tax->label ); ?></span>
-                                    <span><?php echo wp_kses_post( $tax->formatted_amount ); ?></span>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-
-                        <div class="custom-totals-row total">
-                            <span>Total</span>
-                            <span><?php wc_cart_totals_order_total_html(); ?></span>
-                        </div>
+                    <!--
+                        .custom-order-review-inner is registered as a WooCommerce AJAX fragment
+                        in functions.php via woocommerce_update_order_review_fragments.
+                        WooCommerce replaces this div automatically whenever the checkout
+                        recalculates (coupon apply/remove, address entry, shipping change, etc.)
+                    -->
+                    <div class="custom-order-review-inner">
+                        <?php echo custom_checkout_order_review_html(); ?>
                     </div>
 
-                    <!-- Payment Methods -->
+                    <!-- Payment Methods — WooCommerce manages its own fragment updates here -->
                     <div class="custom-payment-methods">
                         <?php woocommerce_checkout_payment(); ?>
                     </div>
@@ -379,8 +391,19 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 </div>
 
 <script>
-// Fix navOverlay error if it exists elsewhere on page
 jQuery(document).ready(function($) {
+    // WooCommerce fires update_checkout automatically when address fields change.
+    // Our fragment is registered in functions.php, so WC replaces .custom-order-review-inner
+    // automatically — no manual AJAX needed.
+
+    // Extra nudge: if a coupon form submits outside normal WC flow, trigger checkout update.
+    $(document).on('submit', '.woocommerce-form-coupon', function() {
+        setTimeout(function() {
+            $(document.body).trigger('update_checkout');
+        }, 600);
+    });
+
+    // Fix navOverlay if present elsewhere on page
     const navOverlay = document.getElementById('navOverlay');
     if (navOverlay) {
         navOverlay.addEventListener('click', function() {

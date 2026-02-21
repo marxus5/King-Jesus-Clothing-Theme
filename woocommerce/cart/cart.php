@@ -416,13 +416,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         <div class="custom-cart-totals">
             <h2>Cart Totals</h2>
-            
-            <?php foreach ( WC()->cart->get_coupons() as $code => $coupon ) : ?>
-                <div class="custom-totals-row">
-                    <span>Coupon: <?php echo esc_html( $code ); ?></span>
-                    <span>-<?php wc_cart_totals_coupon_html( $coupon ); ?></span>
-                </div>
-            <?php endforeach; ?>
 
             <div class="custom-totals-row">
                 <span>Subtotal</span>
@@ -436,25 +429,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             <?php endforeach; ?>
 
-            <?php if ( wc_tax_enabled() && ! WC()->cart->display_prices_including_tax() ) : ?>
-                <?php if ( 'itemized' === get_option( 'woocommerce_tax_total_display' ) ) : ?>
-                    <?php foreach ( WC()->cart->get_tax_totals() as $code => $tax ) : ?>
-                        <div class="custom-totals-row">
-                            <span><?php echo esc_html( $tax->label ); ?></span>
-                            <span><?php echo wp_kses_post( $tax->formatted_amount ); ?></span>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else : ?>
-                    <div class="custom-totals-row">
-                        <span><?php echo esc_html( WC()->countries->tax_or_vat() ); ?></span>
-                        <span><?php wc_cart_totals_taxes_total_html(); ?></span>
-                    </div>
-                <?php endif; ?>
-            <?php endif; ?>
-
             <div class="custom-totals-row total">
                 <span>Total</span>
-                <span><?php wc_cart_totals_order_total_html(); ?></span>
+                <span><?php wc_cart_totals_subtotal_html(); ?></span>
             </div>
 
             <a href="<?php echo esc_url( wc_get_checkout_url() ); ?>" class="custom-checkout-button">

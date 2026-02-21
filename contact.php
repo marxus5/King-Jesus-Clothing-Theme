@@ -299,7 +299,7 @@ get_header(); ?>
             <div class="contact-info-item">
                 <div class="contact-icon">✉️</div>
                 <h3>Email Us</h3>
-                <a href="mailto:contact@kingjesus-clothing.org">contact@kingjesus-clothing.org</a>
+                <a href="mailto:support@kingjesusclothing.org">support@kingjesusclothing.org</a>
             </div>
         </div>
         
@@ -328,11 +328,11 @@ get_header(); ?>
                 </a>
                 
                 <!-- TikTok -->
-                <a href="https://tiktok.com/@kingjesusclothingbrand" target="_blank" rel="noopener noreferrer" class="social-link">
+                <a href="https://www.tiktok.com/@kingjesusclothing" target="_blank" rel="noopener noreferrer" class="social-link">
                     <div class="social-icon tiktok fab fa-tiktok"></div>
                     <div class="social-content">
                         <span class="social-name">TikTok</span>
-                        <span class="social-handle">@kingjesusclothingbrand</span>
+                        <span class="social-handle">@kingjesusclothing</span>
                     </div>
                     <span class="social-arrow">→</span>
                 </a>

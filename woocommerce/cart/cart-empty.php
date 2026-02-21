@@ -209,7 +209,7 @@ defined( 'ABSPATH' ) || exit;
                     <a href="<?php echo esc_url( get_permalink() ); ?>" class="custom-product-card">
                         <div class="custom-product-image">
                             <?php if ( has_post_thumbnail() ) : ?>
-                                <?php the_post_thumbnail( 'medium' ); ?>
+                                <?php the_post_thumbnail('full'); ?>
                             <?php else : ?>
                                 👕
                             <?php endif; ?>

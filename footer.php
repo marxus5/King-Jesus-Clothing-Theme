@@ -16,7 +16,7 @@
             <div class="footer-section">
                 <h3>Contact</h3>
                 <ul>
-                    <li>contact@kingjesus-clothing.org</li>
+                    <li>support@kingjesusclothing.org</li>
                 </ul>
                 <div class="social-icons">
                     <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">

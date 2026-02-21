@@ -317,17 +317,19 @@ add_filter( 'woocommerce_order_details_after_order_table', '__return_false' );
                     <div class="custom-info-value"><?php echo esc_html( '10-17 days' ); ?></div>
                 </div>
 
-                <?php if ( is_user_logged_in() && $order->get_user_id() === get_current_user_id() && $order->get_billing_email() ) : ?>
-                    <div class="custom-info-item">
-                        <div class="custom-info-label">Email</div>
-                        <div class="custom-info-value"><?php echo $order->get_billing_email(); ?></div>
-                    </div>
-                <?php endif; ?>
-
                 <div class="custom-info-item">
                     <div class="custom-info-label">Total</div>
                     <div class="custom-info-value"><?php echo $order->get_formatted_order_total(); ?></div>
                 </div>
+
+                <?php if ( is_user_logged_in() && $order->get_user_id() === get_current_user_id() && $order->get_billing_email() ) : ?>
+                    <div class="custom-info-item">
+                        <div class="custom-info-label">Total Items</div>
+                        <div class="custom-info-value"><?php echo $order->get_item_count(); ?></div>
+                    </div>
+                <?php endif; ?>
+
+                
 
                 <?php if ( $order->get_payment_method_title() ) : ?>
                     <div class="custom-info-item">

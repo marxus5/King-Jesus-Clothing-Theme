@@ -42,7 +42,7 @@ get_header(); ?>
                             <div class="carousel-item">
                                 <div class="carousel-item-image">
                                     <?php if (has_post_thumbnail()) {
-                                        the_post_thumbnail('medium');
+                                        the_post_thumbnail('full');
                                     } else {
                                         echo '👕';
                                     } ?>
