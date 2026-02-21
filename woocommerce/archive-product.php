@@ -226,8 +226,6 @@ do_action( 'woocommerce_before_main_content' );
         ?>
         </ul>
 
-        <?php do_action( 'woocommerce_after_shop_loop' ); ?>
-
         <!-- Pagination -->
         <div class="custom-shop-pagination">
             <?php woocommerce_pagination(); ?>
