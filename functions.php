@@ -182,7 +182,6 @@ function printshop_enqueue_quick_checkout_script() {
                 'quick-checkout',
                 'stripe_config',
                 array(
-                    'stripe' => \Stripe\Stripe::initialize($pub_key),
                     'publicKey' => $pub_key,
                     'currency' => strtolower(get_woocommerce_currency()),
                 )
