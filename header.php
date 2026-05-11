@@ -2,7 +2,7 @@
 <html <?php language_attributes(); ?>>
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <?php wp_head(); ?>
 </head>
@@ -105,6 +105,7 @@
             position: fixed;
             top: 0;
             right: -100%;
+            height: 100dvh;
             height: 100vh;
             width: 70%;
             max-width: 300px;
@@ -132,6 +133,7 @@
             top: 0;
             left: 0;
             width: 100%;
+            height: 100dvh;
             height: 100vh;
             background: rgba(0,0,0,0.5);
             opacity: 0;
@@ -173,6 +175,11 @@
     }
     </style>
 
+    <!-- Free Shipping Banner -->
+    <div class="shipping-ticker-banner">
+        <span class="shipping-ticker-text">Free shipping on orders +$80</span>
+    </div>
+
     <header>
         <nav>
             <a class="logo" href="<?php echo home_url(); ?>"><?php bloginfo('name'); ?></a>
@@ -210,7 +217,10 @@
                 </li>
             </ul>
         </nav>
-    </header> 
+    </header>
+    
+    <!-- Navigation Overlay -->
+    <div class="nav-overlay" id="navOverlay"></div>
 
     <script>
 document.addEventListener('DOMContentLoaded', function() {

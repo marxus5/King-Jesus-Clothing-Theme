@@ -159,15 +159,17 @@ do_action( 'woocommerce_before_single_product' );
     margin-bottom: 1.75rem;
 }
 
-.custom-product-detail-price .price {
+.custom-product-detail-price p.price {
     font-size: 2rem;
     font-weight: 800;
     color: #1f2937;
+    margin: 0;
 }
 
 .custom-product-detail-price .price ins {
     text-decoration: none;
     color: #667eea;
+    background: transparent;
 }
 
 .custom-product-detail-price .price del {
@@ -184,6 +186,16 @@ do_action( 'woocommerce_before_single_product' );
     margin-bottom: 2rem;
     padding-bottom: 2rem;
     border-bottom: 2px solid #f3f4f6;
+}
+
+/* Stripe Express Checkout wrapper */
+.stripe-express-checkout-wrapper {
+    margin-bottom: 1.5rem;
+    min-height: 45px;
+}
+
+#payment-request-button {
+    height: 45px;
 }
 
 /* Add to cart area */
@@ -758,8 +770,8 @@ ul.products li.product button.button:hover {
                 <?php endif; ?>
 
                 <!-- Price -->
-                <div class="custom-product-detail-price">
-                    <?php echo $product->get_price_html(); ?>
+                <div class="custom-product-detail-price woocommerce">
+                    <?php woocommerce_template_single_price(); ?>
                 </div>
 
                 <!-- Short Description -->
@@ -768,6 +780,11 @@ ul.products li.product button.button:hover {
                         <?php echo wp_kses_post( $product->get_short_description() ); ?>
                     </div>
                 <?php endif; ?>
+
+                <!-- Stripe Express Checkout -->
+                <div id="stripe-express-checkout-container" class="stripe-express-checkout-wrapper">
+                    <div id="payment-request-button"></div>
+                </div>
 
                 <!-- Add to Cart — only fires add_to_cart now, everything else removed above -->
                 <div class="custom-product-add-to-cart">
@@ -787,7 +804,7 @@ ul.products li.product button.button:hover {
                     </div>
                     <div class="custom-trust-item">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
-                        Free Shipping $70+
+                        Free Shipping $80+
                     </div>
                     <div class="custom-trust-item">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>

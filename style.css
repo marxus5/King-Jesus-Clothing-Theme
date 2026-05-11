@@ -54,6 +54,31 @@ body {
     display: none !important; /* Hide by default, will be shown on mobile via media query */
 }
 
+/* Free Shipping Banner */
+.shipping-ticker-banner {
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 0.75rem 2rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.shipping-ticker-text {
+    display: inline-block;
+    margin: 0;
+}
+
+@media (max-width: 640px) {
+    .shipping-ticker-banner {
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
+    }
+}
+
 /* Header */
 header {
     background: #000000;
@@ -329,6 +354,7 @@ aside,
 
 /* Hero Section */
     .hero-section {
+        height: 100dvh;
         height: 100vh;
         display: flex;
         flex-direction: column;
@@ -1303,15 +1329,17 @@ select:focus {
     clear: none !important;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 900px) {
     .custom-shop-container ul.products {
         grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1.5rem !important;
     }
 }
 
 @media (max-width: 640px) {
     .custom-shop-container ul.products {
-        grid-template-columns: 1fr !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1rem !important;
     }
 }
 

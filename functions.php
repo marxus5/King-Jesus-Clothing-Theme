@@ -144,6 +144,54 @@ function printshop_enqueue_styles() {
 }
 add_action('wp_enqueue_scripts', 'printshop_enqueue_styles');
 
+/**
+ * Enqueue Quick Checkout & Banner Manager Script
+ */
+function printshop_enqueue_quick_checkout_script() {
+    // Enqueue the custom quick checkout script
+    wp_enqueue_script(
+        'quick-checkout',
+        get_template_directory_uri() . '/js/quick-checkout.js',
+        array(),
+        filemtime(get_template_directory() . '/js/quick-checkout.js'),
+        true // Load in footer
+    );
+    
+    // Only enqueue Stripe.js on product pages
+    if ( is_product() || is_checkout() ) {
+        // Enqueue Stripe.js library from CDN
+        wp_enqueue_script(
+            'stripe-js',
+            'https://js.stripe.com/v3/',
+            array(),
+            '3',
+            false // Load in header
+        );
+        
+        // Get Stripe public key from WooCommerce Stripe gateway settings
+        $stripe_pub_key = get_option('woocommerce_stripe_settings');
+        $pub_key = '';
+        
+        if (is_array($stripe_pub_key) && isset($stripe_pub_key['publishable_key'])) {
+            $pub_key = $stripe_pub_key['publishable_key'];
+        }
+        
+        // Pass Stripe config to JavaScript
+        if ($pub_key) {
+            wp_localize_script(
+                'quick-checkout',
+                'stripe_config',
+                array(
+                    'stripe' => \Stripe\Stripe::initialize($pub_key),
+                    'publicKey' => $pub_key,
+                    'currency' => strtolower(get_woocommerce_currency()),
+                )
+            );
+        }
+    }
+}
+add_action('wp_enqueue_scripts', 'printshop_enqueue_quick_checkout_script');
+
 // Add WooCommerce support
 function printshop_add_woocommerce_support() {
     

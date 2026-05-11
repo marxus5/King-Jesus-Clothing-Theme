@@ -159,7 +159,7 @@ do_action( 'woocommerce_before_main_content' );
 }
 
 /* Responsive */
-@media (max-width: 1024px) {
+@media (max-width: 900px) {
     .custom-shop-container ul.products.columns-4,
     .custom-shop-container ul.products.columns-3,
     .custom-shop-container ul.products {
@@ -171,7 +171,7 @@ do_action( 'woocommerce_before_main_content' );
     .custom-shop-container ul.products.columns-4,
     .custom-shop-container ul.products.columns-3,
     .custom-shop-container ul.products {
-        grid-template-columns: 1fr !important;
+        grid-template-columns: repeat(2, 1fr) !important;
     }
     .custom-shop-title { font-size: 2rem; }
 }
