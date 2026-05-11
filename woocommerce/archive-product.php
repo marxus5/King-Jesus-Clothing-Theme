@@ -18,9 +18,9 @@ do_action( 'woocommerce_before_main_content' );
 <style>
 /* ── Shop Page ─────────────────────────────────────────────── */
 .custom-shop-container {
-    max-width: 1300px;
-    margin: 0 auto;
-    padding: 3rem 2rem;
+    max-width: 100%;
+    margin: 0;
+    padding: 3rem 0.5rem;
 }
 
 .custom-shop-header {
@@ -86,7 +86,7 @@ do_action( 'woocommerce_before_main_content' );
 .custom-shop-container ul.products {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important;
-    gap: 2rem !important;
+    gap: 0.35rem !important;
     list-style: none !important;
     padding: 0 !important;
     margin: 0 !important;

@@ -23,9 +23,9 @@ if ( empty( $product ) || ! $product->is_visible() ) {
 /* ── Product Card ───────────────────────────────────────────── */
 .custom-product-card {
     background: white;
-    border-radius: 16px;
+    border-radius: 6px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex !important;
     flex-direction: column;
@@ -161,9 +161,9 @@ if ( empty( $product ) || ! $product->is_visible() ) {
     margin-top: auto;
     padding-top: 0.75rem;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
 }
 
 .custom-product-price .price {
