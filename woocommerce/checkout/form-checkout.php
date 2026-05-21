@@ -199,6 +199,17 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
     line-height: 1.5 !important;
 }
 
+/* Hide duplicate payment options on small screens */
+@media (max-width: 480px) {
+    .woocommerce-checkout #payment ul.payment_methods li:not(:first-child) {
+        display: none !important;
+    }
+    
+    .woocommerce-checkout #payment ul.payment_methods li:first-child {
+        margin-bottom: 0.75rem !important;
+    }
+}
+
 .custom-order-review #payment ul.payment_methods li:hover,
 .woocommerce-checkout #payment ul.payment_methods li:hover {
     border-color: #667eea !important;
@@ -279,6 +290,96 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
     
     .custom-form-row-half {
         grid-template-columns: 1fr;
+    }
+}
+
+/* Extra small devices - iPhone sizes */
+@media (max-width: 480px) {
+    .custom-checkout-container {
+        padding: 2rem 1rem;
+    }
+    
+    .custom-checkout-title {
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .custom-checkout-section {
+        padding: 1.5rem 1rem;
+    }
+    
+    .custom-order-review {
+        padding: 1rem;
+    }
+    
+    .custom-order-review h3,
+    .custom-checkout-section h3 {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+    }
+    
+    .custom-form-row input[type="text"],
+    .custom-form-row input[type="email"],
+    .custom-form-row input[type="tel"],
+    .custom-form-row select,
+    .custom-form-row textarea {
+        padding: 0.75rem 0.875rem;
+        font-size: 16px; /* Prevents iOS zoom on input focus */
+    }
+    
+    /* Payment methods - cleaner on mobile */
+    .woocommerce-checkout #payment ul.payment_methods li {
+        padding: 1rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+    
+    .woocommerce-checkout #payment ul.payment_methods li label {
+        font-size: 1rem !important;
+    }
+    
+    .woocommerce-checkout #payment .payment_box {
+        padding: 1rem !important;
+        margin-top: 0.5rem !important;
+        font-size: 0.9rem !important;
+    }
+    
+    /* Place order button */
+    .woocommerce-checkout #payment #place_order {
+        padding: 1.25rem 1rem !important;
+        font-size: 1.125rem !important;
+    }
+    
+    .custom-order-item {
+        padding: 0.75rem 0;
+    }
+    
+    .custom-totals-row {
+        padding: 0.75rem 0;
+        font-size: 0.95rem;
+    }
+    
+    .custom-totals-row.total {
+        font-size: 1.25rem;
+    }
+    
+    .custom-payment-methods {
+        margin: 1.5rem 0;
+    }
+}
+
+/* Very small phones */
+@media (max-width: 375px) {
+    .custom-checkout-container {
+        padding: 1rem 0.75rem;
+    }
+    
+    .custom-checkout-title {
+        font-size: 1.5rem;
+    }
+    
+    .custom-checkout-section,
+    .custom-order-review {
+        padding: 1rem 0.75rem;
     }
 }
 </style>

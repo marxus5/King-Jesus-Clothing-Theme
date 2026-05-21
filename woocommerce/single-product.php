@@ -61,15 +61,29 @@ do_action( 'woocommerce_before_single_product' );
     top: 2rem;
 }
 
+/* ── Main image carousel ─────────────────────────────────── */
 .custom-product-main-image {
     border-radius: 20px;
     overflow: hidden;
     background: #f9fafb;
-    aspect-ratio: 1 / 1;
     margin-bottom: 1rem;
+    position: relative;
 }
 
-.custom-product-main-image img {
+/* Splide base */
+#product-main-carousel {
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+#product-main-carousel .splide__slide {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: #f9fafb;
+    cursor: zoom-in;
+}
+
+#product-main-carousel .splide__slide img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -77,10 +91,130 @@ do_action( 'woocommerce_before_single_product' );
     transition: transform 0.4s ease;
 }
 
-/* Zoom on hover — scale the image inside its clipped container */
-.custom-product-main-image:hover img {
-    transform: scale(1.08);
-    cursor: zoom-in;
+#product-main-carousel .splide__slide:hover img {
+    transform: scale(1.06);
+}
+
+/* Carousel navigation arrows */
+#product-main-carousel .splide__arrows {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+}
+
+#product-main-carousel .splide__arrow {
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+    border: none !important;
+    border-radius: 50% !important;
+    width: 42px !important;
+    height: 42px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    opacity: 0.85;
+    pointer-events: all;
+    cursor: pointer;
+    transition: opacity 0.25s, box-shadow 0.25s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    z-index: 10 !important;
+}
+
+#product-main-carousel .splide__arrow--prev {
+    left: 14px !important;
+    right: auto !important;
+}
+
+#product-main-carousel .splide__arrow--next {
+    right: 14px !important;
+    left: auto !important;
+}
+
+#product-main-carousel .splide__arrow:hover {
+    opacity: 1 !important;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.22) !important;
+}
+
+#product-main-carousel .splide__arrow svg {
+    fill: #1f2937 !important;
+    width: 18px !important;
+    height: 18px !important;
+}
+
+/* Carousel dots/pagination */
+#product-main-carousel .splide__pagination {
+    bottom: 14px !important;
+}
+
+#product-main-carousel .splide__pagination__page {
+    background: rgba(255, 255, 255, 0.55) !important;
+    width: 8px !important;
+    height: 8px !important;
+    transition: background 0.2s, transform 0.2s !important;
+}
+
+#product-main-carousel .splide__pagination__page.is-active {
+    background: white !important;
+    transform: scale(1.3) !important;
+}
+
+/* Smooth slide fade when switching color */
+#product-main-carousel .splide__list {
+    transition: opacity 0.25s ease;
+}
+#product-main-carousel.is-switching .splide__list {
+    opacity: 0;
+}
+
+/* ── Color swatch selector ───────────────────────────────── */
+.custom-color-swatches {
+    margin-bottom: 1.5rem;
+}
+
+.custom-color-swatches-label {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #374151;
+    margin-bottom: 0.6rem;
+}
+
+.custom-color-swatches-label span {
+    font-weight: 400;
+    color: #6b7280;
+    margin-left: 0.4rem;
+}
+
+.custom-color-swatches-list {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.custom-color-swatch {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    outline: 2px solid transparent;
+    cursor: pointer;
+    transition: outline-color 0.2s, border-color 0.2s, transform 0.2s;
+    position: relative;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+
+.custom-color-swatch:hover {
+    transform: scale(1.12);
+    outline-color: #667eea;
+    outline-offset: 2px;
+}
+
+.custom-color-swatch.active {
+    border-color: white;
+    outline-color: #667eea;
+    outline-offset: 2px;
+    transform: scale(1.12);
 }
 
 /* Gallery thumbnails */
@@ -173,7 +307,7 @@ do_action( 'woocommerce_before_single_product' );
 }
 
 .custom-product-detail-price .price del {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     color: #9ca3af;
     font-weight: 400;
 }
@@ -206,14 +340,20 @@ do_action( 'woocommerce_before_single_product' );
 /* Override WC quantity + button */
 .custom-product-add-to-cart form.cart {
     display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.custom-product-add-to-cart form.cart > :not(.variations) {
+    display: flex;
     align-items: center;
     gap: 1rem;
-    flex-wrap: wrap;
 }
 
 .custom-product-add-to-cart .quantity input.qty {
     width: 80px;
-    padding: 1rem;
+    padding: 0.5rem;
     text-align: center;
     border: 2px solid #e5e7eb;
     border-radius: 10px;
@@ -229,11 +369,11 @@ do_action( 'woocommerce_before_single_product' );
 
 .custom-product-add-to-cart .single_add_to_cart_button {
     flex: 1;
-    padding: 1.1rem 2rem;
+    padding: 0.5rem 2rem;
     background: #252525;
     color: white;
     border: none;
-    border-radius: 50px;
+    border-radius: 10px;
     font-size: 1.1rem;
     font-weight: 700;
     cursor: pointer;
@@ -638,6 +778,17 @@ ul.products li.product button.button:hover {
         grid-template-columns: repeat(4, 1fr);
     }
 }
+
+/* Hide the WooCommerce color select row — swatches handle color selection instead */
+.variations tr.color-row,
+.variations tr:has(select[name*="color"]),
+.variations tr:has(select[name*="colour"]),
+.variations tr:has(select[id*="color"]),
+.variations tr:has(select[id*="colour"]),
+.variations tr:has(select[name="attribute_Color"]),
+.variations tr:has(select[name="attribute_Colour"]) {
+    display: none !important;
+}
 </style>
 
 <div class="custom-single-product-container">
@@ -685,46 +836,139 @@ ul.products li.product button.button:hover {
                 );
                 ?>
 
-                <div class="custom-product-main-image" id="custom-main-image">
-                    <?php
-                    // Build full-size URLs for all images — used by the lightbox
-                    $full_urls = array();
-                    foreach ( $all_image_ids as $img_id ) {
-                        $full_urls[] = wp_get_attachment_image_url( $img_id, 'full' );
-                    }
-                    $first_full = $main_image_id ? wp_get_attachment_image_url( $main_image_id, 'full' ) : '';
-                    ?>
-                    <?php /* Wrap in <a> so GLightbox can open the full image on click */ ?>
-                    <a href="<?php echo esc_url( $first_full ); ?>"
-                       class="glightbox"
-                       data-gallery="product-gallery"
-                       id="custom-main-link">
-                        <?php
-                        if ( $main_image_id ) {
-                            echo wp_get_attachment_image( $main_image_id, 'full', false, array(
-                                'id'      => 'custom-main-img',
-                                'alt'     => esc_attr( $product->get_name() ),
-                                'loading' => 'eager',
-                            ) );
-                        } else {
-                            echo wc_placeholder_img( 'full' );
+                <?php
+                // Build full-size URL array for JS
+                $full_urls = array();
+                foreach ( $all_image_ids as $img_id ) {
+                    $full_urls[] = wp_get_attachment_image_url( $img_id, 'full' );
+                }
+
+                // Collect color variation image sets (variable products only)
+                $color_image_sets = array();
+                if ( $product->is_type( 'variable' ) ) {
+                    $variations = $product->get_available_variations();
+
+                    // Find the color attribute key directly from variation data.
+                    // WooCommerce stores keys as 'attribute_pa_color' (taxonomy) or
+                    // 'attribute_Color' (local attribute) — we scan whichever exists.
+                    $color_attr_key = '';
+                    if ( ! empty( $variations ) ) {
+                        foreach ( array_keys( $variations[0]['attributes'] ) as $key ) {
+                            if ( stripos( $key, 'color' ) !== false || stripos( $key, 'colour' ) !== false ) {
+                                $color_attr_key = $key; // already has 'attribute_' prefix
+                                break;
+                            }
                         }
-                        ?>
-                    </a>
-                    <?php
-                    // Hidden lightbox links for the rest of the gallery images
-                    // GLightbox needs all images in the DOM to enable next/prev navigation
-                    foreach ( $all_image_ids as $i => $img_id ) :
-                        if ( $i === 0 ) continue; // first image is already the <a> above
-                        $url = wp_get_attachment_image_url( $img_id, 'full' );
-                    ?>
-                        <a href="<?php echo esc_url( $url ); ?>"
-                           class="glightbox"
-                           data-gallery="product-gallery"
-                           style="display:none;"
-                           data-index="<?php echo esc_attr( $i ); ?>">
-                        </a>
-                    <?php endforeach; ?>
+                    }
+
+
+
+                    if ( $color_attr_key ) {
+                        // Built-in palette so swatches look right without taxonomy meta
+                        $color_palette = array(
+                            'brown'  => '#8B5E3C', 'green'  => '#4A7C59', 'black'  => '#1a1a1a',
+                            'white'  => '#f5f5f5', 'red'    => '#c0392b', 'Klein blue'   => '#2563EB',
+                            'navy'   => '#1e3a5f', 'grey'   => '#9ca3af', 'gray'   => '#9ca3af',
+                            'pink'   => '#ec4899', 'purple' => '#7c3aed', 'yellow' => '#f59e0b',
+                            'orange' => '#ea580c', 'beige'  => '#d4b896', 'cream'  => '#fffdd0',
+                            'tan'    => '#d2b48c', 'khaki'  => '#c3b091', 'olive'  => '#6b7c3e',
+                            'Eden Green'   => '#254841', 'coral'  => '#ff6b6b', 'maroon' => '#800000',
+                        );
+
+                        foreach ( $variations as $variation ) {
+                            $attr_val = $variation['attributes'][ $color_attr_key ] ?? '';
+                            if ( ! $attr_val ) continue;
+
+                            $variation_obj = wc_get_product( $variation['variation_id'] );
+                            if ( ! $variation_obj ) continue;
+                            $var_img_id = $variation_obj->get_image_id();
+                            if ( ! $var_img_id ) continue;
+
+                            $slug  = sanitize_title( $attr_val );
+                            $label = $attr_val;
+
+                            // Priority 1: custom _swatch_color meta set via the hex field in admin
+                            $hex = get_post_meta( $variation['variation_id'], '_swatch_color', true );
+
+                            // Priority 2: taxonomy term meta (pa_color attribute plugins)
+                            if ( ! $hex ) {
+                                $tax_key = str_replace( 'attribute_', '', $color_attr_key );
+                                if ( taxonomy_exists( $tax_key ) ) {
+                                    $term = get_term_by( 'slug', $slug, $tax_key );
+                                    if ( $term ) {
+                                        $label = $term->name;
+                                        $hex   = get_term_meta( $term->term_id, 'product_color', true )
+                                              ?: get_term_meta( $term->term_id, 'color', true );
+                                    }
+                                }
+                            }
+
+                            // Priority 3: built-in palette matched on slug keywords
+                            if ( ! $hex ) {
+                                $slug_lower = strtolower( $slug );
+                                foreach ( $color_palette as $keyword => $palette_hex ) {
+                                    if ( strpos( $slug_lower, $keyword ) !== false ) {
+                                        $hex = $palette_hex;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            // Priority 4: grey fallback
+                            if ( ! $hex ) $hex = '#cccccc';
+
+                            if ( ! isset( $color_image_sets[ $slug ] ) ) {
+                                $color_image_sets[ $slug ] = array(
+                                    'label'   => $label,
+                                    'hex'     => $hex,
+                                    'img_ids' => array(),
+                                );
+                            }
+                            if ( ! in_array( $var_img_id, $color_image_sets[ $slug ]['img_ids'] ) ) {
+                                $color_image_sets[ $slug ]['img_ids'][] = $var_img_id;
+                            }
+                        }
+                    }
+                }
+
+                // JS dataset: { slug: firstSlideIndex }
+                // Map each color slug to the index of its FIRST image in $all_image_ids
+                // so JS can do a direct splide.go(index) with no URL matching needed.
+                $js_color_index = array();
+                foreach ( $color_image_sets as $slug => $data ) {
+                    foreach ( $all_image_ids as $pos => $img_id ) {
+                        if ( in_array( $img_id, $data['img_ids'] ) ) {
+                            $js_color_index[ $slug ] = $pos;
+                            break; // first matching slide is enough
+                        }
+                    }
+                }
+                ?>
+
+                <!-- Main image carousel (Splide) -->
+                <div class="custom-product-main-image" id="custom-main-image">
+                    <div id="product-main-carousel" class="splide"
+                         aria-label="<?php echo esc_attr( $product->get_name() ); ?> images">
+                        <div class="splide__track">
+                            <ul class="splide__list">
+                                <?php foreach ( $all_image_ids as $i => $img_id ) :
+                                    $full_url = wp_get_attachment_image_url( $img_id, 'full' );
+                                ?>
+                                <li class="splide__slide" data-img-url="<?php echo esc_url( $full_url ); ?>">
+                                    <a href="<?php echo esc_url( $full_url ); ?>"
+                                       class="glightbox"
+                                       data-gallery="product-gallery"
+                                       data-index="<?php echo esc_attr( $i ); ?>">
+                                        <?php echo wp_get_attachment_image( $img_id, 'large', false, array(
+                                            'alt'     => esc_attr( $product->get_name() ) . ( $i > 0 ? ' ' . ( $i + 1 ) : '' ),
+                                            'loading' => $i === 0 ? 'eager' : 'lazy',
+                                        ) ); ?>
+                                    </a>
+                                </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
 
                 <?php if ( count( $all_image_ids ) > 1 ) : ?>
@@ -734,8 +978,7 @@ ul.products li.product button.button:hover {
                         ?>
                             <div class="custom-product-thumb <?php echo $i === 0 ? 'active' : ''; ?>"
                                  data-full="<?php echo esc_url( $full_url ); ?>"
-                                 data-index="<?php echo esc_attr( $i ); ?>"
-                                 onclick="customSwitchImage(this)">
+                                 data-index="<?php echo esc_attr( $i ); ?>">
                                 <?php echo wp_get_attachment_image( $img_id, 'thumbnail', false, array(
                                     'alt'     => esc_attr( $product->get_name() ) . ' ' . ( $i + 1 ),
                                     'loading' => 'lazy',
@@ -781,10 +1024,28 @@ ul.products li.product button.button:hover {
                     </div>
                 <?php endif; ?>
 
-                <!-- Stripe Express Checkout -->
-                <div id="stripe-express-checkout-container" class="stripe-express-checkout-wrapper">
-                    <div id="payment-request-button"></div>
+                <!-- Color Swatches (variable products with color attribute only) -->
+                <?php if ( ! empty( $color_image_sets ) ) : ?>
+                <div class="custom-color-swatches" id="custom-color-swatches">
+                    <div class="custom-color-swatches-label">
+                        Color: <span id="custom-color-label"><?php echo esc_html( reset( $color_image_sets )['label'] ); ?></span>
+                    </div>
+                    <div class="custom-color-swatches-list">
+                        <?php $first_color = true; foreach ( $color_image_sets as $slug => $data ) :
+                        ?>
+                        <button type="button"
+                                class="custom-color-swatch <?php echo $first_color ? 'active' : ''; ?>"
+                                style="background-color: <?php echo esc_attr( $data['hex'] ); ?>;"
+                                data-color-slug="<?php echo esc_attr( $slug ); ?>"
+                                data-color-label="<?php echo esc_attr( $data['label'] ); ?>"
+                                data-color-index="<?php echo esc_attr( $js_color_index[ $slug ] ?? 0 ); ?>"
+                                title="<?php echo esc_attr( $data['label'] ); ?>"
+                                aria-label="<?php echo esc_attr( $data['label'] ); ?>">
+                        </button>
+                        <?php $first_color = false; endforeach; ?>
+                    </div>
                 </div>
+                <?php endif; ?>
 
                 <!-- Add to Cart — only fires add_to_cart now, everything else removed above -->
                 <div class="custom-product-add-to-cart">
@@ -863,82 +1124,188 @@ ul.products li.product button.button:hover {
 </div>
 
 <script>
-// ── GLightbox — loaded from CDN, handles lightbox + swipe + zoom ──
-(function() {
-    // Load GLightbox CSS
-    var link = document.createElement('link');
-    link.rel  = 'stylesheet';
-    link.href = 'https://cdnjs.cloudflare.com/ajax/libs/glightbox/3.3.0/css/glightbox.min.css';
-    document.head.appendChild(link);
+(function () {
+    'use strict';
 
-    // Load GLightbox JS then initialise
-    var script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/glightbox/3.3.0/js/glightbox.min.js';
-    script.onload = function() {
-        window.productLightbox = GLightbox({
-            selector: '.glightbox[data-gallery="product-gallery"]',
-            touchNavigation: true,  // swipe on mobile
-            loop: true,
-            zoomable: true,         // pinch-to-zoom on mobile / scroll on desktop
-        });
-    };
-    document.head.appendChild(script);
-})();
-
-/**
- * Called when a thumbnail is clicked.
- * 1. Swaps the visible main image src
- * 2. Updates the main <a> href so the lightbox opens the right image
- * 3. Tells GLightbox which slide to open first (so next/prev still works)
- */
-function customSwitchImage(thumb) {
-    var fullSrc = thumb.dataset.full;
-    var index   = parseInt(thumb.dataset.index, 10);
-
-    // Swap visible image.
-    // Must clear srcset and sizes — when srcset is present the browser
-    // ignores src entirely and picks its own image from the set instead.
-    var mainImg = document.getElementById('custom-main-img');
-    if (mainImg) {
-        mainImg.srcset = '';
-        mainImg.sizes  = '';
-        mainImg.src    = fullSrc;
+    /* ── 1. Load external libraries (Splide + GLightbox) ── */
+    function loadCSS(href) {
+        var l = document.createElement('link');
+        l.rel = 'stylesheet'; l.href = href;
+        document.head.appendChild(l);
+    }
+    function loadJS(src, cb) {
+        var s = document.createElement('script');
+        s.src = src; s.onload = cb;
+        document.head.appendChild(s);
     }
 
-    // Update the main lightbox link so clicking opens the correct image
-    var mainLink = document.getElementById('custom-main-link');
-    if (mainLink) mainLink.href = fullSrc;
+    loadCSS('https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css');
+    loadCSS('https://cdnjs.cloudflare.com/ajax/libs/glightbox/3.3.0/css/glightbox.min.css');
 
-    // Reinitialise GLightbox starting at the selected index
-    // (needed so next/prev arrows reflect the new starting position)
-    if (window.productLightbox) {
-        window.productLightbox.destroy();
-        window.productLightbox = GLightbox({
-            selector: '.glightbox[data-gallery="product-gallery"]',
-            touchNavigation: true,
-            loop: true,
-            zoomable: true,
-            startAt: index,
+    /* ── 2. Boot everything after DOM is ready ── */
+    document.addEventListener('DOMContentLoaded', function () {
+
+        /* Hide WooCommerce color select row (JS fallback for browsers without :has()) */
+        document.querySelectorAll('.variations select').forEach(function (sel) {
+            var name = (sel.name || sel.id || '').toLowerCase();
+            if (name.indexOf('color') !== -1 || name.indexOf('colour') !== -1) {
+                var row = sel.closest('tr');
+                if (row) row.style.display = 'none';
+            }
         });
-    }
 
-    // Update active thumbnail highlight
-    document.querySelectorAll('.custom-product-thumb').forEach(function(t) {
-        t.classList.remove('active');
+        /* nav overlay */
+        var navOverlay = document.getElementById('navOverlay');
+        if (navOverlay) {
+            navOverlay.addEventListener('click', function () {
+                var nav = document.querySelector('nav');
+                if (nav) nav.classList.remove('active');
+                navOverlay.classList.remove('active');
+            });
+        }
+
+        /* ── Splide carousel ── */
+        var splideEl = document.getElementById('product-main-carousel');
+        if (!splideEl) return;
+
+        loadJS('https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js', function () {
+
+            window.productSplide = new Splide('#product-main-carousel', {
+                type        : 'loop',
+                perPage     : 1,
+                arrows      : true,
+                pagination  : true,
+                keyboard    : true,
+                drag        : true,          // mouse + touch drag
+                swipeDistanceThreshold: 20,
+                speed       : 380,
+                easing      : 'cubic-bezier(0.25,0.1,0.25,1)',
+            }).mount();
+
+            /* Keep thumbnail highlight in sync when carousel slides */
+            window.productSplide.on('moved', function (newIndex) {
+                syncThumb(newIndex);
+            });
+
+            /* ── GLightbox ── */
+            loadJS('https://cdnjs.cloudflare.com/ajax/libs/glightbox/3.3.0/js/glightbox.min.js', function () {
+                initLightbox(0);
+            });
+        });
     });
-    thumb.classList.add('active');
-}
 
-document.addEventListener('DOMContentLoaded', function() {
-    var navOverlay = document.getElementById('navOverlay');
-    if (navOverlay) {
-        navOverlay.addEventListener('click', function() {
-            var nav = document.querySelector('nav');
-            if (nav) nav.classList.remove('active');
-            navOverlay.classList.remove('active');
+    /* ── 3. Helpers ── */
+
+    function initLightbox(startAt) {
+        if (window.productLightbox) {
+            window.productLightbox.destroy();
+        }
+        window.productLightbox = GLightbox({
+            selector        : '.glightbox[data-gallery="product-gallery"]',
+            touchNavigation : true,
+            loop            : true,
+            zoomable        : true,
+            startAt         : startAt,
         });
     }
-});
+
+    function syncThumb(index) {
+        document.querySelectorAll('.custom-product-thumb').forEach(function (t) {
+            t.classList.toggle('active', parseInt(t.dataset.index, 10) === index);
+        });
+    }
+
+    /* ── 4. Thumbnail click — jump carousel to that slide ── */
+    document.addEventListener('click', function (e) {
+        var thumb = e.target.closest('.custom-product-thumb');
+        if (!thumb) return;
+        var index = parseInt(thumb.dataset.index, 10);
+        if (window.productSplide) {
+            window.productSplide.go(index);
+        }
+        syncThumb(index);
+        /* Re-init lightbox so next/prev starts from this image */
+        if (window.productLightbox) {
+            initLightbox(index);
+        }
+    });
+
+    /* ── 5. Color swatch click — swap carousel images ── */
+    document.addEventListener('click', function (e) {
+        var swatch = e.target.closest('.custom-color-swatch');
+        if (!swatch) return;
+
+        /* Update active swatch */
+        document.querySelectorAll('.custom-color-swatch').forEach(function (s) {
+            s.classList.remove('active');
+        });
+        swatch.classList.add('active');
+
+        /* Update label */
+        var labelEl = document.getElementById('custom-color-label');
+        if (labelEl) labelEl.textContent = swatch.dataset.colorLabel;
+
+        /* Jump directly to the pre-computed slide index for this color */
+        var targetIndex = parseInt(swatch.dataset.colorIndex, 10);
+        if (isNaN(targetIndex)) targetIndex = 0;
+
+        var splide = window.productSplide;
+        if (!splide) return;
+
+        splide.go(targetIndex);
+        syncThumb(targetIndex);
+        if (window.productLightbox) {
+            initLightbox(targetIndex);
+        }
+
+        /* ── Sync WooCommerce variation select so Add to Cart works ──
+         * WooCommerce names the select by attribute slug, e.g.:
+         *   Local attribute "Color"  → name="attribute_Color"
+         *   Taxonomy attribute       → name="attribute_pa_color"
+         * We try both, plus a broad fallback on any select whose name
+         * contains "color" / "colour" (case-insensitive).
+         * The label value (e.g. "Brown") is tried first, then the slug.
+         */
+        var slug  = swatch.dataset.colorSlug;
+        var label = swatch.dataset.colorLabel;
+        if (slug || label) {
+            /* Build candidate select names */
+            var selectNames = [
+                'attribute_Color', 'attribute_Colour',
+                'attribute_color', 'attribute_colour',
+                'attribute_pa_color', 'attribute_pa_colour'
+            ];
+            document.querySelectorAll('select').forEach(function (sel) {
+                var name = (sel.name || sel.id || '').toLowerCase();
+                var isColorSel = selectNames.some(function(n){ return sel.name === n || sel.id === n; })
+                              || name.indexOf('color') !== -1
+                              || name.indexOf('colour') !== -1;
+                if (!isColorSel) return;
+
+                /* Try matching by label first (e.g. "Brown"), then by slug */
+                var valuesToTry = [label, slug];
+                var matched = false;
+                valuesToTry.forEach(function(val) {
+                    if (matched || !val) return;
+                    /* Direct value match */
+                    var opt = sel.querySelector('option[value="' + val + '"]');
+                    /* Case-insensitive fallback */
+                    if (!opt) {
+                        Array.from(sel.options).forEach(function(o) {
+                            if (!matched && o.value.toLowerCase() === val.toLowerCase()) opt = o;
+                        });
+                    }
+                    if (opt) {
+                        sel.value = opt.value;
+                        sel.dispatchEvent(new Event('change', { bubbles: true }));
+                        matched = true;
+                    }
+                });
+            });
+        }
+    });
+
+})();
 </script>
 
 <?php

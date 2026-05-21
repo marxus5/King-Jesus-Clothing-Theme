@@ -103,8 +103,8 @@ do_action( 'woocommerce_before_cart' ); ?>
 }
 
 .custom-detail-row .quantity input qty {
-    width: 70px;
-    padding: 0.5rem;
+    width: 80px;
+    padding: 1.5rem;
     text-align: center;
     border: 2px solid #e5e7eb;
     border-radius: 6px;
