@@ -68,12 +68,26 @@ do_action( 'woocommerce_before_single_product' );
     background: #f9fafb;
     margin-bottom: 1rem;
     position: relative;
+    width: 100%;
+    max-width: 100%;
 }
 
 /* Splide base */
 #product-main-carousel {
     border-radius: 20px;
     overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+}
+
+#product-main-carousel .splide__track {
+    width: 100%;
+    overflow: hidden;
+}
+
+#product-main-carousel .splide__list {
+    width: 100%;
+    touch-action: pan-y pinch-zoom;
 }
 
 #product-main-carousel .splide__slide {
@@ -81,6 +95,15 @@ do_action( 'woocommerce_before_single_product' );
     overflow: hidden;
     background: #f9fafb;
     cursor: zoom-in;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+#product-main-carousel .splide__slide a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
 }
 
 #product-main-carousel .splide__slide img {
@@ -89,6 +112,8 @@ do_action( 'woocommerce_before_single_product' );
     object-fit: cover;
     display: block;
     transition: transform 0.4s ease;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
 }
 
 #product-main-carousel .splide__slide:hover img {
@@ -758,6 +783,16 @@ ul.products li.product button.button:hover {
     .custom-product-detail-title {
         font-size: 1.75rem;
     }
+    .custom-product-main-image {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 20px;
+    }
+    #product-main-carousel,
+    #product-main-carousel .splide__track {
+        width: 100%;
+        max-width: 100%;
+    }
 }
 
 @media (max-width: 640px) {
@@ -770,6 +805,18 @@ ul.products li.product button.button:hover {
     }
     .custom-product-tabs .woocommerce-tabs .panel {
         padding: 1.25rem !important;
+    }
+    .custom-product-main-image {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 16px;
+    }
+    #product-main-carousel,
+    #product-main-carousel .splide__track,
+    #product-main-carousel .splide__slide {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 16px;
     }
 }
 
@@ -1176,11 +1223,20 @@ ul.products li.product button.button:hover {
                 arrows      : true,
                 pagination  : true,
                 keyboard    : true,
-                drag        : true,          // mouse + touch drag
+                drag        : true,
                 swipeDistanceThreshold: 20,
                 speed       : 380,
                 easing      : 'cubic-bezier(0.25,0.1,0.25,1)',
+                autoWidth   : false,
+                autoHeight  : false,
             }).mount();
+            
+            /* Force proper dimensions after mount */
+            setTimeout(function() {
+                if (window.productSplide) {
+                    window.productSplide.refresh();
+                }
+            }, 100);
 
             /* Keep thumbnail highlight in sync when carousel slides */
             window.productSplide.on('moved', function (newIndex) {
@@ -1232,7 +1288,7 @@ ul.products li.product button.button:hover {
 
     /* ── 5. Color swatch click — swap carousel images ── */
     document.addEventListener('click', function (e) {
-        var swatch = e.target.closest('.custom-color-swatch');
+        var swatch = e.target.closest('button.custom-color-swatch');
         if (!swatch) return;
 
         /* Update active swatch */
