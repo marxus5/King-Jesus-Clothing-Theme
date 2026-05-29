@@ -299,7 +299,7 @@ do_action( 'woocommerce_before_single_product' );
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.25rem;
 }
 
 .custom-product-rating .star-rating {
@@ -417,7 +417,7 @@ do_action( 'woocommerce_before_single_product' );
 .custom-product-meta {
     font-size: 0.875rem;
     color: #6b7280;
-    display: flex;
+    display: none;
     flex-direction: column;
     gap: 0.4rem;
     margin-bottom: 2rem;
@@ -1065,11 +1065,7 @@ ul.products li.product button.button:hover {
                 </div>
 
                 <!-- Short Description -->
-                <?php if ( $product->get_short_description() ) : ?>
-                    <div class="custom-product-short-desc">
-                        <?php echo wp_kses_post( $product->get_short_description() ); ?>
-                    </div>
-                <?php endif; ?>
+                
 
                 <!-- Color Swatches (variable products with color attribute only) -->
                 <?php if ( ! empty( $color_image_sets ) ) : ?>
@@ -1122,6 +1118,46 @@ ul.products li.product button.button:hover {
 
             </div>
         </div>
+
+<?php
+        /*
+         * Tab Content Swap — must run before woocommerce_after_single_product_summary fires.
+         * Description tab     → short description
+         * Additional Info tab → full description + attributes table
+         */
+        add_filter( 'woocommerce_product_tabs', function( $tabs ) {
+            global $product;
+
+            // Description tab: show short description
+            if ( isset( $tabs['description'] ) ) {
+                $tabs['description']['callback'] = function() {
+                    global $product;
+                    $short = $product->get_short_description();
+                    if ( $short ) {
+                        echo '<div class="woocommerce-product-details__short-description">';
+                        echo wp_kses_post( wpautop( $short ) );
+                        echo '</div>';
+                    }
+                };
+            }
+
+            // Additional Information tab: full description + attributes table
+            if ( isset( $tabs['additional_information'] ) ) {
+                $tabs['additional_information']['callback'] = function() {
+                    global $product;
+                    $desc = $product->get_description();
+                    if ( $desc ) {
+                        echo '<div class="woocommerce-product-details__full-description">';
+                        echo wp_kses_post( wpautop( $desc ) );
+                        echo '</div>';
+                    }
+                    wc_display_product_attributes( $product );
+                };
+            }
+
+            return $tabs;
+        } );
+        ?>
 
         <!-- Tabs: Description, Additional Info, Reviews -->
         <div class="custom-product-tabs">
@@ -1365,6 +1401,52 @@ ul.products li.product button.button:hover {
 </script>
 
 <?php
+/**
+ * ─── Tab Content Swap ───────────────────────────────────────
+ * Description tab: Show short description only
+ * Additional Information tab: Show full description + attributes
+ */
+add_filter( 'woocommerce_product_tabs', function( $tabs ) {
+    global $product;
+    
+    // Swap Description tab callback to show only short description
+    $tabs['description']['callback'] = function() {
+        global $product;
+        if ( ! $product->get_short_description() ) {
+            return;
+        }
+        ?>
+        <div class="panel" id="tab-description" role="tabpanel" aria-labelledby="tab-title-description">
+            <?php echo wp_kses_post( wpautop( $product->get_short_description() ) ); ?>
+        </div>
+        <?php
+    };
+    
+    // Swap Additional Information tab callback to show full description + attributes
+    $tabs['additional_information']['callback'] = function() {
+        global $product;
+        
+        // Output full description (post content)
+        ?>
+        <div class="panel" id="tab-additional_information" role="tabpanel" aria-labelledby="tab-title-additional_information">
+            <?php
+            // Full product description
+            if ( $product->get_description() ) {
+                echo '<div class="product-description">';
+                echo wp_kses_post( wpautop( $product->get_description() ) );
+                echo '</div>';
+            }
+            
+            // Attributes table
+            wc_display_product_attributes( $product );
+            ?>
+        </div>
+        <?php
+    };
+    
+    return $tabs;
+} );
+
 do_action( 'woocommerce_after_single_product' );
 get_footer();
 ?>
