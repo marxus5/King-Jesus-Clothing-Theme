@@ -336,7 +336,7 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
 
   /* ─── SCRIPTURE ─── */
   .scripture-section { padding: 100px 5vw; text-align: center; background: linear-gradient(135deg, #CE202F 0%, #e85060 50%, #f08090 100%); position: relative; overflow: hidden; }
-  .scripture-section::before { content: '✝'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: clamp(180px, 30vw, 300px); color: rgba(255,255,255,0.1); line-height: 1; pointer-events: none; }
+  .scripture-section::before { content: '✝'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: clamp(180px, 30vw, 300px); color: rgba(255,255,255,0.1); line-height: 1; pointer-events: none; display: none; }
   .scripture-text { font-size: clamp(20px, 4vw, 42px); font-weight: 300; font-style: italic; line-height: 1.5; max-width: 800px; margin: 0 auto 20px; color: #fff; position: relative; opacity: 0; transform: translateY(24px); transition: opacity 0.8s, transform 0.8s; }
   .scripture-text.visible { opacity: 1; transform: translateY(0); }
   .scripture-ref { font-size: 14px; letter-spacing: 0.2em; font-weight: 700; color: rgba(255,255,255,0.7); text-transform: uppercase; }
@@ -532,83 +532,6 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
     <div class="scripture-ref">Galatians 2:20</div>
   </section>
 </div><!-- end .page-body -->
-
-
-
-<!-- <script>
-  // ─── CONFIG: replace with your Google Apps Script Web App URL ───────────────
-  // Steps:
-  // 1. Open Google Sheets → Extensions → Apps Script
-  // 2. Paste the doPost function from the comment below and deploy as Web App
-  // 3. Replace the URL below with your deployment URL
-  //
-  // Apps Script code to paste:
-  // function doPost(e) {
-  //   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  //   var data = JSON.parse(e.postData.contents);
-  //   sheet.appendRow([new Date(), data.name, data.email, data.source]);
-  //   return ContentService.createTextOutput(JSON.stringify({result:'success'}))
-  //     .setMimeType(ContentService.MimeType.JSON);
-  // }
-const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyr2xZ_M-2QYKkUF3H8aeMZgdJNT0nfd0iqYqIe_yU7ehErEPuVuwIsKE8EhlRRuGoX/exec';
-
-async function sendToGoogleSheet(name, email, source = 'website') {
-  try {
-    const response = await fetch(GOOGLE_SHEET_URL, {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json' 
-      },
-      body: JSON.stringify({ 
-        name, 
-        email, 
-        source,
-        timestamp: new Date().toISOString() 
-      })
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    const result = await response.json();
-    console.log('✅ Successfully added to sheet:', result);
-    return result;
-
-  } catch (err) {
-    console.error('❌ Sheet submit error:', err);
-    // Optional: fallback behavior
-    alert("Thanks for subscribing! (There was a small connection issue)");
-  }
-} -->
-
-  // ─── NAVBAR ─────────────────────────────────────────────────────────────────
-  const navbar = document.getElementById('navbar');
-  // Hero height threshold — once scrolled past nav height we solidify
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 20) {
-      navbar.classList.remove('at-top');
-      navbar.classList.add('scrolled');
-    } else {
-      navbar.classList.remove('scrolled');
-      navbar.classList.add('at-top');
-    }
-  });
-
-  // ─── MOBILE MENU ────────────────────────────────────────────────────────────
-  function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
-
-  // ─── SCROLL REVEAL ──────────────────────────────────────────────────────────
-  const revealEls = document.querySelectorAll('.reveal, .product-card, .value-card, .perk-item, .faq-item, #aboutImg, #aboutText, #scripture');
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-  revealEls.forEach(el => obs.observe(el));
-
-  // ─── FAQ ────────────────────────────────────────────────────────────────────
-  function toggleFaq(item) { item.classList.toggle('open'); }
-
-
 </script>
 
 <?php get_footer(); ?>

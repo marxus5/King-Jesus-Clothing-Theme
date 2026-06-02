@@ -186,8 +186,8 @@
         }
 
         /* ─── MODAL ─── */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.35s; }
-        .modal-overlay.open { opacity: 1; pointer-events: auto; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; visibility: hidden; transition: opacity 0.35s, visibility 0.35s; }
+        .modal-overlay.open { opacity: 1; pointer-events: auto; visibility: visible; }
         .modal { background: #fff; border: 1px solid #eee; max-width: 480px; width: 100%; padding: 48px 36px 40px; position: relative; transform: translateY(30px) scale(0.96); transition: transform 0.35s; text-align: center; box-shadow: 0 24px 60px rgba(0,0,0,0.12); }
         .modal-overlay.open .modal { transform: translateY(0) scale(1); }
         .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; color: #aaa; font-size: 22px; cursor: pointer; transition: color 0.2s; line-height: 1; z-index: 1001; pointer-events: auto; }
