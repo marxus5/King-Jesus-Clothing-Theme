@@ -290,12 +290,12 @@
         }
         await sendToGoogleSheet(name, email, 'popup-modal');
         document.getElementById('modalForm').innerHTML =
-          '<div style="padding:20px 0;font-size:17px;color:#1D1D1D;line-height:1.6">🙏 God bless you, ' + name + '!<br><br>Your 15% off code:<br><strong style="font-size:22px;color:#CE202F;letter-spacing:0.1em">KING15</strong></div>';
+          '<div style="padding:20px 0;font-size:17px;color:#1D1D1D;line-height:1.6">🙏 Thank you, ' + name + '!<br><br>Your 15% off code:<br><strong style="font-size:22px;color:#CE202F;letter-spacing:0.1em">KING15</strong></div>';
         setTimeout(closeModal, 4000);
       }    </script>
 
     <!-- FIXED TOP BANNER -->
-    <div class="top-banner">✈ Free International Shipping on orders $80+ &nbsp;|&nbsp; Kingdom Style, Every Day</div>
+    <div class="top-banner">✈ Free International Shipping on orders $80+</div>
 
     <!-- STICKY NAVBAR (just below banner) -->
     <nav class="navbar at-top" id="navbar">
