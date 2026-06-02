@@ -35,7 +35,7 @@ do_action( 'woocommerce_before_single_product' );
 }
 
 .custom-product-breadcrumb a {
-    color: #667eea;
+    color: #7A0E1A;
     text-decoration: none;
 }
 
@@ -231,13 +231,13 @@ do_action( 'woocommerce_before_single_product' );
 
 .custom-color-swatch:hover {
     transform: scale(1.12);
-    outline-color: #667eea;
+    outline-color: #7A0E1A;
     outline-offset: 2px;
 }
 
 .custom-color-swatch.active {
     border-color: white;
-    outline-color: #667eea;
+    outline-color: #7A0E1A;
     outline-offset: 2px;
     transform: scale(1.12);
 }
@@ -260,7 +260,7 @@ do_action( 'woocommerce_before_single_product' );
 
 .custom-product-thumb.active,
 .custom-product-thumb:hover {
-    border-color: #667eea;
+    border-color: #7A0E1A;
 }
 
 .custom-product-thumb img {
@@ -279,7 +279,7 @@ do_action( 'woocommerce_before_single_product' );
 .custom-product-detail-category {
     font-size: 0.8rem;
     font-weight: 700;
-    color: #667eea;
+    color: #7A0E1A;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     margin-bottom: 0.75rem;
@@ -327,7 +327,7 @@ do_action( 'woocommerce_before_single_product' );
 
 .custom-product-detail-price .price ins {
     text-decoration: none;
-    color: #667eea;
+    color: #7A0E1A;
     background: transparent;
 }
 
@@ -389,7 +389,7 @@ do_action( 'woocommerce_before_single_product' );
 
 .custom-product-add-to-cart .quantity input.qty:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #7A0E1A;
 }
 
 .custom-product-add-to-cart .single_add_to_cart_button {
@@ -403,14 +403,14 @@ do_action( 'woocommerce_before_single_product' );
     font-weight: 700;
     cursor: pointer;
     transition: all 0.3s;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 4px 15px rgba(122, 14, 26, 0.3);
     text-transform: none;
     letter-spacing: normal;
 }
 
 .custom-product-add-to-cart .single_add_to_cart_button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 8px 25px rgba(122, 14, 26, 0.4);
 }
 
 /* Meta (SKU, categories, tags) */
@@ -424,7 +424,7 @@ do_action( 'woocommerce_before_single_product' );
 }
 
 .custom-product-meta a {
-    color: #667eea;
+    color: #7A0E1A;
     text-decoration: none;
 }
 
@@ -452,7 +452,7 @@ do_action( 'woocommerce_before_single_product' );
 }
 
 .custom-trust-item svg {
-    color: #667eea;
+    color: #7A0E1A;
     flex-shrink: 0;
 }
 
@@ -495,8 +495,8 @@ do_action( 'woocommerce_before_single_product' );
 
 .custom-product-tabs ul.tabs li.active a,
 .custom-product-tabs ul.tabs li a:hover {
-    color: #667eea;
-    border-bottom-color: #667eea;
+    color: #7A0E1A;
+    border-bottom-color: #7A0E1A;
 }
 
 .custom-product-tabs .panel {
@@ -592,7 +592,7 @@ do_action( 'woocommerce_before_single_product' );
 .custom-related-price {
     font-size: 1rem;
     font-weight: 700;
-    color: #667eea;
+    color: #7A0E1A;
 }
 
 .custom-related-view-all {
@@ -600,19 +600,19 @@ do_action( 'woocommerce_before_single_product' );
     width: fit-content;
     margin: 1.5rem auto 0;
     padding: 0.875rem 2.5rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #f34040 0%, #830b15 100%);
     color: white;
     text-decoration: none;
     border-radius: 50px;
     font-weight: 700;
     font-size: 1rem;
     transition: all 0.3s;
-    box-shadow: 0 4px 15px rgba(102,126,234,0.3);
+    box-shadow: 0 4px 15px rgba(122, 14, 26, 0.3);
 }
 
 .custom-related-view-all:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102,126,234,0.4);
+    box-shadow: 0 8px 25px rgba(122, 14, 26, 0.4);
     color: white;
 }
 
@@ -686,8 +686,8 @@ do_action( 'woocommerce_before_single_product' );
 
 .custom-product-tabs .woocommerce-tabs ul.tabs li.active a,
 .custom-product-tabs .woocommerce-tabs ul.tabs li a:hover {
-    color: #667eea !important;
-    border-bottom-color: #667eea !important;
+    color: #7A0E1A !important;
+    border-bottom-color: #7A0E1A !important;
     background: transparent !important;
 }
 
@@ -914,12 +914,18 @@ ul.products li.product button.button:hover {
                         // Built-in palette so swatches look right without taxonomy meta
                         $color_palette = array(
                             'brown'  => '#8B5E3C', 'green'  => '#4A7C59', 'black'  => '#1a1a1a',
-                            'white'  => '#f5f5f5', 'red'    => '#c0392b', 'Klein blue'   => '#2563EB',
-                            'navy'   => '#1e3a5f', 'grey'   => '#9ca3af', 'gray'   => '#9ca3af',
-                            'pink'   => '#ec4899', 'purple' => '#7c3aed', 'yellow' => '#f59e0b',
+                            'white'  => '#f5f5f5', 'red'    => '#c0392b', 'Klein blue' => '#7A0E1A',
+                            'navy'   => '#272C43', 'grey'   => '#9ca3af', 'gray'   => '#9ca3af',
+                            'pink'   => '#ec4899', 'purple' => '#9476AC', 'yellow' => '#f59e0b',
                             'orange' => '#ea580c', 'beige'  => '#d4b896', 'cream'  => '#fffdd0',
-                            'tan'    => '#d2b48c', 'khaki'  => '#c3b091', 'olive'  => '#6b7c3e',
-                            'Eden Green'   => '#254841', 'coral'  => '#ff6b6b', 'maroon' => '#800000',
+                            'Sand'    => '#A68977', 'khaki'  => '#c3b091', 'Dark Green'  => '#4B5B5A',
+                            'Eden Green' => '#254841', 'coral'  => '#ff6b6b', 'maroon' => '#800000',
+                            'Apricot'  => '#D9D5C9', "Forest Green" => '#31463D', "Sky Blue" => '#AFBEDB',
+                            "Coffee" => '#52302B', "Dark Purple" => '#B39FB0', "Grey Coffee" => '#928377',
+                            'Oat Gray' => '#E2DEDB', 'Flower Gray' => '#CFCFD2' , 'Light Blue' => '#7B89A6',
+                            'Royal Blue' => '#444A60', 'Dark Blue' => '#4A5575', 'Dark Gray' => '#372C28',
+                            'Bean Green' => '#859A89', 'Medium Blue' => '#7D9BC1', 
+                            
                         );
 
                         foreach ( $variations as $variation ) {

@@ -70,7 +70,7 @@ if ( empty( $product ) || ! $product->is_visible() ) {
     position: absolute;
     top: 1rem;
     left: 1rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #f34040 0%, #830b15 100%);
     color: white;
     font-size: 0.75rem;
     font-weight: 700;
@@ -121,7 +121,7 @@ if ( empty( $product ) || ! $product->is_visible() ) {
 .custom-product-category {
     font-size: 0.75rem;
     font-weight: 600;
-    color: #667eea;
+    color: #7A0E1A;
     text-transform: uppercase;
     letter-spacing: 0.06em;
 }
@@ -142,7 +142,7 @@ if ( empty( $product ) || ! $product->is_visible() ) {
 }
 
 .custom-product-name a:hover {
-    color: #667eea;
+    color: #7A0E1A;
 }
 
 /* Short description */
@@ -174,7 +174,7 @@ if ( empty( $product ) || ! $product->is_visible() ) {
 
 .custom-product-price .price ins {
     text-decoration: none;
-    color: #667eea;
+    color: #7A0E1A;
 }
 
 .custom-product-price .price del {
@@ -190,7 +190,7 @@ if ( empty( $product ) || ! $product->is_visible() ) {
     align-items: center;
     justify-content: center;
     padding: 0.6rem 1.25rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #f34040 0%, #830b15 100%);
     color: white !important;
     border: none;
     border-radius: 50px;
@@ -200,13 +200,13 @@ if ( empty( $product ) || ! $product->is_visible() ) {
     cursor: pointer;
     transition: all 0.3s;
     white-space: nowrap;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 2px 8px rgba(122, 14, 26, 0.3);
 }
 
 .custom-product-card .button:hover,
 .custom-product-card .add_to_cart_button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 6px 16px rgba(122, 14, 26, 0.4);
     color: white !important;
 }
 
