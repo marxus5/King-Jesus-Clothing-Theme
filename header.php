@@ -132,10 +132,10 @@
         }
 
         .nav-logo {
-            width: 36px; height: 36px; background: var(--red); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 900; font-size: 13px; color: #fff; flex-shrink: 0;
-            border: 2px solid var(--gold);
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            flex-shrink: 0;
         }
 
         .nav-brand {
@@ -157,7 +157,7 @@
         .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
         .hamburger span { display: block; width: 22px; height: 2px; transition: 0.3s; }
 
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
             .nav-left { display: none; }
             .hamburger { display: flex; }
             .nav-brand { font-size: 12px; }
@@ -306,7 +306,9 @@
             <a href="<?php echo esc_url( home_url('/contact') ); ?>">Contact</a>
         </div>
         <div class="nav-center">
-            <div class="nav-logo">KJ</div>
+            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/king-jesus-clothing-logo.png"
+                alt="King Jesus Clothing"
+                class="nav-logo">
             <a href="<?php echo esc_url( home_url() ); ?>" class="nav-brand"><?php bloginfo('name'); ?></a>
         </div>
         <div class="nav-right">
@@ -357,6 +359,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const navbar = document.getElementById('navbar');
     const mobileMenu = document.getElementById('mobileMenu');
     const isHomepage = document.body.classList.contains('page-template-page-homepage');
+
     
     // Close menu when a link is clicked
     const menuLinks = mobileMenu.querySelectorAll('a:not(.mobile-close)');
@@ -370,24 +373,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Close menu on window resize if open
     window.addEventListener('resize', function() {
-        if (window.innerWidth > 768 && mobileMenu.classList.contains('open')) {
+        if (window.innerWidth > 880 && mobileMenu.classList.contains('open')) {
             mobileMenu.classList.remove('open');
         }
     });
 
-    // Add scroll detection for navbar — only on homepage
-    window.addEventListener('scroll', () => {
-        if (isHomepage) {
-            // On homepage: toggle between transparent and solid based on scroll
-            if (window.scrollY > 20) {
-                navbar.classList.remove('at-top');
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-                navbar.classList.add('at-top');
-            }
-        }
-        // On other pages: navbar stays in scrolled state always (handled by CSS)
-    });
+                    navbar.classList.add('scrolled');
+
+    // // Add scroll detection for navbar — only on homepage
+    // window.addEventListener('scroll', () => {
+    //     if (isHomepage) {
+    //         // On homepage: toggle between transparent and solid based on scroll
+    //         if (window.scrollY > 20) {
+    //             navbar.classList.remove('at-top');
+    //             navbar.classList.add('scrolled');
+    //         } else {
+    //             navbar.classList.remove('scrolled');
+    //             navbar.classList.add('at-top');
+    //         }
+    //     }
+    //     // On other pages: navbar stays in scrolled state always (handled by CSS)
+    // });
 });
 </script>

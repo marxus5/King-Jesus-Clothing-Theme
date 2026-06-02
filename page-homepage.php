@@ -101,11 +101,7 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
     position: absolute; left: 50%; transform: translateX(-50%);
     display: flex; align-items: center; gap: 10px;
   }
-  .nav-logo {
-    width: 36px; height: 36px; background: var(--red); border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 900; font-size: 13px; color: #fff; flex-shrink: 0;
-  }
+
   .nav-brand {
     font-weight: 700; font-size: 15px; letter-spacing: 0.08em;
     text-decoration: none; white-space: nowrap; text-transform: uppercase;
@@ -124,7 +120,7 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
   .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
   .hamburger span { display: block; width: 22px; height: 2px; transition: 0.3s; }
 
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     .nav-left { display: none; }
     .hamburger { display: flex; }
     .nav-brand { font-size: 12px; }
@@ -178,15 +174,12 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
 }
 
 /* Mobile Optimization */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .hero {
         height: 20vh;
         min-height: 300px;
         margin-top: 1rem; /* Add some spacing on mobile */
-    }
-
-    nav
-    
+    }    
     .hero-bg {
         background-position: center 50%;   /* Different focus for mobile */
     }
@@ -229,7 +222,7 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
 
   .section-label {
     font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
-    color: var(--brown); margin-bottom: 10px; font-weight: 700;
+    color: var(--brown); margin-bottom: 10px; font-weight: 700; margin-top: 10px; text-align: center;
   }
   .section-title {
     font-size: clamp(22px, 4vw, 40px); font-weight: 800;
@@ -312,10 +305,16 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
 
   /* ─── ABOUT ─── */
   .about-section { padding: 80px 5vw; background: var(--off-white); display: grid; grid-template-columns: 1fr; gap: 48px; align-items: center; }
-  @media (min-width: 768px) { .about-section { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 900px) { .about-section { grid-template-columns: 1fr 1fr; } }
   .about-img { aspect-ratio: 4/5; background: linear-gradient(135deg, #f5e8d8, #e8d0b8); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; opacity: 0; transform: translateX(-30px); transition: opacity 0.7s, transform 0.7s; }
   .about-img.visible { opacity: 1; transform: translateX(0); }
-  .about-img-placeholder { font-size: 12px; letter-spacing: 0.2em; color: #bbb; text-align: center; text-transform: uppercase; }
+  .about-img-placeholder {    
+    width: 100%;
+    height: clamp(500px, 40vw, 700px);
+    object-fit: cover;
+    display: block;
+
+}
   .about-img::before { content: ''; position: absolute; bottom: 0; left: 0; width: 4px; height: 100%; background: var(--brown); }
   .about-text { opacity: 0; transform: translateX(30px); transition: opacity 0.7s 0.2s, transform 0.7s 0.2s; }
   .about-text.visible { opacity: 1; transform: translateX(0); }
@@ -386,6 +385,28 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
   .value-card:nth-child(2){transition-delay:.12s} .value-card:nth-child(3){transition-delay:.24s}
   .perk-item:nth-child(2){transition-delay:.08s} .perk-item:nth-child(3){transition-delay:.16s} .perk-item:nth-child(4){transition-delay:.24s}
   .faq-item:nth-child(2){transition-delay:.06s} .faq-item:nth-child(3){transition-delay:.12s} .faq-item:nth-child(4){transition-delay:.18s} .faq-item:nth-child(5){transition-delay:.24s}
+
+  .custom-related-view-all {
+    display: block;
+    width: fit-content;
+    margin: 1.5rem auto 0;
+    padding: 0.875rem 2.5rem;
+    background: linear-gradient(135deg, #f34040 0%, #830b15 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(122, 14, 26, 0.3);
+}
+
+.custom-related-view-all:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(122, 14, 26, 0.4);
+    color: white;
+}
+
 </style>
 </head>
 <body>
@@ -393,7 +414,7 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
 <!-- PAGE BODY (offset for fixed banner+nav) -->
 <div class="page-body">
 
-  <!-- HERO (nav overlays because of negative margin-top) -->
+  <!-- HERO (nav overlays because of negative margin-top)
   <div class="hero">
     <div class="hero-bg"></div>
     <div class="hero-cross"></div>
@@ -405,7 +426,7 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
     </div>
-  </div>
+  </div> -->
 
   <!-- FEATURED PRODUCTS -->
   <section class="section" id="products">
@@ -447,8 +468,12 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
         }
         wp_reset_postdata();
       }
-      ?>    </div>
-  </section>
+      ?>
+      </div>
+      <a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>" class="custom-related-view-all">
+                View All Products
+            </a>    
+    </section>
 
   <!-- MISSION / VALUES -->
   <section class="mission-section">
@@ -471,7 +496,7 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
   </section>
 
   <!-- REVIEWS -->
-  <section class="reviews-section">
+  <!-- <section class="reviews-section">
     <div class="reviews-header reveal">
       <div class="overall-rating">
         <span class="stars-big">★★★★★</span>
@@ -490,24 +515,22 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
         <div class="review-card"><div class="review-top"><div class="review-avatar">MP</div><div><div class="review-name">Marcus Price</div><div class="review-verified">✓ Verified Buyer</div></div></div><div class="review-stars">★★★★★</div><div class="review-text">"Ordered three hoodies for our small group leaders. Everyone loved them. Sizing is true and print quality is excellent."</div><div class="review-img">📸 Photo</div></div>
         <div class="review-card"><div class="review-top"><div class="review-avatar">LW</div><div><div class="review-name">Lydia Wallace</div><div class="review-verified">✓ Verified Buyer</div></div></div><div class="review-stars">★★★★★</div><div class="review-text">"Faith Over Fear crewneck arrived fast and looks even better in person. Rich color and incredible detail."</div></div>
         <div class="review-card"><div class="review-top"><div class="review-avatar">RP</div><div><div class="review-name">Robert Park</div><div class="review-verified">✓ Verified Buyer</div></div></div><div class="review-stars">★★★★★</div><div class="review-text">"First Christian brand that feels modern. My non-believing friends are curious about the designs — great conversations."</div><div class="review-img">📸 Photo</div></div>
-        <!-- Duplicate for seamless loop -->
         <div class="review-card"><div class="review-top"><div class="review-avatar">JM</div><div><div class="review-name">James Miller</div><div class="review-verified">✓ Verified Buyer</div></div></div><div class="review-stars">★★★★★</div><div class="review-text">"I wore the King Jesus tee to college and had 3 people ask about my faith. This clothing opens doors for the Gospel."</div></div>
         <div class="review-card"><div class="review-top"><div class="review-avatar">SR</div><div><div class="review-name">Sarah Rodriguez</div><div class="review-verified">✓ Verified Buyer</div></div></div><div class="review-stars">★★★★★</div><div class="review-text">"Incredible quality. Soft, durable, and the designs are genuinely beautiful. I bought 4 pieces and plan to gift them to my youth group."</div></div>
         <div class="review-card"><div class="review-top"><div class="review-avatar">DC</div><div><div class="review-name">David Chen</div><div class="review-verified">✓ Verified Buyer</div></div></div><div class="review-stars">★★★★★</div><div class="review-text">"Shipped to Australia super fast. The Lion of Judah hoodie is my favorite piece. Bold design without being cheesy."</div></div>
         <div class="review-card"><div class="review-top"><div class="review-avatar">AT</div><div><div class="review-name">Ashley Turner</div><div class="review-verified">✓ Verified Buyer</div></div></div><div class="review-stars">★★★★★</div><div class="review-text">"I love that they support missionaries. It feels meaningful to buy from a kingdom-minded brand. Customer for life."</div></div>
       </div>
     </div>
-  </section>
+  </section> -->
 
   <!-- ABOUT -->
   <section class="about-section">
-    <div class="about-img" id="aboutImg"><div class="about-img-placeholder">YOUR BRAND<br>IMAGE HERE</div></div>
+    <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/Black-Hoodies-Modle-Pic.jpg" alt="King Jesus Clothing" class="about-img-placeholder">
     <div class="about-text" id="aboutText">
       <div class="section-label">Our Story</div>
       <h2 class="section-title">Born from a<br>Calling, Not a Trend</h2>
-      <p>King Jesus Clothing started with a simple belief: that fashion could be used for the Kingdom. We're a family-owned brand rooted in faith, dedicated to creating clothing that reflects the heart of the Gospel — bold, beautiful, and built to last.</p>
-      <p>Every stitch supports our mission of funding missionaries planting churches in unreached corners of the world. When you wear King Jesus, you're not just wearing clothes. You're wearing a declaration.</p>
-      <a href="#" class="btn-outline">Our Full Story →</a>
+      <p>We exist to focus on, teach, and spread the living words and teachings of Christ and His Kingdom. Our ultimate goal is to proclaim the gospel of the Kingdom, create fresh opportunities for evangelism and discipleship, draw people into deeper intimacy with God, and literally clothe them in Christ through every garment we create.</p>
+      <a href="<?php echo home_url('/about'); ?>" class="btn-outline">Our Full Story →</a>
     </div>
   </section>
 
@@ -518,11 +541,11 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
         <div class="section-label">FAQ</div>
         <h2 class="section-title">Common Questions</h2>
       </div>
-      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How long does shipping take? <div class="faq-arrow"></div></div><div class="faq-a">Domestic US orders ship within 2–4 business days. International orders typically arrive in 7–14 business days. Free international shipping on all orders over $80.</div></div>
-      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">What is your return policy? <div class="faq-arrow"></div></div><div class="faq-a">We offer easy 30-day returns on all unworn, unwashed items in original condition. Simply contact us and we'll send a return label. Exchanges are always free.</div></div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How long does shipping take? <div class="faq-arrow"></div></div><div class="faq-a">International orders typically arrive in 7–14 business days. Free shipping on all orders over $80.</div></div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">What is your return policy? <div class="faq-arrow"></div></div><div class="faq-a">We offer easy 30-day returns on all unworn, unwashed items in original condition. Simply contact us and we'll walk you through the process! Look at our Return Policy page for more details.</div></div>
       <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How do your sizes run? <div class="faq-arrow"></div></div><div class="faq-a">Our garments are true to size with a slightly relaxed fit. We recommend checking the size chart on each product page. If you're between sizes, size up for a more comfortable fit.</div></div>
-      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How do you support missionaries? <div class="faq-arrow"></div></div><div class="faq-a">A portion of every purchase is donated to vetted missionary organizations working in unreached people groups. We partner with field missionaries personally and report transparently on how funds are used each quarter.</div></div>
-      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Do you offer bulk or church orders? <div class="faq-arrow"></div></div><div class="faq-a">Yes! We offer special pricing for churches, youth groups, and ministries ordering 10+ items. Reach out through our Contact page and we'll take care of you.</div></div>
+      <!-- <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How do you support missionaries? <div class="faq-arrow"></div></div><div class="faq-a">A portion of every purchase is donated to vetted missionary organizations working in unreached people groups. We partner with field missionaries personally and report transparently on how funds are used each quarter.</div></div> -->
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Do you offer bulk or church orders? <div class="faq-arrow"></div></div><div class="faq-a">Yes! We offer special pricing for churches, youth groups, and ministries, starting at 6+ items. Reach out through our Contact page and we'll take care of you.</div></div>
     </div>
   </div>
 
