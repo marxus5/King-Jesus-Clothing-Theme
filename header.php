@@ -213,7 +213,7 @@
 
     <script>
       // Define modal functions early so they're available when elements load
-      const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyG-CsyCtp-awQoCA9x9zy99lCGw1XyhKg3zAAMGkg/exec';
+      const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyr2xZ_M-2QYKkUF3H8aeMZgdJNT0nfd0iqYqIe_yU7ehErEPuVuwIsKE8EhlRRuGoX/exec';
       const MODAL_STORAGE_KEY = 'kj-modal-shown-session';
 
       function isCheckoutPage() {

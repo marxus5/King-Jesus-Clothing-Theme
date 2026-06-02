@@ -535,7 +535,7 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
 
 
 
-<script>
+<!-- <script>
   // ─── CONFIG: replace with your Google Apps Script Web App URL ───────────────
   // Steps:
   // 1. Open Google Sheets → Extensions → Apps Script
@@ -580,7 +580,7 @@ async function sendToGoogleSheet(name, email, source = 'website') {
     // Optional: fallback behavior
     alert("Thanks for subscribing! (There was a small connection issue)");
   }
-}
+} -->
 
   // ─── NAVBAR ─────────────────────────────────────────────────────────────────
   const navbar = document.getElementById('navbar');
