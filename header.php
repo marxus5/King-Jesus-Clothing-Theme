@@ -298,7 +298,7 @@
         }
         await sendToGoogleSheet(name, email, 'popup-modal');
         document.getElementById('modalForm').innerHTML =
-          '<div style="padding:20px 0;font-size:17px;color:#1D1D1D;line-height:1.6">🙏 Thank you, ' + name + '!<br><br>Your 15% discount is <strong style="color:#CE202F;">JesusIsKing25</strong>.</div>';
+          '<div style="padding:20px 0;font-size:17px;color:#1D1D1D;line-height:1.6">🙏 Thank you, ' + name + '!<br><br>Your 25% discount is <strong style="color:#CE202F;">JesusIsKing25</strong></div>';
         // setTimeout(closeModal, 4000);
       }    </script>
 

@@ -39,20 +39,20 @@
       <div class="modal">
         <button class="modal-close" onclick="closeModal()">✕</button>
         <div class="modal-badge">Exclusive Offer</div>
-        <h2>Get 15% Off<br>Your First Order</h2>
-        <p>Join the King Jesus community and receive a 15% discount, early access to new drops, and kingdom-focused updates.</p>
+        <h2>Get 25% Off<br>Your First Order</h2>
+        <p>Join the King Jesus Clothing Family and receive a 25% discount, early access to new drops, and updates.</p>
         <div class="modal-form" id="modalForm">
           <input class="modal-input" id="modalName" type="text" placeholder="Your first name">
           <input class="modal-input" id="modalEmail" type="email" placeholder="Your email address">
-          <button class="modal-submit" onclick="submitModal()">Claim My 15% Off</button>
+          <button class="modal-submit" onclick="submitModal()">Claim My 25% Off</button>
           <div class="modal-skip" onclick="closeModal()">No thanks, I'll pay full price</div>
         </div>
       </div>
     </div>
 
-    <!-- STICKY 15% TRIANGLE — bottom left corner (on all pages except checkout) -->
+    <!-- STICKY 25% TRIANGLE — bottom left corner (on all pages except checkout) -->
     <div class="sticky-promo" id="stickyPromo" onclick="openModal()">
-      <div class="sticky-triangle"><div class="sticky-triangle-text">15%<br>OFF</div></div>
+      <div class="sticky-triangle"><div class="sticky-triangle-text">25%<br>OFF</div></div>
     </div>
 
     <script>
