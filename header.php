@@ -229,10 +229,10 @@
       }
 
       function initModalSystem() {
-        if (isCheckoutPage()) {
-          console.log('Checkout page - skipping modal');
-          return;
-        }
+        // if (isCheckoutPage()) {
+        //   console.log('Checkout page - skipping modal');
+        //   return;
+        // }
 
         const promo = document.getElementById('stickyPromo');
         const modal = document.getElementById('modalOverlay');
@@ -273,7 +273,8 @@
       }
 
       function openModal() {
-        if (!isCheckoutPage()) {
+        // if (!isCheckoutPage()) {
+        if(true) {
           const modal = document.getElementById('modalOverlay');
           if (modal) {
             modal.classList.add('open');
