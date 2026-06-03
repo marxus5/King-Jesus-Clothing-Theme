@@ -491,6 +491,39 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
     </form>
 </div>
 
+<?php
+// Reads from the single constant defined in functions.php
+$coupon_code = defined('KJ_PROMO_COUPON') ? KJ_PROMO_COUPON : 'JesusIsKing25';
+$coupon_already_applied = WC()->cart && WC()->cart->has_discount( $coupon_code );
+?>
+
+<?php if ( ! $coupon_already_applied ) : ?>
+<div class="kj-coupon-banner" id="kjCouponBanner">
+    <div class="kj-coupon-banner-inner">
+        <span class="kj-coupon-tag">🎁</span>
+        <span class="kj-coupon-text">You have a <strong>15% off</strong> discount available!</span>
+        <button class="kj-coupon-apply-btn" id="kjApplyCouponBtn" type="button">Apply <?php echo esc_html( $coupon_code ); ?></button>
+        <span class="kj-coupon-success" id="kjCouponSuccess" style="display:none;">&#10003; Applied!</span>
+    </div>
+</div>
+<?php endif; ?>
+
+<style>
+.kj-coupon-banner { max-width:1200px; margin:0 auto 1.5rem; padding:0 2rem; }
+.kj-coupon-banner-inner { display:flex; align-items:center; gap:0.875rem; background:#fff8f0; border:2px solid #CE202F; border-radius:12px; padding:1rem 1.5rem; flex-wrap:wrap; }
+.kj-coupon-tag { font-size:1.25rem; }
+.kj-coupon-text { flex:1; font-size:1rem; color:#1f2937; min-width:160px; }
+.kj-coupon-apply-btn { padding:0.6rem 1.5rem; background:#CE202F; color:white; border:none; border-radius:50px; font-weight:700; font-size:0.95rem; cursor:pointer; transition:background 0.2s,transform 0.2s; white-space:nowrap; }
+.kj-coupon-apply-btn:hover { background:#a8131f; transform:translateY(-1px); }
+.kj-coupon-apply-btn:disabled { background:#9ca3af; cursor:not-allowed; transform:none; }
+.kj-coupon-success { color:#16a34a; font-weight:700; font-size:1rem; }
+@media (max-width:480px) {
+    .kj-coupon-banner { padding:0 1rem; }
+    .kj-coupon-banner-inner { padding:0.875rem 1rem; gap:0.625rem; }
+    .kj-coupon-text { font-size:0.9rem; }
+}
+</style>
+
 <script>
 jQuery(document).ready(function($) {
     // WooCommerce fires update_checkout automatically when address fields change.
@@ -503,6 +536,38 @@ jQuery(document).ready(function($) {
             $(document.body).trigger('update_checkout');
         }, 600);
     });
+
+    // One-click apply from the banner — coupon code comes from kjData set in header.php
+    const applyBtn = document.getElementById('kjApplyCouponBtn');
+    if (applyBtn && typeof kjData !== 'undefined') {
+        applyBtn.addEventListener('click', async function() {
+            applyBtn.disabled = true;
+            applyBtn.textContent = 'Applying…';
+            try {
+                const fd = new FormData();
+                fd.append('action', 'kj_apply_coupon');
+                fd.append('nonce', kjData.nonce);
+                const res  = await fetch(kjData.ajaxUrl, { method:'POST', body:fd });
+                const data = await res.json();
+                if (data.success) {
+                    applyBtn.style.display = 'none';
+                    document.getElementById('kjCouponSuccess').style.display = 'inline';
+                    $(document.body).trigger('update_checkout');
+                    setTimeout(function() {
+                        const banner = document.getElementById('kjCouponBanner');
+                        if (banner) banner.style.display = 'none';
+                    }, 2000);
+                } else {
+                    applyBtn.textContent = 'Apply ' + (kjData.coupon || 'code');
+                    applyBtn.disabled = false;
+                }
+            } catch(err) {
+                console.warn('Coupon apply error:', err);
+                applyBtn.textContent = 'Apply ' + (kjData.coupon || 'code');
+                applyBtn.disabled = false;
+            }
+        });
+    }
 
     // Fix navOverlay if present elsewhere on page
     const navOverlay = document.getElementById('navOverlay');

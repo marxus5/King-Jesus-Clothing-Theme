@@ -1,5 +1,53 @@
 <?php
 /**
+ * ── King Jesus Clothing: Promo Coupon System ────────────────────────────────
+ * Add this entire block to your theme's functions.php
+ *
+ * TO CHANGE THE COUPON CODE: update the ONE line below.
+ * Every template (header, checkout, modal) reads from this automatically.
+ */
+define( 'KJ_PROMO_COUPON', 'JesusIsKing25' );  // ← CHANGE THIS LINE ONLY
+ 
+ 
+/**
+ * AJAX handler — applies the coupon to the WooCommerce cart session.
+ * Called by the modal (header.php) and the checkout banner (form-checkout.php).
+ * Works for both guests and logged-in users.
+ */
+add_action( 'wp_ajax_kj_apply_coupon',        'kj_apply_coupon_handler' );
+add_action( 'wp_ajax_nopriv_kj_apply_coupon', 'kj_apply_coupon_handler' );
+ 
+function kj_apply_coupon_handler() {
+ 
+    // 1. Verify nonce — blocks bots from spamming coupon applies
+    if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'kj_apply_coupon_nonce' ) ) {
+        wp_send_json_error( array( 'message' => 'Invalid request.' ), 403 );
+    }
+ 
+    // 2. Make sure WooCommerce cart is available
+    if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
+        wp_send_json_error( array( 'message' => 'Cart not available.' ), 500 );
+    }
+ 
+    $coupon_code = KJ_PROMO_COUPON;  // reads from the constant above
+ 
+    // 3. Don't apply if already in cart
+    if ( WC()->cart->has_discount( $coupon_code ) ) {
+        wp_send_json_success( array( 'message' => 'Coupon already applied.' ) );
+    }
+ 
+    // 4. Apply it
+    $result = WC()->cart->apply_coupon( $coupon_code );
+ 
+    if ( $result ) {
+        wp_send_json_success( array( 'message' => 'Coupon applied.' ) );
+    } else {
+        wp_send_json_error( array( 'message' => 'Could not apply coupon.' ) );
+    }
+}
+ 
+
+/**
  * ─────────────────────────────────────────────────────────────────────────────
  * ADD THIS CODE TO YOUR THEME'S functions.php
  * ─────────────────────────────────────────────────────────────────────────────
@@ -334,3 +382,4 @@ function kjc_save_variation_swatch_color( $variation_id, $loop ) {
 
 
 ?>
+

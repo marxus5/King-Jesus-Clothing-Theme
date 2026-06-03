@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <?php wp_head(); ?>
+    <script>
+    /* ── King Jesus Clothing: single source of truth for promo coupon ── */
+    var kjData = {
+        ajaxUrl : '<?php echo esc_js( admin_url("admin-ajax.php") ); ?>',
+        nonce   : '<?php echo esc_js( wp_create_nonce("kj_apply_coupon_nonce") ); ?>',
+        coupon  : '<?php echo esc_js( defined("KJ_PROMO_COUPON") ? KJ_PROMO_COUPON : "JesusIsKing25" ); ?>'
+    };
+    </script>
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
@@ -161,16 +169,6 @@
             .nav-left { display: none; }
             .hamburger { display: flex; }
             .nav-brand { font-size: 12px; }
-
-            /* Override absolute centering — flow logo+brand from the left */
-            .nav-center {
-                position: static;
-                transform: none;
-                margin-right: auto;
-            }
-
-            /* Tighten right side spacing */
-            .nav-right { gap: 14px; margin-left: 0; }
         }
 
         .mobile-menu {
@@ -300,8 +298,8 @@
         }
         await sendToGoogleSheet(name, email, 'popup-modal');
         document.getElementById('modalForm').innerHTML =
-          '<div style="padding:20px 0;font-size:17px;color:#1D1D1D;line-height:1.6">🙏 Thank you, ' + name + '!<br><br>Your 15% off code:<br><strong style="font-size:22px;color:#CE202F;letter-spacing:0.1em">KING15</strong></div>';
-        setTimeout(closeModal, 4000);
+          '<div style="padding:20px 0;font-size:17px;color:#1D1D1D;line-height:1.6">🙏 Thank you, ' + name + '!<br><br>Your 15% discount is <strong style="color:#CE202F;">JesusIsKing25</strong>.</div>';
+        // setTimeout(closeModal, 4000);
       }    </script>
 
     <!-- FIXED TOP BANNER -->
