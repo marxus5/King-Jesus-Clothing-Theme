@@ -956,11 +956,20 @@ ul.products li.product button.button:hover {
                                 }
                             }
 
-                            // Priority 3: built-in palette matched on slug keywords
+                            // Priority 3: built-in palette matched on slug or label keywords (case-insensitive)
                             if ( ! $hex ) {
-                                $slug_lower = strtolower( $slug );
+                                $slug_lower  = strtolower( $slug );
+                                $label_lower = strtolower( $label );
                                 foreach ( $color_palette as $keyword => $palette_hex ) {
-                                    if ( strpos( $slug_lower, $keyword ) !== false ) {
+                                    $keyword_lower = strtolower( $keyword );
+                                    // Exact match first (e.g. 'sand' === 'sand')
+                                    if ( $slug_lower === $keyword_lower || $label_lower === $keyword_lower ) {
+                                        $hex = $palette_hex;
+                                        break;
+                                    }
+                                    // Substring match (e.g. 'dark-green' contains 'dark green')
+                                    if ( strpos( $slug_lower, $keyword_lower ) !== false
+                                      || strpos( $label_lower, $keyword_lower ) !== false ) {
                                         $hex = $palette_hex;
                                         break;
                                     }

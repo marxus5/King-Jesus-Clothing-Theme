@@ -161,6 +161,16 @@
             .nav-left { display: none; }
             .hamburger { display: flex; }
             .nav-brand { font-size: 12px; }
+
+            /* Override absolute centering — flow logo+brand from the left */
+            .nav-center {
+                position: static;
+                transform: none;
+                margin-right: auto;
+            }
+
+            /* Tighten right side spacing */
+            .nav-right { gap: 14px; margin-left: 0; }
         }
 
         .mobile-menu {
