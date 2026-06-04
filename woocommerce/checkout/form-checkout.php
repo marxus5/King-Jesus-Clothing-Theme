@@ -493,7 +493,7 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 
 <?php
 // Reads from the single constant defined in functions.php
-$coupon_code = defined('KJ_PROMO_COUPON') ? KJ_PROMO_COUPON : 'JesusIsKing25';
+$coupon_code = defined('KJ_PROMO_COUPON') ? KJ_PROMO_COUPON : 'JesusIsKing15';
 $coupon_already_applied = WC()->cart && WC()->cart->has_discount( $coupon_code );
 ?>
 

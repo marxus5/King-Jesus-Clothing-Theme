@@ -10,7 +10,7 @@
     var kjData = {
         ajaxUrl : '<?php echo esc_js( admin_url("admin-ajax.php") ); ?>',
         nonce   : '<?php echo esc_js( wp_create_nonce("kj_apply_coupon_nonce") ); ?>',
-        coupon  : '<?php echo esc_js( defined("KJ_PROMO_COUPON") ? KJ_PROMO_COUPON : "JesusIsKing25" ); ?>'
+        coupon  : '<?php echo esc_js( defined("KJ_PROMO_COUPON") ? KJ_PROMO_COUPON : "JesusIsKing15" ); ?>'
     };
     </script>
 </head>
@@ -299,7 +299,7 @@
         }
         await sendToGoogleSheet(name, email, 'popup-modal');
         document.getElementById('modalForm').innerHTML =
-          '<div style="padding:20px 0;font-size:17px;color:#1D1D1D;line-height:1.6">🙏 Thank you, ' + name + '!<br><br>Your 25% discount is <strong style="color:#CE202F;">JesusIsKing25</strong></div>';
+          '<div style="padding:20px 0;font-size:17px;color:#1D1D1D;line-height:1.6">🙏 Thank you, ' + name + '!<br><br>Your 15% discount is <strong style="color:#CE202F;">JesusIsKing15</strong></div>';
         // setTimeout(closeModal, 4000);
       }    </script>
 

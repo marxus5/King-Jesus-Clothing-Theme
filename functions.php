@@ -6,7 +6,7 @@
  * TO CHANGE THE COUPON CODE: update the ONE line below.
  * Every template (header, checkout, modal) reads from this automatically.
  */
-define( 'KJ_PROMO_COUPON', 'JesusIsKing25' );  // ← CHANGE THIS LINE ONLY
+define( 'KJ_PROMO_COUPON', 'JesusIsKing15' );  // ← CHANGE THIS LINE ONLY
  
  
 /**
