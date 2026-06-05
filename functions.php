@@ -381,5 +381,233 @@ function kjc_save_variation_swatch_color( $variation_id, $loop ) {
 }
 
 
-?>
+/**
+ * ─────────────────────────────────────────────────────────────────────────────
+ * TAPSTITCH SHIPPING NOTIFICATION
+ * ─────────────────────────────────────────────────────────────────────────────
+ *
+ * When Tapstitch fulfills an order it posts a private note containing a
+ * tracking URL (gofo.com/us/track). This hook:
+ *   1. Detects that note when it is inserted
+ *   2. Extracts the tracking URL
+ *   3. Saves the tracking URL as order meta so it can be used anywhere
+ *   4. Marks the order as "completed"
+ *   5. Sends the customer a shipping confirmation email with the tracking link
+ *
+ * No plugin needed — works purely through WooCommerce hooks.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+add_action( 'woocommerce_order_note_added', 'kjc_tapstitch_handle_tracking_note', 10, 2 );
 
+function kjc_tapstitch_handle_tracking_note( $note_id, $order ) {
+
+    // ── Get the note content from the database ──────────────────────────────
+    $note = get_comment( $note_id );
+    if ( ! $note ) return;
+
+    $note_content = $note->comment_content;
+
+    // ── Detect Tapstitch shipping notes ─────────────────────────────────────
+    // Match on Tapstitch's consistent note language rather than a specific
+    // carrier URL — works regardless of which carrier they use
+    // (gofo.com, USPS, DHL, FedEx, etc.)
+    $is_tapstitch_note = (
+        strpos( $note_content, 'Your package has been shipped' ) !== false ||
+        strpos( $note_content, 'check the logistics information' ) !== false ||
+        strpos( $note_content, 'gofo.com' ) !== false ||
+        strpos( $note_content, 'tapstitch' ) !== false
+    );
+
+    if ( ! $is_tapstitch_note ) return;
+
+    // ── Prevent running twice if somehow the note fires more than once ──────
+    if ( get_post_meta( $order->get_id(), '_kjc_tapstitch_notified', true ) ) return;
+
+    // ── Extract any tracking URL from the note ──────────────────────────────
+    // Grabs the first https:// URL found — works for any carrier
+    preg_match( '/(https?:\/\/[^\s<>"]+)/', $note_content, $matches );
+    $tracking_url = ! empty( $matches[1] ) ? esc_url_raw( $matches[1] ) : '';
+
+    // ── Identify the carrier for the email ──────────────────────────────────
+    // Add more carriers here if Tapstitch switches in the future
+    $carrier = 'your carrier';
+    $carrier_patterns = array(
+        'usps'       => 'USPS',
+        'ups'        => 'UPS',
+        'fedex'      => 'FedEx',
+        'dhl'        => 'DHL',
+        'gofo'       => 'GoFo',
+        'auspost'    => 'Australia Post',
+        'royalmail'  => 'Royal Mail',
+        'canadapost' => 'Canada Post',
+    );
+    $note_lower = strtolower( $note_content );
+    foreach ( $carrier_patterns as $keyword => $carrier_name ) {
+        if ( strpos( $note_lower, $keyword ) !== false ) {
+            $carrier = $carrier_name;
+            break;
+        }
+    }
+    $order->update_meta_data( '_kjc_shipping_carrier', $carrier );
+
+    // ── Save tracking URL to order meta ─────────────────────────────────────
+    if ( $tracking_url ) {
+        $order->update_meta_data( '_kjc_tracking_url', $tracking_url );
+    }
+
+    // ── Mark as notified so this only fires once per order ──────────────────
+    $order->update_meta_data( '_kjc_tapstitch_notified', true );
+    $order->save();
+
+    // ── Move order to completed ─────────────────────────────────────────────
+    // Remove our own hook temporarily to avoid any loops, then update status
+    remove_action( 'woocommerce_order_note_added', 'kjc_tapstitch_handle_tracking_note', 10 );
+    $order->update_status( 'completed', 'Tapstitch confirmed shipment. Customer notified.' );
+    add_action( 'woocommerce_order_note_added', 'kjc_tapstitch_handle_tracking_note', 10, 2 );
+
+    // ── Send customer shipping email ────────────────────────────────────────
+    kjc_send_shipping_email( $order, $tracking_url, $carrier );
+}
+
+
+/**
+ * Sends a branded shipping confirmation email to the customer.
+ * Called automatically by kjc_tapstitch_handle_tracking_note().
+ *
+ * @param WC_Order $order        The WooCommerce order object
+ * @param string   $tracking_url The gofo.com tracking URL from Tapstitch
+ */
+function kjc_send_shipping_email( $order, $tracking_url, $carrier = 'your carrier' ) {
+
+    $to      = $order->get_billing_email();
+    $name    = $order->get_billing_first_name();
+    $subject = 'Your King Jesus Clothing Order Has Shipped! 🙏';
+
+    // ── Build the order items summary ───────────────────────────────────────
+    $items_html = '';
+    foreach ( $order->get_items() as $item ) {
+        $items_html .= '<tr>
+            <td style="padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:14px;color:#374151;">'
+                . esc_html( $item->get_name() )
+            . '</td>
+            <td style="padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:14px;color:#374151;text-align:right;">x'
+                . esc_html( $item->get_quantity() )
+            . '</td>
+        </tr>';
+    }
+
+    // ── Build tracking button HTML ──────────────────────────────────────────
+    $tracking_button = '';
+    if ( $tracking_url ) {
+        $tracking_button = '
+        <div style="text-align:center;margin:32px 0;">
+            <p style="font-size:13px;color:#6b7280;margin:0 0 12px;">
+                Shipping via <strong style="color:#1D1D1D;">' . esc_html( $carrier ) . '</strong>
+            </p>
+            <a href="' . esc_url( $tracking_url ) . '"
+               style="display:inline-block;background:#CE202F;color:#ffffff;text-decoration:none;
+                      padding:14px 36px;font-weight:700;font-size:14px;letter-spacing:0.1em;
+                      text-transform:uppercase;border-bottom:3px solid #C9A84C;">
+                Track My Order
+            </a>
+        </div>';
+    }
+
+    // ── Full email HTML ─────────────────────────────────────────────────────
+    $message = '
+    <!DOCTYPE html>
+    <html>
+    <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+    <body style="margin:0;padding:0;background:#f9fafb;font-family:\'Segoe UI\',system-ui,sans-serif;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background:#f9fafb;padding:40px 20px;">
+            <tr><td align="center">
+                <table width="100%" cellpadding="0" cellspacing="0"
+                       style="max-width:560px;background:#ffffff;border-top:4px solid #CE202F;">
+
+                    <!-- Header -->
+                    <tr>
+                        <td style="padding:32px 40px 24px;text-align:center;border-bottom:1px solid #f3f4f6;">
+                            <div style="font-size:11px;letter-spacing:0.3em;text-transform:uppercase;
+                                        color:#8B5E3C;font-weight:700;margin-bottom:8px;">
+                                King Jesus Clothing
+                            </div>
+                            <h1 style="font-size:24px;font-weight:800;color:#1D1D1D;margin:0;line-height:1.2;">
+                                Your Order Is On Its Way! ✝
+                            </h1>
+                        </td>
+                    </tr>
+
+                    <!-- Body -->
+                    <tr>
+                        <td style="padding:32px 40px;">
+                            <p style="font-size:15px;color:#374151;line-height:1.7;margin:0 0 20px;">
+                                Hi ' . esc_html( $name ) . ',
+                            </p>
+                            <p style="font-size:15px;color:#374151;line-height:1.7;margin:0 0 24px;">
+                                Great news — your order has been fulfilled and is on its way to you.
+                                We pray it blesses you and everyone who sees it. 🙏
+                            </p>
+
+                            <!-- Order summary -->
+                            <table width="100%" cellpadding="0" cellspacing="0"
+                                   style="margin-bottom:24px;">
+                                <tr>
+                                    <td style="font-size:11px;font-weight:700;letter-spacing:0.15em;
+                                               text-transform:uppercase;color:#8B5E3C;padding-bottom:8px;">
+                                        Order #' . esc_html( $order->get_order_number() ) . '
+                                    </td>
+                                </tr>
+                                ' . $items_html . '
+                            </table>
+
+                            ' . $tracking_button . '
+
+                            <p style="font-size:13px;color:#6b7280;line-height:1.7;margin:24px 0 0;text-align:center;">
+                                If the button does not work, copy and paste this link into your browser:<br>
+                                <a href="' . esc_url( $tracking_url ) . '"
+                                   style="color:#CE202F;word-break:break-all;">'
+                                   . esc_html( $tracking_url ) .
+                                '</a>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="padding:24px 40px;background:#f9fafb;text-align:center;
+                                   border-top:1px solid #f3f4f6;">
+                            <p style="font-size:12px;color:#9ca3af;margin:0;line-height:1.7;">
+                                © ' . date('Y') . ' King Jesus Clothing. All rights reserved.<br>
+                                Questions? Reply to this email or visit
+                                <a href="' . esc_url( home_url('/contact') ) . '"
+                                   style="color:#CE202F;">our contact page</a>.
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+            </td></tr>
+        </table>
+    </body>
+    </html>';
+
+    // ── Email headers — HTML format, from your store ────────────────────────
+    $headers = array(
+        'Content-Type: text/html; charset=UTF-8',
+        'From: King Jesus Clothing <' . get_option('admin_email') . '>',
+    );
+
+    wp_mail( $to, $subject, $message, $headers );
+}
+
+
+/**
+ * ── Suppress premature textdomain notice from WooCommerce core ──────────────
+ * This is a known WooCommerce issue — not caused by our theme code.
+ */
+add_filter( 'doing_it_wrong_trigger_error', function( $trigger, $function_name ) {
+    if ( $function_name === '_load_textdomain_just_in_time' ) {
+        return false;
+    }
+    return $trigger;
+}, 10, 2 );

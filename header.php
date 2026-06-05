@@ -229,15 +229,10 @@
       }
 
       function initModalSystem() {
-        // if (isCheckoutPage()) {
-        //   console.log('Checkout page - skipping modal');
-        //   return;
-        // }
 
         const promo = document.getElementById('stickyPromo');
         const modal = document.getElementById('modalOverlay');
 
-        console.log('Initializing modal system. Promo:', !!promo, 'Modal:', !!modal);
 
         if (promo) {
           promo.classList.add('show');
@@ -247,7 +242,6 @@
           setTimeout(() => {
             modal.classList.add('open');
             sessionStorage.setItem(MODAL_STORAGE_KEY, 'true');
-            console.log('Modal opened');
           }, 10000);
         }
       }

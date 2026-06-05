@@ -16,13 +16,13 @@
       <div class="footer-col">
         <h4><a href="<?php echo home_url('/contact'); ?>">Contact & Socials</a></h4>
         <div class="social-icons"> 
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://facebook.com/kingjesusclothingbrand" target="_blank" rel="noopener noreferrer">
                 <i class="fab fa-facebook-f"></i>
             </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://instagram.com/kingjesusclothingbrand" target="_blank" rel="noopener noreferrer">
                 <i class="fab fa-instagram"></i>
             </a>
-            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.tiktok.com/@kingjesusclothing" target="_blank" rel="noopener noreferrer">
                 <i class="fab fa-tiktok"></i>
             </a>
         </div>
