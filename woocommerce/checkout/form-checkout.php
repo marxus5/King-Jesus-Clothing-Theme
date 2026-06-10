@@ -493,19 +493,19 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 
 <?php
 // Reads from the single constant defined in functions.php
-$coupon_code = defined('KJ_PROMO_COUPON') ? KJ_PROMO_COUPON : 'JesusIsKing15';
-$coupon_already_applied = WC()->cart && WC()->cart->has_discount( $coupon_code );
+// $coupon_code = defined('KJ_PROMO_COUPON') ? KJ_PROMO_COUPON : 'JesusIsKing15';
+// $coupon_already_applied = WC()->cart && WC()->cart->has_discount( $coupon_code );
 ?>
 
 <?php if ( ! $coupon_already_applied ) : ?>
-<div class="kj-coupon-banner" id="kjCouponBanner">
+<!-- <div class="kj-coupon-banner" id="kjCouponBanner">
     <div class="kj-coupon-banner-inner">
         <span class="kj-coupon-tag">🎁</span>
         <span class="kj-coupon-text">You have a <strong>15% off</strong> discount available!</span>
         <button class="kj-coupon-apply-btn" id="kjApplyCouponBtn" type="button">Apply <?php echo esc_html( $coupon_code ); ?></button>
         <span class="kj-coupon-success" id="kjCouponSuccess" style="display:none;">&#10003; Applied!</span>
     </div>
-</div>
+</div> -->
 <?php endif; ?>
 
 <style>
