@@ -288,26 +288,6 @@ add_action( 'after_setup_theme', 'printshop_woocommerce_setup' );
  * Ensure emails are sent when order status changes.
  * This hook catches any status changes and triggers the appropriate email.
  */
-add_action( 'woocommerce_order_status_changed', function( $order_id, $old_status, $new_status, $order ) {
-    // Only send emails for non-processing statuses on transition FROM processing
-    if ( 'processing' === $old_status && $new_status !== 'processing' ) {
-        // Trigger the appropriate email based on new status
-        do_action( 'woocommerce_order_status_' . $new_status, $order_id, $order );
-    }
-}, 10, 4 );
-
-/**
- * Ensure completed orders automatically send their email.
- * Some payment gateways don't trigger this automatically.
- */
-add_action( 'woocommerce_payment_complete', function( $order_id ) {
-    $order = wc_get_order( $order_id );
-    if ( $order && ! $order->has_status( 'completed' ) ) {
-        // Mark as completed which triggers the email
-        $order->set_status( 'completed' );
-        $order->save();
-    }
-}, 5 );
 
 /**
  * Fix for Stripe: Ensure processing orders with successful payment are marked complete.
