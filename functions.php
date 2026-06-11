@@ -2,6 +2,56 @@
 
 /**
  * ─────────────────────────────────────────────────────────────────────────────
+ * META (INSTAGRAM/FACEBOOK SHOP) CHECKOUT LINK HANDLER
+ * ─────────────────────────────────────────────────────────────────────────────
+ *
+ * Meta sends customers to a URL like:
+ *   /shop/checkout-link/?products=367:1,123:2&coupon=CODE&cart_origin=instagram
+ *
+ * That page doesn't exist on the site, so this intercepts any request whose
+ * path contains "checkout-link", loads the requested products/quantities into
+ * the WooCommerce cart, applies the coupon (if given), and redirects to the
+ * real checkout page.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+add_action( 'template_redirect', 'kjc_meta_checkout_link_redirect' );
+function kjc_meta_checkout_link_redirect() {
+
+    if ( strpos( $_SERVER['REQUEST_URI'], 'checkout-link' ) === false ) {
+        return;
+    }
+
+    if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
+        return;
+    }
+
+    $products_param = isset( $_GET['products'] ) ? sanitize_text_field( wp_unslash( $_GET['products'] ) ) : '';
+    $coupon_param   = isset( $_GET['coupon'] ) ? sanitize_text_field( wp_unslash( $_GET['coupon'] ) ) : '';
+
+    if ( $products_param ) {
+        WC()->cart->empty_cart();
+
+        foreach ( explode( ',', $products_param ) as $entry ) {
+            $parts      = explode( ':', $entry );
+            $product_id = absint( $parts[0] ?? 0 );
+            $quantity   = isset( $parts[1] ) ? absint( $parts[1] ) : 1;
+
+            if ( $product_id && $quantity > 0 ) {
+                WC()->cart->add_to_cart( $product_id, $quantity );
+            }
+        }
+    }
+
+    if ( $coupon_param && ! WC()->cart->has_discount( $coupon_param ) ) {
+        WC()->cart->apply_coupon( wc_format_coupon_code( $coupon_param ) );
+    }
+
+    wp_safe_redirect( wc_get_checkout_url() );
+    exit;
+}
+
+/**
+ * ─────────────────────────────────────────────────────────────────────────────
  * ADD THIS CODE TO YOUR THEME'S functions.php
  * ─────────────────────────────────────────────────────────────────────────────
  *
