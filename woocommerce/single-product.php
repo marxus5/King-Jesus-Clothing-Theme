@@ -353,6 +353,13 @@ do_action( 'woocommerce_before_single_product' );
     min-height: 45px;
 }
 
+/* WooCommerce Payments Express Checkout (Google Pay / Apple Pay) button spacing */
+iframe[title="Secure express checkout frame"],
+iframe[name^="__privateStripeFrame"] {
+    margin-top: 16px !important;
+    margin-bottom: 24px !important;
+}
+
 #payment-request-button {
     height: 45px;
 }

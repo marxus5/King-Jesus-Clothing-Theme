@@ -8,7 +8,8 @@ get_header(); ?>
 <style>
     /* About Page Styling */
     .about-hero {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #f34040 0%, #830b15 100%);
+;
         padding: 6rem 2rem 4rem;
         text-align: center;
         color: white;
@@ -116,7 +117,8 @@ get_header(); ?>
 
     /* Values Section */
     .values-section {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #f34040 0%, #830b15 100%);
+;
         padding: 4rem 2rem;
         border-radius: 16px;
         color: white;

@@ -109,7 +109,8 @@ get_header(); ?>
     overflow: hidden;
     margin-bottom: 3rem;
     box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #f34040 0%, #830b15 100%);
+;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -234,7 +235,8 @@ get_header(); ?>
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #f34040 0%, #830b15 100%);
+;
     display: flex;
     align-items: center;
     justify-content: center;

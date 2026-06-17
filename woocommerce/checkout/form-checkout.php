@@ -258,7 +258,8 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 .woocommerce-checkout #payment #place_order {
     width: 100% !important;
     padding: 1.5rem 2rem !important;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+background: linear-gradient(135deg, #f34040 0%, #830b15 100%);
+ !important;
     color: white !important;
     border: none !important;
     border-radius: 50px !important;

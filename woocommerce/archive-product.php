@@ -141,7 +141,8 @@ do_action( 'woocommerce_before_main_content' );
 
 .custom-shop-pagination .woocommerce-pagination ul li a:hover,
 .custom-shop-pagination .woocommerce-pagination ul li span.current {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #f34040 0%, #830b15 100%);
+;
     border-color: transparent;
     color: white;
 }

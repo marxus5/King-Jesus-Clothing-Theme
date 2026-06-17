@@ -18,7 +18,8 @@ defined( 'ABSPATH' ) || exit;
 .custom-empty-icon {
     width: 120px;
     height: 120px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #f34040 0%, #830b15 100%);
+;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -47,7 +48,8 @@ defined( 'ABSPATH' ) || exit;
 .custom-shop-button {
     display: inline-block;
     padding: 1.25rem 3rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #f34040 0%, #830b15 100%);
+;
     color: white;
     border: none;
     border-radius: 50px;
@@ -103,7 +105,7 @@ defined( 'ABSPATH' ) || exit;
 .custom-product-image {
     width: 100%;
     height: 280px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg #f34040 0%, #830b15 100%);
     display: flex;
     align-items: center;
     justify-content: center;

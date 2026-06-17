@@ -228,7 +228,8 @@ add_filter( 'woocommerce_order_details_after_order_table', '__return_false' );
 }
 
 .custom-action-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #f34040 0%, #830b15 100%);
+;
     color: white;
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }

@@ -197,7 +197,8 @@ do_action( 'woocommerce_before_cart' ); ?>
     width: 100%;
     max-width: 100%;
     padding: 1.5rem 2rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #f34040 0%, #830b15 100%);
+;
     color: white;
     border: none;
     border-radius: 50px;
@@ -220,7 +221,8 @@ do_action( 'woocommerce_before_cart' ); ?>
 .custom-continue-shopping {
     display: inline-block;
     padding: 1rem 2.5rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #f34040 0%, #830b15 100%);
+;
     color: white;
     border-radius: 50px;
     text-decoration: none;

@@ -211,7 +211,8 @@ get_header(); ?>
 
     /* Message Section */
     .message-section {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #f34040 0%, #830b15 100%);
+;
         padding: 4rem 3rem;
         border-radius: 16px;
         text-align: center;
