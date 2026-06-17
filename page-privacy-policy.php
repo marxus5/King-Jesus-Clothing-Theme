@@ -42,7 +42,7 @@ get_header(); ?>
         margin-top: 2.5rem;
         margin-bottom: 1rem;
         color: #1a1a1a;
-        border-bottom: 2px solid #667eea;
+        border-bottom: 2px solid #7A0E1A;
         padding-bottom: 0.5rem;
     }
 
@@ -84,7 +84,7 @@ get_header(); ?>
     }
 
     .contact-section h3 {
-        color: #667eea;
+        color: #7A0E1A;
     }
 </style>
 

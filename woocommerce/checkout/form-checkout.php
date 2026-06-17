@@ -27,7 +27,7 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 .custom-back-to-cart {
     display: inline-block;
     margin-bottom: 2rem;
-    color: #667eea;
+    color: #7A0E1A;
     text-decoration: underline;
     justify-content: center;
 }
@@ -91,7 +91,7 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 .custom-form-row select:focus,
 .custom-form-row textarea:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #7A0E1A;
 }
 
 .custom-form-row-half {
@@ -147,7 +147,7 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 .custom-totals-row.total {
     font-size: 1.75rem;
     font-weight: 700;
-    color: #667eea;
+    color: #7A0E1A;
     border-bottom: none;
     padding-top: 1.5rem;
 }
@@ -212,7 +212,7 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 
 .custom-order-review #payment ul.payment_methods li:hover,
 .woocommerce-checkout #payment ul.payment_methods li:hover {
-    border-color: #667eea !important;
+    border-color: #7A0E1A !important;
 }
 
 .custom-order-review #payment ul.payment_methods li label,

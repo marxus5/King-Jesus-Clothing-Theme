@@ -69,7 +69,7 @@ get_header(); ?>
 }
 
 .post-category-badge:hover {
-    background: #667eea;
+    background: #7A0E1A;
     color: white;
 }
 
@@ -159,7 +159,7 @@ get_header(); ?>
 }
 
 .post-content a {
-    color: #667eea;
+    color: #7A0E1A;
     font-weight: 600;
     text-decoration: none;
     border-bottom: 2px solid transparent;
@@ -167,11 +167,11 @@ get_header(); ?>
 }
 
 .post-content a:hover {
-    border-bottom-color: #667eea;
+    border-bottom-color: #7A0E1A;
 }
 
 .post-content blockquote {
-    border-left: 4px solid #667eea;
+    border-left: 4px solid #7A0E1A;
     padding-left: 2rem;
     margin: 2rem 0;
     font-style: italic;
@@ -218,7 +218,7 @@ get_header(); ?>
 }
 
 .post-tag:hover {
-    background: #667eea;
+    background: #7A0E1A;
     color: white;
 }
 

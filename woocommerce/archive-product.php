@@ -76,7 +76,7 @@ do_action( 'woocommerce_before_main_content' );
 
 .custom-shop-toolbar .woocommerce-ordering select:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #7A0E1A;
 }
 
 /* Product Grid — target columns-4 specifically since that's what WC outputs */

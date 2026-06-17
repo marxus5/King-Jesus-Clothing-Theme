@@ -88,7 +88,7 @@ get_header(); ?>
         width: 80px;
         height: 80px;
         margin: 0 auto 1.5rem;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #7A0E1A 0%, #764ba2 100%);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -104,7 +104,7 @@ get_header(); ?>
     }
 
     .contact-info-item a {
-        color: #667eea;
+        color: #7A0E1A;
         text-decoration: none;
         font-size: 1.125rem;
         font-weight: 500;
@@ -151,7 +151,7 @@ get_header(); ?>
 
     .social-link:hover {
         transform: translateX(10px);
-        border-color: #667eea;
+        border-color: #7A0E1A;
         background: white;
         box-shadow: 0 4px 20px rgba(102, 126, 234, 0.15);
     }
@@ -200,7 +200,7 @@ get_header(); ?>
     }
 
     .social-arrow {
-        color: #667eea;
+        color: #7A0E1A;
         font-size: 1.5rem;
         transition: transform 0.3s;
     }

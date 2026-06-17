@@ -24,7 +24,7 @@ add_filter( 'woocommerce_order_details_after_order_table', '__return_false' );
 .custom-thankyou-header {
     text-align: center;
     padding: 3rem 2rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #4b4b4b 0%, #0f0f0f 100%);
     border-radius: 16px;
     margin-bottom: 3rem;
     color: white;
@@ -154,7 +154,7 @@ add_filter( 'woocommerce_order_details_after_order_table', '__return_false' );
 .custom-item-total {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #667eea;
+    color: #7A0E1A;
     text-align: right;
 }
 
@@ -180,7 +180,7 @@ add_filter( 'woocommerce_order_details_after_order_table', '__return_false' );
 .custom-totals-row.total {
     font-size: 1.75rem;
     font-weight: 700;
-    color: #667eea;
+    color: #7A0E1A;
     padding-top: 1.5rem;
 }
 
@@ -247,8 +247,8 @@ add_filter( 'woocommerce_order_details_after_order_table', '__return_false' );
 }
 
 .custom-action-secondary:hover {
-    border-color: #667eea;
-    color: #667eea;
+    border-color: #7A0E1A;
+    color: #7A0E1A;
 }
 
 @media (max-width: 768px) {

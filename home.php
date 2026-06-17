@@ -135,7 +135,7 @@ get_header(); ?>
 }
 
 .blog-post-title a:hover {
-    color: #667eea;
+    color: #7A0E1A;
 }
 
 .blog-post-excerpt {
@@ -147,7 +147,7 @@ get_header(); ?>
 }
 
 .blog-post-readmore {
-    color: #667eea;
+    color: #7A0E1A;
     font-weight: 600;
     text-decoration: none;
     display: inline-flex;
@@ -178,7 +178,7 @@ get_header(); ?>
 }
 
 .blog-category:hover {
-    background: #667eea;
+    background: #7A0E1A;
     color: white;
 }
 
@@ -203,9 +203,9 @@ get_header(); ?>
 
 .page-numbers:hover,
 .page-numbers.current {
-    background: #667eea;
+    background: #7A0E1A;
     color: white;
-    border-color: #667eea;
+    border-color: #7A0E1A;
 }
 
 .page-numbers.dots {

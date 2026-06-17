@@ -133,7 +133,7 @@ defined( 'ABSPATH' ) || exit;
 .custom-product-price {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #667eea;
+    color: #7A0E1A;
     margin-bottom: 1rem;
 }
 
@@ -154,7 +154,7 @@ defined( 'ABSPATH' ) || exit;
 }
 
 .custom-view-product:hover {
-    background: #667eea;
+    background: #7A0E1A;
     color: white;
 }
 

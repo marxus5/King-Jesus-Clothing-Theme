@@ -80,7 +80,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 }
 
 .custom-product-title a:hover {
-    color: #667eea;
+    color: #7A0E1A;
 }
 
 .custom-detail-row {
@@ -114,13 +114,13 @@ do_action( 'woocommerce_before_cart' ); ?>
 
 .custom-detail-row .quantity input qty:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #7A0E1A;
 }
 
 .custom-item-price {
     font-size: 1rem;
     font-weight: 600;
-    color: #667eea;
+    color: #7A0E1A;
 }
 
 .custom-variation {
@@ -187,7 +187,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 .custom-totals-row.total {
     font-size: 1.75rem;
     font-weight: 700;
-    color: #667eea;
+    color: #7A0E1A;
     border-bottom: none;
     padding-top: 1.5rem;
 }

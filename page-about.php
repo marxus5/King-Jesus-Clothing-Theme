@@ -8,8 +8,7 @@ get_header(); ?>
 <style>
     /* About Page Styling */
     .about-hero {
-        background: linear-gradient(135deg, #f34040 0%, #830b15 100%);
-;
+        background: linear-gradient(135deg, #4b4b4b 0%, #0f0f0f 100%);
         padding: 6rem 2rem 4rem;
         text-align: center;
         color: white;
@@ -49,7 +48,7 @@ get_header(); ?>
     .mission-header h2 {
         font-size: 2rem;
         font-weight: 700;
-        color: #667eea;
+        color: #7A0E1A;
         margin-bottom: 1rem;
     }
 
@@ -73,7 +72,7 @@ get_header(); ?>
     }
 
     .mission-content strong {
-        color: #667eea;
+        color: #7A0E1A;
     }
 
     /* Image Gallery Section */
@@ -117,8 +116,7 @@ get_header(); ?>
 
     /* Values Section */
     .values-section {
-        background: linear-gradient(135deg, #f34040 0%, #830b15 100%);
-;
+        background: linear-gradient(135deg, #4b4b4b 0%, #0f0f0f 100%);
         padding: 4rem 2rem;
         border-radius: 16px;
         color: white;
