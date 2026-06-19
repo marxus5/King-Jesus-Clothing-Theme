@@ -93,19 +93,16 @@
 
         /* Text colors in transparent state (over dark hero) — homepage only */
         body.page-template-page-homepage .navbar.at-top .nav-left a,
-        body.page-template-page-homepage .navbar.at-top .nav-brand,
         body.page-template-page-homepage .navbar.at-top .cart-icon { color: #fff; }
         body.page-template-page-homepage .navbar.at-top .hamburger span { background: #fff; }
 
         /* Text colors in solid state */
         body.page-template-page-homepage .navbar.scrolled .nav-left a,
-        body.page-template-page-homepage .navbar.scrolled .nav-brand,
         body.page-template-page-homepage .navbar.scrolled .cart-icon { color: var(--text); }
         body.page-template-page-homepage .navbar.scrolled .hamburger span { background: var(--text); }
 
         /* On non-homepage pages: navbar is always solid with dark text */
         body:not(.page-template-page-homepage) .navbar .nav-left a,
-        body:not(.page-template-page-homepage) .navbar .nav-brand,
         body:not(.page-template-page-homepage) .navbar .cart-icon { color: var(--text); }
         body:not(.page-template-page-homepage) .navbar .hamburger span { background: var(--text); }
 
@@ -126,23 +123,6 @@
         }
         .nav-left a:hover::after { width: 100%; }
 
-        .nav-center {
-            position: absolute; left: 50%; transform: translateX(-50%);
-            display: flex; align-items: center; gap: 10px;
-        }
-
-        .nav-logo {
-            width: 40px;
-            height: 40px;
-            object-fit: contain;
-            flex-shrink: 0;
-        }
-
-        .nav-brand {
-            font-weight: 700; font-size: 15px; letter-spacing: 0.08em;
-            text-decoration: none; white-space: nowrap; text-transform: uppercase;
-            transition: color 0.3s;
-        }
 
         .nav-right { display: flex; align-items: center; gap: 20px; margin-left: auto; }
         .cart-wrap { position: relative; cursor: pointer; }
@@ -156,29 +136,6 @@
 
         .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
         .hamburger span { display: block; width: 22px; height: 2px; transition: 0.3s; }
-
-        @media (max-width: 900px) {
-            .nav-left { display: none; }
-            .hamburger { display: flex; }
-            .nav-brand { font-size: 12px; }
-        }
-
-        .mobile-menu {
-            display: none; position: fixed; inset: 0;
-            background: rgba(255,255,255,0.98); z-index: 199;
-            flex-direction: column; align-items: center; justify-content: center; gap: 32px;
-        }
-
-        .mobile-menu.open { display: flex; }
-
-        .mobile-menu a {
-            color: var(--text); text-decoration: none; font-size: 22px;
-            font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s;
-        }
-
-        .mobile-menu a:hover { color: var(--red); }
-
-        .mobile-close { position: absolute; top: 24px; right: 24px; font-size: 28px; cursor: pointer; color: var(--text); }
 
         .cart-link {
             text-decoration: none;
@@ -211,8 +168,62 @@
         .sticky-triangle-text { position: absolute; top: 50%; left: -78px; transform: translateY(-50%); width: 66px; text-align: center; color: #fff; font-size: 11px; font-weight: 800; letter-spacing: 0.04em; line-height: 1.3; pointer-events: none; }
     </style>
 
+    
+    <!-- FIXED TOP BANNER -->
+    <div class="top-banner">✈ Free International Shipping on orders $80+</div>
+
+    <!-- STICKY NAVBAR (just below banner) -->
+    <nav class="navbar at-top" id="navbar">
+        <div class="nav-left">
+            <a href="<?php echo esc_url( home_url('/shop') ); ?>">Shop</a>
+            <a href="<?php echo esc_url( home_url('/blog') ); ?>">Blog</a>
+            <a href="<?php echo esc_url( home_url('/about-us') ); ?>">About</a>
+            <a href="<?php echo esc_url( home_url('/contact') ); ?>">Contact</a>
+        </div>
+        <div class="nav-center">
+            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/king-jesus-clothing-logo.png"
+                alt="King Jesus Clothing"
+                class="nav-logo">
+            <a href="<?php echo esc_url( home_url() ); ?>" class="nav-brand"><?php bloginfo('name'); ?></a>
+        </div>
+        <div class="nav-right">
+            <div class="cart-wrap">
+                <?php
+                    $checkout_url = function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart');
+                    $cart_count = 0;
+                    if ( function_exists('WC') ) {
+                        $cart = WC()->cart;
+                        if ( $cart ) {
+                            $cart_count = $cart->get_cart_contents_count();
+                        }
+                    }
+                ?>
+                <a href="<?php echo esc_url( $checkout_url ); ?>" class="cart-link">
+                    <svg class="cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/>
+                        <path d="M16 10a4 4 0 01-8 0"/>
+                    </svg>
+                    <?php if ( $cart_count > 0 ) : ?>
+                        <span class="cart-badge"><?php echo esc_html( $cart_count ); ?></span>
+                    <?php endif; ?>
+                </a>
+            </div>
+            <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+        <span class="mobile-close" onclick="toggleMenu()">✕</span>
+        <a href="<?php echo esc_url( home_url('/shop') ); ?>" onclick="toggleMenu()">Shop</a>
+        <a href="<?php echo esc_url( home_url('/blog') ); ?>" onclick="toggleMenu()">Blog</a>
+        <a href="<?php echo esc_url( home_url('/about-us') ); ?>" onclick="toggleMenu()">About</a>
+        <a href="<?php echo esc_url( home_url('/contact') ); ?>" onclick="toggleMenu()">Contact</a>
+    </div>
+
     <script>
-      // Define modal functions early so they're available when elements load
+
+        // Define modal functions early so they're available when elements load
       const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbz-uCZoMRAk0Y3asGnqiwpu3CxRy0PzIvg30eZzT6OfVaJH_VTEk7sPvnZKnQ6_r-Ba/exec';
       const MODAL_STORAGE_KEY = 'kj-modal-shown-session';
 
@@ -287,107 +298,57 @@
         document.getElementById('modalForm').innerHTML =
           '<div style="padding:20px 0;font-size:17px;color:#1D1D1D;line-height:1.6">🙏 Thank you, ' + name + '!<br><br>Your 15% discount is <strong style="color:#CE202F;">JesusIsKing15</strong></div>';
         // setTimeout(closeModal, 4000);
-      }    </script>
+      }    
 
-    <!-- FIXED TOP BANNER -->
-    <div class="top-banner">✈ Free International Shipping on orders $80+</div>
-
-    <!-- STICKY NAVBAR (just below banner) -->
-    <nav class="navbar at-top" id="navbar">
-        <div class="nav-left">
-            <a href="<?php echo esc_url( home_url('/shop') ); ?>">Shop</a>
-            <a href="<?php echo esc_url( home_url('/blog') ); ?>">Blog</a>
-            <a href="<?php echo esc_url( home_url('/about-us') ); ?>">About</a>
-            <a href="<?php echo esc_url( home_url('/contact') ); ?>">Contact</a>
-        </div>
-        <div class="nav-center">
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/king-jesus-clothing-logo.png"
-                alt="King Jesus Clothing"
-                class="nav-logo">
-            <a href="<?php echo esc_url( home_url() ); ?>" class="nav-brand"><?php bloginfo('name'); ?></a>
-        </div>
-        <div class="nav-right">
-            <div class="cart-wrap">
-                <?php
-                    $checkout_url = function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart');
-                    $cart_count = 0;
-                    if ( function_exists('WC') ) {
-                        $cart = WC()->cart;
-                        if ( $cart ) {
-                            $cart_count = $cart->get_cart_contents_count();
-                        }
-                    }
-                ?>
-                <a href="<?php echo esc_url( $checkout_url ); ?>" class="cart-link">
-                    <svg class="cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/>
-                        <path d="M16 10a4 4 0 01-8 0"/>
-                    </svg>
-                    <?php if ( $cart_count > 0 ) : ?>
-                        <span class="cart-badge"><?php echo esc_html( $cart_count ); ?></span>
-                    <?php endif; ?>
-                </a>
-            </div>
-            <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
-        </div>
-    </nav>
-
-    <!-- MOBILE MENU -->
-    <div class="mobile-menu" id="mobileMenu">
-        <span class="mobile-close" onclick="toggleMenu()">✕</span>
-        <a href="<?php echo esc_url( home_url('/shop') ); ?>" onclick="toggleMenu()">Shop</a>
-        <a href="<?php echo esc_url( home_url('/blog') ); ?>" onclick="toggleMenu()">Blog</a>
-        <a href="<?php echo esc_url( home_url('/about-us') ); ?>" onclick="toggleMenu()">About</a>
-        <a href="<?php echo esc_url( home_url('/contact') ); ?>" onclick="toggleMenu()">Contact</a>
-    </div>
-
-    <script>
-// Global toggle menu function for onclick handlers
-function toggleMenu() {
-    const mobileMenu = document.getElementById('mobileMenu');
-    if (mobileMenu) {
-        mobileMenu.classList.toggle('open');
+    // Global toggle menu function for onclick handlers
+    function toggleMenu() {
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (mobileMenu) {
+            mobileMenu.classList.toggle('open');
+        }
     }
-}
 
-document.addEventListener('DOMContentLoaded', function() {
-    const navbar = document.getElementById('navbar');
-    const mobileMenu = document.getElementById('mobileMenu');
-    const isHomepage = document.body.classList.contains('page-template-page-homepage');
+    document.addEventListener('DOMContentLoaded', function() {
+        const navbar = document.getElementById('navbar');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const isHomepage = document.body.classList.contains('page-template-page-homepage');
 
-    
-    // Close menu when a link is clicked
-    const menuLinks = mobileMenu.querySelectorAll('a:not(.mobile-close)');
-    menuLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            if (mobileMenu.classList.contains('open')) {
+        
+        // Close menu when a link is clicked
+        const menuLinks = mobileMenu.querySelectorAll('a:not(.mobile-close)');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (mobileMenu.classList.contains('open')) {
+                    mobileMenu.classList.remove('open');
+                }
+            });
+        });
+
+        // Close menu on window resize if open
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 880 && mobileMenu.classList.contains('open')) {
                 mobileMenu.classList.remove('open');
             }
         });
-    });
 
-    // Close menu on window resize if open
-    window.addEventListener('resize', function() {
-        if (window.innerWidth > 880 && mobileMenu.classList.contains('open')) {
-            mobileMenu.classList.remove('open');
+        navbar.classList.add('scrolled');
+
+        // Navbar: transparent at the very top on the homepage, solid once scrolled.
+        function updateNavbar() {
+            if (!isHomepage) {                       // non-homepage pages stay solid
+                navbar.classList.remove('at-top');
+                navbar.classList.add('scrolled');
+                return;
+            }
+            if (window.scrollY > 20) {
+                navbar.classList.remove('at-top');
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.add('at-top');
+                navbar.classList.remove('scrolled');
+            }
         }
+        updateNavbar();
+        window.addEventListener('scroll', updateNavbar, { passive: true });
     });
-
-                    navbar.classList.add('scrolled');
-
-    // // Add scroll detection for navbar — only on homepage
-    // window.addEventListener('scroll', () => {
-    //     if (isHomepage) {
-    //         // On homepage: toggle between transparent and solid based on scroll
-    //         if (window.scrollY > 20) {
-    //             navbar.classList.remove('at-top');
-    //             navbar.classList.add('scrolled');
-    //         } else {
-    //             navbar.classList.remove('scrolled');
-    //             navbar.classList.add('at-top');
-    //         }
-    //     }
-    //     // On other pages: navbar stays in scrolled state always (handled by CSS)
-    // });
-});
 </script>

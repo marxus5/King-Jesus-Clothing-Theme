@@ -55,7 +55,7 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
     z-index: 300;
   }
 
-  /* ─── NAVBAR — sticky just below banner ─── */
+  ─── NAVBAR — sticky just below banner ───
   .navbar {
     position: fixed;
     top: var(--banner-h);
@@ -78,6 +78,11 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
     box-shadow: 0 2px 16px rgba(0,0,0,0.07);
   }
 
+  .nav-center { display: flex; align-items: center; gap: 10px; }  /* already there — keep */
+  .nav-brand  { line-height: 1; }                                  /* add this */
+  .nav-logo   { display: block; width: 40px; height: 40px; object-fit: contain; flex-shrink: 0;}  /* add this — kills inline-img gap */
+
+
   /* Text colors in transparent state (over dark hero) */
   .navbar.at-top .nav-left a,
   .navbar.at-top .nav-brand,
@@ -97,15 +102,10 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
   }
   .nav-left a:hover { color: var(--red) !important; }
 
-  .nav-center {
-    position: absolute; left: 50%; transform: translateX(-50%);
-    display: flex; align-items: center; gap: 10px;
-  }
-
   .nav-brand {
     font-weight: 700; font-size: 15px; letter-spacing: 0.08em;
     text-decoration: none; white-space: nowrap; text-transform: uppercase;
-    transition: color 0.3s;
+    transition: color 0.3s; ;
   }
 
   .nav-right { display: flex; align-items: center; gap: 20px; margin-left: auto; }
@@ -128,7 +128,7 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
 
   .mobile-menu {
     display: none; position: fixed; inset: 0;
-    background: rgba(255,255,255,0.98); z-index: 199;
+    background: rgba(255,255,255,0.98); z-index: 400;
     flex-direction: column; align-items: center; justify-content: center; gap: 32px;
   }
   .mobile-menu.open { display: flex; }
@@ -142,54 +142,41 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
   /* ─── PAGE OFFSET for fixed banner+nav ─── */
   .page-body { padding-top: 0; /* Banner+nav are transparent over hero, so no padding needed */ }
 
-  /* ─── HERO ─── */
-  /* Hero sits at top of .page-body so the transparent nav overlays it */
+
 /* HERO */
 .hero {
     position: relative;
-    width: 100vw;
-    height: 68vh;           /* Good balance */
-    min-height: 460px;
-    max-height: 720px;
+    width: 100%;                       /* was 100vw — fixes sideways shift */
+    min-height: 70vh;
+    max-height: 760px;
     overflow: hidden;
-    margin-top: calc(-1 * var(--nav-h));
-    /* background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/NewHero.jpg'); */
-    background-size: cover;
-        background-position: center 30%;   /* Adjust this number to focus on important part */
-
-  }
+    margin-top: calc(-1 * (var(--banner-h) + var(--nav-h)));
+}
 
 .hero-bg {
-    position: absolute;
-    inset: 0;
-    background-image: 
-        linear-gradient(135deg, 
-            rgba(0,0,0,0.08) 0%, 
-            rgba(206,32,47,0.22) 45%, 
-            rgba(206,32,47,0.68) 100%),
-        linear-gradient(135deg, #3a0008 0%, #7a0012 40%, #b0001a 70%, #CE202F 100%);    
+    position: absolute; inset: 0;
+    background-image:
+        linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.05) 40%, rgba(0, 0, 0, 0.55) 100%),
+        url('<?php echo get_template_directory_uri(); ?>/assets/images/NewHero.jpg');
     background-size: cover;
+    background-position: center center;
     background-repeat: no-repeat;
     z-index: -1;
 }
 
-/* Mobile Optimization */
 @media (max-width: 900px) {
     .hero {
-        height: 20vh;
-        min-height: 300px;
-        margin-top: 1rem; /* Add some spacing on mobile */
-    }    
+        min-height: 50vh;              /* was 20vh — gives the image room, stops the crop */
+        max-height: none;
+        margin-top: 30px;
+        /* margin-top: calc(-1 * (var(--banner-h) + var(--nav-h))); */
+    }
     .hero-bg {
-        background-position: center 50%;   /* Different focus for mobile */
+        background-position: center 30%;  /* nudge this % to keep the model/subject in frame */
     }
 }
-  .hero-cross {
-    position: absolute; inset: 0; opacity: 0.05;
-    background-image:
-      repeating-linear-gradient(0deg, transparent, transparent 58px, rgba(255,255,255,0.5) 58px, rgba(255,255,255,0.5) 62px),
-      repeating-linear-gradient(90deg, transparent, transparent 58px, rgba(255,255,255,0.5) 58px, rgba(255,255,255,0.5) 62px);
-  }
+
+  
   .hero-content {
     position: absolute; bottom: 0; left: 0; right: 0;
     padding: 0 6vw 44px;
@@ -197,10 +184,10 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
   }
   .hero-eyebrow {
     font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
-    color: var(--gold-light); margin-bottom: 12px; font-weight: 600;
+    color: var(--white); margin-bottom: 6px; font-weight: 600;
   }
   .hero-title {
-    font-size: clamp(32px, 6vw, 72px); font-weight: 800;
+    font-size: clamp(25px, 6vw, 72px); font-weight: 800;
     line-height: 1.05; margin-bottom: 28px; color: #fff; letter-spacing: -0.01em;
   }
   .hero-cta {
@@ -414,19 +401,19 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
 <!-- PAGE BODY (offset for fixed banner+nav) -->
 <div class="page-body">
 
-  <!-- HERO (nav overlays because of negative margin-top)
+  <!-- HERO (nav overlays because of negative margin-top) -->
   <div class="hero">
     <div class="hero-bg"></div>
     <div class="hero-cross"></div>
     <div class="hero-content">
-      <div class="hero-eyebrow">New Collection — Spring 2025</div>
-      <h1 class="hero-title">Wear Your<br>Faith Boldly</h1>
+      <div class="hero-eyebrow">King Jesus Clothing</div>
+      <h1 class="hero-title">Christian Clothing to<br>Wear Your Faith Boldly</h1>
       <a href="#products" class="hero-cta">
         Shop Our Best Sellers
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
     </div>
-  </div> -->
+  </div>
 
   <!-- FEATURED PRODUCTS -->
   <section class="section" id="products">
@@ -495,33 +482,78 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
     </div>
   </section>
 
-  <!-- REVIEWS -->
-  <!-- <section class="reviews-section">
+ <?php
+/* ─── LIVE REVIEWS — pulled from real WooCommerce product reviews ─── */
+$kjc_reviews = get_comments( array(
+    'status'     => 'approve',
+    'post_type'  => 'product',
+    'type'       => 'review',
+    'number'     => 12,
+    'orderby'    => 'comment_date_gmt',
+    'order'      => 'DESC',
+    'meta_query' => array(
+        array( 'key' => 'rating', 'value' => 4, 'compare' => '>=', 'type' => 'NUMERIC' ),
+    ),
+) );
+
+if ( ! empty( $kjc_reviews ) ) :
+
+    global $wpdb;
+    $kjc_sql_where = "FROM {$wpdb->commentmeta} cm
+        INNER JOIN {$wpdb->comments} c ON c.comment_ID = cm.comment_id
+        WHERE cm.meta_key = 'rating'
+          AND c.comment_approved = '1'
+          AND c.comment_type = 'review'";
+    $kjc_avg   = $wpdb->get_var( "SELECT AVG(cm.meta_value) $kjc_sql_where" );
+    $kjc_count = (int) $wpdb->get_var( "SELECT COUNT(*) $kjc_sql_where" );
+    $kjc_avg   = $kjc_avg ? round( $kjc_avg, 1 ) : 5.0;
+    $kjc_stars = max( 1, (int) round( $kjc_avg ) );
+?>
+  <section class="reviews-section">
     <div class="reviews-header reveal">
       <div class="overall-rating">
-        <span class="stars-big">★★★★★</span>
-        <span class="rating-num">4.9</span>
-        <span class="rating-count">from 1,284 reviews</span>
+        <span class="stars-big"><?php echo str_repeat( '★', $kjc_stars ) . str_repeat( '☆', 5 - $kjc_stars ); ?></span>
+        <span class="rating-num"><?php echo esc_html( number_format( $kjc_avg, 1 ) ); ?></span>
+        <span class="rating-count">from <?php echo esc_html( $kjc_count ); ?> verified review<?php echo $kjc_count === 1 ? '' : 's'; ?></span>
       </div>
       <h2 class="section-title">What Our Community Says</h2>
       <p class="reviews-subtitle">Real believers wearing their faith and sharing their stories. Every review is from a verified purchase.</p>
     </div>
     <div class="carousel-track-wrap">
       <div class="carousel-track">
-        <div class="review-card"><div class="review-top"><div class="review-avatar">JM</div><div><div class="review-name">James Miller</div><div class="review-verified">✓ Verified Buyer</div></div></div><div class="review-stars">★★★★★</div><div class="review-text">"I wore the King Jesus tee to college and had 3 people ask about my faith. This clothing opens doors for the Gospel."</div><div class="review-img">📸 Photo</div></div>
-        <div class="review-card"><div class="review-top"><div class="review-avatar">SR</div><div><div class="review-name">Sarah Rodriguez</div><div class="review-verified">✓ Verified Buyer</div></div></div><div class="review-stars">★★★★★</div><div class="review-text">"Incredible quality. Soft, durable, and the designs are genuinely beautiful. I bought 4 pieces and plan to gift them to my youth group."</div></div>
-        <div class="review-card"><div class="review-top"><div class="review-avatar">DC</div><div><div class="review-name">David Chen</div><div class="review-verified">✓ Verified Buyer</div></div></div><div class="review-stars">★★★★★</div><div class="review-text">"Shipped to Australia super fast. The Lion of Judah hoodie is my favorite piece. Bold design without being cheesy."</div><div class="review-img">📸 Photo</div></div>
-        <div class="review-card"><div class="review-top"><div class="review-avatar">AT</div><div><div class="review-name">Ashley Turner</div><div class="review-verified">✓ Verified Buyer</div></div></div><div class="review-stars">★★★★★</div><div class="review-text">"I love that they support missionaries. It feels meaningful to buy from a kingdom-minded brand. Customer for life."</div></div>
-        <div class="review-card"><div class="review-top"><div class="review-avatar">MP</div><div><div class="review-name">Marcus Price</div><div class="review-verified">✓ Verified Buyer</div></div></div><div class="review-stars">★★★★★</div><div class="review-text">"Ordered three hoodies for our small group leaders. Everyone loved them. Sizing is true and print quality is excellent."</div><div class="review-img">📸 Photo</div></div>
-        <div class="review-card"><div class="review-top"><div class="review-avatar">LW</div><div><div class="review-name">Lydia Wallace</div><div class="review-verified">✓ Verified Buyer</div></div></div><div class="review-stars">★★★★★</div><div class="review-text">"Faith Over Fear crewneck arrived fast and looks even better in person. Rich color and incredible detail."</div></div>
-        <div class="review-card"><div class="review-top"><div class="review-avatar">RP</div><div><div class="review-name">Robert Park</div><div class="review-verified">✓ Verified Buyer</div></div></div><div class="review-stars">★★★★★</div><div class="review-text">"First Christian brand that feels modern. My non-believing friends are curious about the designs — great conversations."</div><div class="review-img">📸 Photo</div></div>
-        <div class="review-card"><div class="review-top"><div class="review-avatar">JM</div><div><div class="review-name">James Miller</div><div class="review-verified">✓ Verified Buyer</div></div></div><div class="review-stars">★★★★★</div><div class="review-text">"I wore the King Jesus tee to college and had 3 people ask about my faith. This clothing opens doors for the Gospel."</div></div>
-        <div class="review-card"><div class="review-top"><div class="review-avatar">SR</div><div><div class="review-name">Sarah Rodriguez</div><div class="review-verified">✓ Verified Buyer</div></div></div><div class="review-stars">★★★★★</div><div class="review-text">"Incredible quality. Soft, durable, and the designs are genuinely beautiful. I bought 4 pieces and plan to gift them to my youth group."</div></div>
-        <div class="review-card"><div class="review-top"><div class="review-avatar">DC</div><div><div class="review-name">David Chen</div><div class="review-verified">✓ Verified Buyer</div></div></div><div class="review-stars">★★★★★</div><div class="review-text">"Shipped to Australia super fast. The Lion of Judah hoodie is my favorite piece. Bold design without being cheesy."</div></div>
-        <div class="review-card"><div class="review-top"><div class="review-avatar">AT</div><div><div class="review-name">Ashley Turner</div><div class="review-verified">✓ Verified Buyer</div></div></div><div class="review-stars">★★★★★</div><div class="review-text">"I love that they support missionaries. It feels meaningful to buy from a kingdom-minded brand. Customer for life."</div></div>
+        <?php
+        /* Render the set twice so the infinite-scroll animation (-50%) loops seamlessly */
+        for ( $pass = 0; $pass < 2; $pass++ ) :
+          foreach ( $kjc_reviews as $review ) :
+            $rating   = (int) get_comment_meta( $review->comment_ID, 'rating', true ) ?: 5;
+            $name     = $review->comment_author ?: 'Verified Buyer';
+            $verified = get_comment_meta( $review->comment_ID, 'verified', true );
+            $product  = get_the_title( $review->comment_post_ID );
+            $text     = wp_strip_all_tags( $review->comment_content );
+            $words    = preg_split( '/\s+/', trim( $name ) );
+            $initials = strtoupper( substr( $words[0], 0, 1 ) . ( isset( $words[1] ) ? substr( $words[1], 0, 1 ) : '' ) );
+        ?>
+        <div class="review-card"<?php echo $pass ? ' aria-hidden="true"' : ''; ?>>
+          <div class="review-top">
+            <div class="review-avatar"><?php echo esc_html( $initials ); ?></div>
+            <div>
+              <div class="review-name"><?php echo esc_html( $name ); ?></div>
+              <?php if ( $verified ) : ?>
+                <div class="review-verified">✓ Verified Buyer</div>
+              <?php endif; ?>
+            </div>
+          </div>
+          <div class="review-stars"><?php echo str_repeat( '★', $rating ) . str_repeat( '☆', 5 - $rating ); ?></div>
+          <div class="review-text"><?php echo esc_html( $text ); ?></div>
+          <?php if ( $product ) : ?>
+            <div class="review-verified" style="margin-top:12px;opacity:.7;">on <?php echo esc_html( $product ); ?></div>
+          <?php endif; ?>
+        </div>
+        <?php endforeach; endfor; ?>
       </div>
     </div>
-  </section> -->
+  </section>
+<?php endif; ?>
 
   <!-- ABOUT -->
   <section class="about-section">
