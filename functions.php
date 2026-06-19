@@ -2,6 +2,36 @@
 
 /**
  * ─────────────────────────────────────────────────────────────────────────────
+ * POST/REDIRECT/GET FOR ADD-TO-CART
+ * ─────────────────────────────────────────────────────────────────────────────
+ * The default WooCommerce single-product add-to-cart is a POST form. Without a
+ * redirect, the POST stays in browser history, so hitting the Back button
+ * re-submits it and adds the item again. Forcing a redirect after a non-AJAX
+ * POST add-to-cart turns it into a GET history entry, so Back is safe.
+ */
+add_filter( 'woocommerce_add_to_cart_redirect', 'kjc_prg_add_to_cart_redirect', 20 );
+function kjc_prg_add_to_cart_redirect( $url ) {
+    // Respect an existing redirect (e.g. the "redirect to cart after add" option).
+    if ( $url || ( function_exists( 'wp_doing_ajax' ) && wp_doing_ajax() ) ) {
+        return $url;
+    }
+
+    $method = isset( $_SERVER['REQUEST_METHOD'] ) ? strtoupper( $_SERVER['REQUEST_METHOD'] ) : '';
+    if ( 'POST' === $method && ! empty( $_REQUEST['add-to-cart'] ) ) {
+        $product_id = absint( $_REQUEST['add-to-cart'] );
+        $permalink  = $product_id ? get_permalink( $product_id ) : '';
+        if ( $permalink ) {
+            return $permalink;
+        }
+        $referer = wp_get_referer();
+        return $referer ? $referer : home_url();
+    }
+
+    return $url;
+}
+
+/**
+ * ─────────────────────────────────────────────────────────────────────────────
  * META (INSTAGRAM/FACEBOOK SHOP) CHECKOUT LINK HANDLER
  * ─────────────────────────────────────────────────────────────────────────────
  *
