@@ -192,6 +192,16 @@ function printshop_enqueue_styles() {
         filemtime(get_stylesheet_directory() . '/style.css')
     );
 
+    // Combined stylesheet: global chrome (banner, navbar, mobile menu, modal,
+    // sticky promo) + homepage template. Loads after style.css so it can layer
+    // on top. Replaces the old inline <style> blocks and homepage-v2.css.
+    wp_enqueue_style(
+        'kjc-main',
+        get_template_directory_uri() . '/css/main.css',
+        array( 'main-style' ),
+        filemtime( get_template_directory() . '/css/main.css' )
+    );
+
 }
 add_action('wp_enqueue_scripts', 'printshop_enqueue_styles');
 
