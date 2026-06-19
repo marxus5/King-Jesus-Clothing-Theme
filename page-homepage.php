@@ -17,7 +17,6 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
   <!-- HERO (nav overlays because of negative margin-top) -->
   <div class="hero">
     <div class="hero-bg"></div>
-    <div class="hero-cross"></div>
     <div class="hero-content">
       <div class="hero-eyebrow">King Jesus Clothing</div>
       <h1 class="hero-title">Christian Clothing to<br>Wear Your Faith Boldly</h1>

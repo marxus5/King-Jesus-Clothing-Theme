@@ -233,12 +233,6 @@ body.page-template-page-homepage {
     background-repeat: no-repeat;
     z-index: -1;
 }
-.page-template-page-homepage .hero-cross {
-    position: absolute; inset: 0; opacity: 0.05;
-    background-image:
-        repeating-linear-gradient(0deg, transparent, transparent 58px, rgba(255,255,255,0.5) 58px, rgba(255,255,255,0.5) 62px),
-        repeating-linear-gradient(90deg, transparent, transparent 58px, rgba(255,255,255,0.5) 58px, rgba(255,255,255,0.5) 62px);
-}
 .page-template-page-homepage .hero-content {
     position: absolute; bottom: 0; left: 0; right: 0;
     padding: 0 6vw 44px;
@@ -304,8 +298,13 @@ body.page-template-page-homepage {
 .page-template-page-homepage .product-img::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 3px; background: var(--gold); transition: width 0.35s ease; }
 .page-template-page-homepage .product-card:hover .product-img::after { width: 100%; }
 .page-template-page-homepage .product-card:hover .product-img-inner { transform: scale(1.03); }
+.page-template-page-homepage .product-img-inner img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .page-template-page-homepage .product-name { font-size: 13px; font-weight: 600; margin-bottom: 5px; }
 .page-template-page-homepage .product-price { font-size: 14px; font-weight: 700; color: var(--red); }
+/* Smaller, squarer product images on phones so they don't dominate the screen */
+@media (max-width: 640px) {
+    .page-template-page-homepage .product-img { aspect-ratio: 1 / 1; }
+}
 
 /* ─── MISSION / VALUES ─── */
 .page-template-page-homepage .mission-section { padding: 80px 5vw; background: var(--off-white); }
@@ -335,12 +334,12 @@ body.page-template-page-homepage {
 
 /* ─── REVIEWS ─── */
 .page-template-page-homepage .reviews-section { padding: 80px 0; background: var(--white); overflow: hidden; }
-.page-template-page-homepage .reviews-header { padding: 0 5vw; margin-bottom: 40px; }
-.page-template-page-homepage .overall-rating { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+.page-template-page-homepage .reviews-header { padding: 0 5vw; margin: 0 auto 40px; max-width: 1100px; text-align: center; }
+.page-template-page-homepage .overall-rating { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 16px; }
 .page-template-page-homepage .stars-big { font-size: 24px; letter-spacing: 2px; color: var(--gold); }
 .page-template-page-homepage .rating-num { font-size: 36px; font-weight: 800; }
 .page-template-page-homepage .rating-count { font-size: 13px; color: var(--text-muted); }
-.page-template-page-homepage .reviews-subtitle { font-size: 13px; color: var(--text-muted); max-width: 420px; line-height: 1.7; }
+.page-template-page-homepage .reviews-subtitle { font-size: 13px; color: var(--text-muted); max-width: 420px; margin: 0 auto; line-height: 1.7; }
 .page-template-page-homepage .carousel-track-wrap { overflow: hidden; }
 .page-template-page-homepage .carousel-track { display: flex; gap: 20px; padding: 10px 5vw 20px; animation: scrollLeft 40s linear infinite; width: max-content; }
 .page-template-page-homepage .carousel-track:hover { animation-play-state: paused; }
