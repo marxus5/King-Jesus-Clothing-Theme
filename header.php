@@ -173,39 +173,45 @@
             }
         });
 
-        // Navbar: transparent at the very top on the homepage, solid once scrolled.
-        function updateNavbar() {
-            if (!isHomepage) {                       // non-homepage pages stay solid
-                navbar.classList.remove('at-top');
-                navbar.classList.add('scrolled');
-                return;
-            }
-            if (window.scrollY > 20) {
-                navbar.classList.remove('at-top');
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.add('at-top');
-                navbar.classList.remove('scrolled');
-            }
-        }
-
-        // Top banner: hide when scrolling down, reveal when scrolling up.
+        // Scroll handling (navbar transparency + banner hide/show), throttled
+        // with requestAnimationFrame so it runs at most once per frame — keeps
+        // scrolling smooth on mobile.
         const bannerH = 38;
         let lastScroll = window.scrollY;
-        function updateBanner() {
-            const y = window.scrollY;
-            if (y > lastScroll && y > bannerH) {
-                document.body.classList.add('banner-hidden');    // scrolling down
-            } else if (y < lastScroll) {
-                document.body.classList.remove('banner-hidden');  // scrolling up
-            }
-            lastScroll = y;
+        let ticking = false;
+
+        // Non-homepage navbar is always solid; set once.
+        if (!isHomepage) {
+            navbar.classList.add('scrolled');
+            navbar.classList.remove('at-top');
         }
 
-        updateNavbar();
+        function applyScrollState() {
+            const y = window.scrollY;
+
+            // Navbar transparent at very top (homepage only), solid once scrolled.
+            if (isHomepage) {
+                const solid = y > 20;
+                navbar.classList.toggle('scrolled', solid);
+                navbar.classList.toggle('at-top', !solid);
+            }
+
+            // Banner: hide on scroll-down, reveal on scroll-up.
+            if (y > lastScroll && y > bannerH) {
+                document.body.classList.add('banner-hidden');
+            } else if (y < lastScroll) {
+                document.body.classList.remove('banner-hidden');
+            }
+            lastScroll = y;
+            ticking = false;
+        }
+
+        applyScrollState();
         window.addEventListener('scroll', function () {
-            updateNavbar();
-            updateBanner();
+            if (!ticking) {
+                window.requestAnimationFrame(applyScrollState);
+                ticking = true;
+            }
         }, { passive: true });
     });
 </script>

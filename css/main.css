@@ -69,6 +69,8 @@ body.banner-hidden .navbar { top: 0; }
     position: fixed;
     top: var(--banner-h);
     left: 0; right: 0;
+    width: 100%;
+    max-width: none;          /* override the global `nav { max-width:1200px }` in style.css */
     z-index: 200;
     display: flex;
     align-items: center;
@@ -160,6 +162,11 @@ body:not(.page-template-page-homepage) .navbar .hamburger span { background: var
     .nav-brand { font-size: 12px; }
     /* Flow logo+brand to the left on mobile (nav-left is hidden) */
     .nav-center { position: static; left: auto; transform: none; }
+    /* backdrop-filter blur is expensive to repaint while scrolling on phones —
+       drop it; the solid 0.97 white background looks the same. */
+    .navbar,
+    .navbar.scrolled,
+    body.page-template-page-homepage .navbar.scrolled { backdrop-filter: none; }
 }
 
 /* ============================ MOBILE MENU =============================== */
