@@ -173,8 +173,6 @@
             }
         });
 
-        navbar.classList.add('scrolled');
-
         // Navbar: transparent at the very top on the homepage, solid once scrolled.
         function updateNavbar() {
             if (!isHomepage) {                       // non-homepage pages stay solid
@@ -190,7 +188,24 @@
                 navbar.classList.remove('scrolled');
             }
         }
+
+        // Top banner: hide when scrolling down, reveal when scrolling up.
+        const bannerH = 38;
+        let lastScroll = window.scrollY;
+        function updateBanner() {
+            const y = window.scrollY;
+            if (y > lastScroll && y > bannerH) {
+                document.body.classList.add('banner-hidden');    // scrolling down
+            } else if (y < lastScroll) {
+                document.body.classList.remove('banner-hidden');  // scrolling up
+            }
+            lastScroll = y;
+        }
+
         updateNavbar();
-        window.addEventListener('scroll', updateNavbar, { passive: true });
+        window.addEventListener('scroll', function () {
+            updateNavbar();
+            updateBanner();
+        }, { passive: true });
     });
 </script>
