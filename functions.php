@@ -48,6 +48,10 @@ function kjc_continue_shopping_message( $message, $products ) {
 
     return sprintf( '%s %s', $button, esc_html( $added_text ) );
 }
+
+/**
+ * ─────────────────────────────────────────────────────────────────────────────
+ * META (INSTAGRAM/FACEBOOK SHOP) CHECKOUT LINK HANDLER
  * ─────────────────────────────────────────────────────────────────────────────
  *
  * Meta sends customers to a URL like:
