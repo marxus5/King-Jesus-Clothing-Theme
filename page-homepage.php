@@ -141,18 +141,25 @@ if ( ! empty( $kjc_reviews ) ) :
             $name     = $review->comment_author ?: 'Verified Buyer';
             $verified = get_comment_meta( $review->comment_ID, 'verified', true );
             $product  = get_the_title( $review->comment_post_ID );
+            $date     = date_i18n( 'M j, Y', strtotime( $review->comment_date ) );
             $text     = wp_strip_all_tags( $review->comment_content );
+            if ( mb_strlen( $text ) > 220 ) {
+                $text = rtrim( mb_substr( $text, 0, 219 ) ) . '…';
+            }
             $words    = preg_split( '/\s+/', trim( $name ) );
             $initials = strtoupper( substr( $words[0], 0, 1 ) . ( isset( $words[1] ) ? substr( $words[1], 0, 1 ) : '' ) );
         ?>
         <div class="review-card"<?php echo $pass ? ' aria-hidden="true"' : ''; ?>>
           <div class="review-top">
             <div class="review-avatar"><?php echo esc_html( $initials ); ?></div>
-            <div>
+            <div class="review-id">
               <div class="review-name"><?php echo esc_html( $name ); ?></div>
-              <?php if ( $verified ) : ?>
-                <div class="review-verified">✓ Verified Buyer</div>
-              <?php endif; ?>
+              <div class="review-meta">
+                <?php if ( $verified ) : ?>
+                  <span class="review-verified">✓ Verified Buyer</span>
+                <?php endif; ?>
+                <span class="review-date"><?php echo esc_html( $date ); ?></span>
+              </div>
             </div>
           </div>
           <div class="review-stars"><?php echo str_repeat( '★', $rating ) . str_repeat( '☆', 5 - $rating ); ?></div>
@@ -169,7 +176,7 @@ if ( ! empty( $kjc_reviews ) ) :
 
   <!-- ABOUT -->
   <section class="about-section">
-    <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/Black-Hoodies-Modle-Pic.jpg" alt="King Jesus Clothing" class="about-img-placeholder">
+    <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/Black-Hoodies-Modle-Pic.jpg" alt="Model wearing a King Jesus Clothing black Christian hoodie" class="about-img-placeholder" id="aboutImg">
     <div class="about-text" id="aboutText">
       <div class="section-label">Our Story</div>
       <h2 class="section-title">Born from a<br>Calling, Not a Trend</h2>
@@ -199,6 +206,18 @@ if ( ! empty( $kjc_reviews ) ) :
     <div class="scripture-ref">Galatians 2:20</div>
   </section>
 </div><!-- end .page-body -->
+
+<script>
+(function () {
+  // Touch devices: tap the reviews carousel to pause, tap again to resume.
+  // (Desktop keeps the :hover pause, which works well there.)
+  if (window.matchMedia('(hover: none)').matches) {
+    var track = document.querySelector('.carousel-track');
+    if (track) {
+      track.addEventListener('click', function () { track.classList.toggle('paused'); });
+    }
+  }
+})();
 </script>
 
 <?php get_footer(); ?>
