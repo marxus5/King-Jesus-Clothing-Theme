@@ -1315,7 +1315,7 @@ ul.products li.product button.button:hover {
             window.productLightbox.destroy();
         }
         window.productLightbox = GLightbox({
-            selector        : '.glightbox[data-gallery="product-gallery"]',
+            selector        : '.splide__slide:not(.splide__slide--clone) a.glightbox[data-gallery="product-gallery"]',
             touchNavigation : true,
             loop            : true,
             zoomable        : true,

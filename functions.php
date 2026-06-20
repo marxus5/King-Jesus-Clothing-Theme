@@ -26,8 +26,28 @@ function kjc_prg_add_to_cart_redirect( $url ) {
 }
 
 /**
- * ─────────────────────────────────────────────────────────────────────────────
- * META (INSTAGRAM/FACEBOOK SHOP) CHECKOUT LINK HANDLER
+ * Change the "added to cart" notice button from "View cart" to
+ * "Continue Shopping", linking back to the main shop page.
+ */
+add_filter( 'wc_add_to_cart_message_html', 'kjc_continue_shopping_message', 10, 2 );
+function kjc_continue_shopping_message( $message, $products ) {
+    $names = array();
+    if ( is_array( $products ) ) {
+        foreach ( $products as $product_id => $qty ) {
+            $names[] = ( $qty > 1 ? absint( $qty ) . ' × ' : '' ) . get_the_title( $product_id );
+        }
+    }
+    $added_text = $names ? implode( ', ', $names ) . ' added to your cart.' : 'Added to your cart.';
+
+    $shop_url = wc_get_page_permalink( 'shop' );
+    $button   = sprintf(
+        '<a href="%s" class="button wc-forward">%s</a>',
+        esc_url( $shop_url ),
+        esc_html__( 'Continue Shopping', 'woocommerce' )
+    );
+
+    return sprintf( '%s %s', $button, esc_html( $added_text ) );
+}
  * ─────────────────────────────────────────────────────────────────────────────
  *
  * Meta sends customers to a URL like:
