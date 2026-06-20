@@ -19,7 +19,7 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
     <div class="hero-bg"></div>
     <div class="hero-content">
       <div class="hero-eyebrow">King Jesus Clothing</div>
-      <h1 class="hero-title">Christian Clothing to<br>Wear Your Faith Boldly</h1>
+      <h1 class="hero-title">Christian Clothing<br>That Starts Conversations</h1>
       <a href="#products" class="hero-cta">
         Shop Our Best Sellers
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
