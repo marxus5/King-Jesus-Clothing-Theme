@@ -129,12 +129,14 @@ do_action( 'woocommerce_before_main_content' );
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 42px;
+    min-width: 42px;
     height: 42px;
+    padding: 0 0.6rem;
     border-radius: 8px;
-    border: 2px solid #e5e7eb;
+    border: none;
+    background: transparent;
     font-weight: 600;
-    color: #374151;
+    color: #7A0E1A;
     text-decoration: none;
     transition: all 0.2s;
 }
@@ -142,7 +144,6 @@ do_action( 'woocommerce_before_main_content' );
 .custom-shop-pagination .woocommerce-pagination ul li a:hover,
 .custom-shop-pagination .woocommerce-pagination ul li span.current {
     background: linear-gradient(135deg, #f34040 0%, #830b15 100%);
-;
     border-color: transparent;
     color: white;
 }

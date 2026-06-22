@@ -64,6 +64,11 @@
     </div>
 
     <script>
+      // Config for the email popup + checkout opt-in (AJAX endpoint + nonce).
+      window.kjcData = {
+        ajaxUrl: '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>',
+        nonce: '<?php echo esc_js( wp_create_nonce( 'kjc_coupon' ) ); ?>'
+      };
 
         // Define modal functions early so they're available when elements load
       const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbz-uCZoMRAk0Y3asGnqiwpu3CxRy0PzIvg30eZzT6OfVaJH_VTEk7sPvnZKnQ6_r-Ba/exec';
@@ -98,16 +103,35 @@
         document.addEventListener('DOMContentLoaded', () => setTimeout(initModalSystem, 100));
       }
       // Modal action functions (globally accessible for onclick handlers)
-      async function sendToGoogleSheet(name, email, source) {
+      async function sendToGoogleSheet(payload) {
         try {
           await fetch(GOOGLE_SHEET_URL, {
             method: 'POST',
             mode: 'no-cors',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, email, source, timestamp: new Date().toISOString() })
+            body: JSON.stringify(Object.assign({ timestamp: new Date().toISOString() }, payload))
           });
         } catch(err) {
           console.warn('Sheet submit error:', err);
+        }
+      }
+
+      // Saves the welcome discount to the shopper's cart/session so it
+      // auto-applies at checkout — including express (Apple/Google Pay)
+      // checkouts, which have no coupon field. Backed by a 30-day cookie so it
+      // persists if they leave and come back.
+      function rememberWelcomeCoupon() {
+        try {
+          document.cookie = 'kjc_pending_coupon=1; path=/; max-age=' + (60 * 60 * 24 * 30) + '; SameSite=Lax';
+        } catch (e) {}
+        if (window.kjcData && window.kjcData.ajaxUrl) {
+          const body = new URLSearchParams({ action: 'kjc_apply_coupon', nonce: window.kjcData.nonce });
+          fetch(window.kjcData.ajaxUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: body,
+            credentials: 'same-origin'
+          }).catch(function () {});
         }
       }
 
@@ -129,18 +153,42 @@
         if (promo) setTimeout(() => promo.classList.add('show'), 600);
       }
 
+      let kjcModalSubmitting = false;
       async function submitModal() {
-        const name = document.getElementById('modalName').value.trim();
-        const email = document.getElementById('modalEmail').value.trim();
-        if (!name || !email) {
-          alert('Please fill in both fields.');
+        // Guard against double-clicks while the request is in flight — stops
+        // duplicate rows piling up in the Google Sheet.
+        if (kjcModalSubmitting) return;
+
+        const emailEl = document.getElementById('modalEmail');
+        const phoneEl = document.getElementById('modalPhone');
+        const btn = document.getElementById('modalSubmitBtn');
+        const email = emailEl ? emailEl.value.trim() : '';
+        const phone = phoneEl ? phoneEl.value.trim() : '';
+
+        // Email is required; phone is optional.
+        const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        if (!emailOk) {
+          alert('Please enter a valid email address.');
+          if (emailEl) emailEl.focus();
           return;
         }
-        await sendToGoogleSheet(name, email, 'popup-modal');
+
+        kjcModalSubmitting = true;
+        if (btn) {
+          btn.disabled = true;
+          btn.textContent = 'Sending…';
+          btn.style.opacity = '0.7';
+          btn.style.cursor = 'default';
+        }
+
+        await sendToGoogleSheet({ email: email, phone: phone, source: 'popup-modal' });
+
+        // Save the discount to their cart/session so it auto-applies at checkout.
+        rememberWelcomeCoupon();
+
         document.getElementById('modalForm').innerHTML =
-          '<div style="padding:20px 0;font-size:17px;color:#1D1D1D;line-height:1.6">🙏 Thank you, ' + name + '!<br><br>Your 15% discount is <strong style="color:#CE202F;">JesusIsKing15</strong></div>';
-        // setTimeout(closeModal, 4000);
-      }    
+          '<div style="padding:20px 0;font-size:17px;color:#1D1D1D;line-height:1.6">🙏 Thank you for joining the family!<br><br>Your 15% discount code is <strong style="color:#CE202F;">JesusIsKing15</strong><br><br><span style="font-size:14px;color:#555;">We\'ve saved it to your cart — it\'ll apply automatically at checkout.</span></div>';
+      }
 
     // Global toggle menu function for onclick handlers
     function toggleMenu() {

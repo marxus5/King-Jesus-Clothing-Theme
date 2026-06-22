@@ -42,9 +42,9 @@
         <h2>Get 15% Off<br>Your First Order</h2>
         <p>Join the King Jesus Clothing Family and receive a 15% discount, early access to new drops, and updates.</p>
         <div class="modal-form" id="modalForm">
-          <input class="modal-input" id="modalName" type="text" placeholder="Your first name">
-          <input class="modal-input" id="modalEmail" type="email" placeholder="Your email address">
-          <button class="modal-submit" onclick="submitModal()">Claim My 15% Off</button>
+          <input class="modal-input" id="modalEmail" type="email" placeholder="Your email address" required>
+          <input class="modal-input" id="modalPhone" type="tel" placeholder="Phone number (optional)" autocomplete="tel">
+          <button class="modal-submit" id="modalSubmitBtn" onclick="submitModal()">Claim My 15% Off</button>
           <div class="modal-skip" onclick="closeModal()">No thanks, I'll pay full price</div>
         </div>
       </div>
