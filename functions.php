@@ -342,6 +342,163 @@ add_action( 'after_setup_theme', 'printshop_woocommerce_setup' );
 
 /**
  * ─────────────────────────────────────────────────────────────────────────────
+ * CART HELPERS — free-shipping progress meter + product recommendations
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Power the custom cart template (woocommerce/cart/cart.php): the
+ * "Spend only $X more to reach free shipping" meter and the "You'll Also Love"
+ * cross-sell row.
+ */
+
+/**
+ * The cart subtotal that unlocks free shipping.
+ *
+ * Reads the minimum order amount from any enabled WooCommerce "Free shipping"
+ * method (lowest wins, across every zone incl. "Rest of the world"). Falls back
+ * to $80 — the figure in the site's top banner — when none is configured.
+ * Override with the `kjc_free_shipping_threshold` filter (return a number).
+ *
+ * @return float
+ */
+function kjc_get_free_shipping_threshold() {
+	$override = apply_filters( 'kjc_free_shipping_threshold', null );
+	if ( is_numeric( $override ) ) {
+		return (float) $override;
+	}
+
+	$threshold = 0.0;
+
+	if ( class_exists( 'WC_Shipping_Zones' ) ) {
+		// Zone 0 is the catch-all "Rest of the world"; the rest are admin-defined.
+		$zone_ids = array( 0 );
+		foreach ( WC_Shipping_Zones::get_zones() as $zone ) {
+			if ( isset( $zone['id'] ) ) {
+				$zone_ids[] = (int) $zone['id'];
+			}
+		}
+
+		foreach ( $zone_ids as $zone_id ) {
+			$zone = WC_Shipping_Zones::get_zone( $zone_id );
+			if ( ! $zone ) {
+				continue;
+			}
+			foreach ( $zone->get_shipping_methods( true ) as $method ) {
+				if ( 'free_shipping' !== $method->id ) {
+					continue;
+				}
+				$requires = isset( $method->requires ) ? $method->requires : $method->get_option( 'requires' );
+				// Only thresholds count; "n/a" or coupon-only free shipping has no spend target.
+				if ( ! in_array( $requires, array( 'min_amount', 'either', 'both' ), true ) ) {
+					continue;
+				}
+				$amount = (float) ( isset( $method->min_amount ) ? $method->min_amount : $method->get_option( 'min_amount' ) );
+				if ( $amount > 0 && ( 0.0 === $threshold || $amount < $threshold ) ) {
+					$threshold = $amount;
+				}
+			}
+		}
+	}
+
+	if ( $threshold <= 0 ) {
+		$threshold = 80.0; // Matches the "Free … Shipping on orders $80+" banner.
+	}
+
+	return (float) $threshold;
+}
+
+/**
+ * How much more the customer must spend to unlock free shipping.
+ * Compared against the cart subtotal (items only, excl. shipping/tax).
+ * Returns 0 once the threshold is met.
+ *
+ * @return float
+ */
+function kjc_get_free_shipping_remaining() {
+	if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
+		return 0.0;
+	}
+	$remaining = kjc_get_free_shipping_threshold() - (float) WC()->cart->get_subtotal();
+	return $remaining > 0 ? $remaining : 0.0;
+}
+
+/**
+ * Product IDs to recommend in the cart's "You'll Also Love" row.
+ *
+ * Order of preference:
+ *   1. Cross-sells assigned to cart items (Product data → Linked Products →
+ *      Cross-sells) — WooCommerce's native "pairs well with" field.
+ *   2. Best-sellers (most units sold) to fill any remaining slots.
+ *   3. Newest products, as a final fallback for a store with no sales yet.
+ *
+ * Products already in the cart are always excluded.
+ *
+ * @param int $limit Maximum number of recommendations.
+ * @return int[]
+ */
+function kjc_get_cart_recommendations( $limit = 3 ) {
+	if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
+		return array();
+	}
+
+	$limit   = max( 1, (int) $limit );
+	$in_cart = array();
+	foreach ( WC()->cart->get_cart() as $cart_item ) {
+		$in_cart[] = (int) $cart_item['product_id'];
+	}
+
+	$ids = array();
+
+	// 1) Native cross-sells.
+	foreach ( WC()->cart->get_cross_sells() as $cross_id ) {
+		$cross_id = (int) $cross_id;
+		if ( in_array( $cross_id, $in_cart, true ) || in_array( $cross_id, $ids, true ) ) {
+			continue;
+		}
+		$product = wc_get_product( $cross_id );
+		if ( $product && $product->is_visible() && $product->is_in_stock() ) {
+			$ids[] = $cross_id;
+		}
+		if ( count( $ids ) >= $limit ) {
+			return array_slice( $ids, 0, $limit );
+		}
+	}
+
+	// 2) then 3) Top up with best-sellers, then newest.
+	$fill_queries = array(
+		array( 'orderby' => 'meta_value_num', 'meta_key' => 'total_sales', 'order' => 'DESC' ),
+		array( 'orderby' => 'date', 'order' => 'DESC' ),
+	);
+
+	foreach ( $fill_queries as $query_args ) {
+		if ( count( $ids ) >= $limit ) {
+			break;
+		}
+		$exclude  = array_merge( $in_cart, $ids );
+		$products = wc_get_products( array_merge( array(
+			'status'       => 'publish',
+			'limit'        => $limit + count( $exclude ), // grab extra so exclusions still leave enough
+			'stock_status' => 'instock',
+			'visibility'   => 'catalog',
+			'exclude'      => $exclude,
+			'return'       => 'ids',
+		), $query_args ) );
+
+		foreach ( $products as $pid ) {
+			$pid = (int) $pid;
+			if ( in_array( $pid, $in_cart, true ) || in_array( $pid, $ids, true ) ) {
+				continue;
+			}
+			$ids[] = $pid;
+			if ( count( $ids ) >= $limit ) {
+				break;
+			}
+		}
+	}
+
+	return array_slice( $ids, 0, $limit );
+}
+
+/**
+ * ─────────────────────────────────────────────────────────────────────────────
  * ORDER STATUS & EMAIL FIXES
  * ─────────────────────────────────────────────────────────────────────────────
  */
