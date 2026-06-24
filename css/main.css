@@ -722,9 +722,9 @@ body.page-template-page-homepage {
     flex-basis: 100%;
     margin: 2px 0 0;
     font-size: 13px;
-    color: var(--gold-light, #E8C96A);
+    color: #fff;
 }
-.footer-signup-msg strong { color: #fff; }
+.footer-signup-msg strong { color: #FF5A5A; }
 @media (max-width: 640px) {
     .footer-signup { flex-direction: column; align-items: stretch; }
     .footer-signup-form { max-width: none; }

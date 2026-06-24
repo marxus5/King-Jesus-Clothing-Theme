@@ -97,19 +97,19 @@
         }
       }
 
-      // Reveal the sticky 15% corner tab, unless the shopper dismissed it.
+      // Reveal the sticky 15% corner tab, unless dismissed this session.
       function showSticky() {
-        try { if (localStorage.getItem(STICKY_DISMISSED_KEY)) return; } catch (e) {}
+        try { if (sessionStorage.getItem(STICKY_DISMISSED_KEY)) return; } catch (e) {}
         const promo = document.getElementById('stickyPromo');
         if (promo) promo.classList.add('show');
       }
 
-      // Hide the sticky tab and remember the choice so it stays gone.
+      // Hide the sticky tab and remember the choice for this session.
       function dismissSticky(e) {
         if (e) { e.stopPropagation(); e.preventDefault(); }
         const promo = document.getElementById('stickyPromo');
         if (promo) promo.classList.remove('show');
-        try { localStorage.setItem(STICKY_DISMISSED_KEY, '1'); } catch (err) {}
+        try { sessionStorage.setItem(STICKY_DISMISSED_KEY, '1'); } catch (err) {}
       }
 
       // Try to init immediately, or wait for DOM
@@ -241,6 +241,11 @@
         // with requestAnimationFrame so it runs at most once per frame — keeps
         // scrolling smooth on mobile.
         const bannerH = 38;
+        // Don't hide the banner until the shopper has scrolled down a fair bit,
+        // and only react to deliberate scrolls (not tiny jitters) so the layout
+        // doesn't keep resizing on mobile.
+        const HIDE_AFTER = 160;   // px scrolled before the banner may hide
+        const SCROLL_DELTA = 12;  // ignore movements smaller than this
         let lastScroll = window.scrollY;
         let ticking = false;
 
@@ -260,13 +265,26 @@
                 navbar.classList.toggle('at-top', !solid);
             }
 
-            // Banner: hide on scroll-down, reveal on scroll-up.
-            if (y > lastScroll && y > bannerH) {
-                document.body.classList.add('banner-hidden');
-            } else if (y < lastScroll) {
+            // Always show the banner near the very top.
+            if (y <= bannerH) {
                 document.body.classList.remove('banner-hidden');
+                lastScroll = y;
+                ticking = false;
+                return;
             }
-            lastScroll = y;
+
+            // Otherwise only flip state on a deliberate scroll (>= SCROLL_DELTA),
+            // and only hide once we're past HIDE_AFTER. This stops the constant
+            // resize from small up/down movements.
+            const diff = y - lastScroll;
+            if (Math.abs(diff) >= SCROLL_DELTA) {
+                if (diff > 0 && y > HIDE_AFTER) {
+                    document.body.classList.add('banner-hidden');   // scrolling down
+                } else if (diff < 0) {
+                    document.body.classList.remove('banner-hidden'); // scrolling up
+                }
+                lastScroll = y;
+            }
             ticking = false;
         }
 
