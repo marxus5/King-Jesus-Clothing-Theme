@@ -498,6 +498,88 @@ function kjc_get_cart_recommendations( $limit = 3 ) {
 }
 
 /**
+ * Cart total for on-page display: items after discounts (+ fees), EXCLUDING
+ * shipping and tax. Keeps the cart's "Total" free of "calculated at checkout"
+ * estimates, so Subtotal − Coupon visibly equals Total. Shipping and tax are
+ * still charged — they're just finalised on the checkout page.
+ *
+ * @return float
+ */
+function kjc_get_cart_display_total() {
+	if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
+		return 0.0;
+	}
+	// get_cart_contents_total() = line totals AFTER coupons, excl. tax/shipping/fees.
+	return (float) WC()->cart->get_cart_contents_total() + (float) WC()->cart->get_fee_total();
+}
+
+/**
+ * Render the free-shipping progress bar (cart / product / shop / checkout).
+ *
+ * Shows how close the cart is to the free-shipping threshold, in three states:
+ * empty cart (teaser), partway (nudge) and reached (celebration). Outputs
+ * nothing if WooCommerce/cart is unavailable or no threshold is configured.
+ * Styles live in css/main.css (.kjc-shipbar).
+ *
+ * @param string $context Where it renders (cart|product|shop|checkout); becomes a
+ *                        modifier class and is passed to the disable filter.
+ */
+function kjc_render_free_shipping_bar( $context = '' ) {
+	if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
+		return;
+	}
+	// Let callers suppress the bar in a given context if needed.
+	if ( ! apply_filters( 'kjc_show_free_shipping_bar', true, $context ) ) {
+		return;
+	}
+
+	$threshold = kjc_get_free_shipping_threshold();
+	if ( $threshold <= 0 ) {
+		return;
+	}
+
+	$subtotal  = (float) WC()->cart->get_subtotal();
+	$remaining = max( 0.0, $threshold - $subtotal );
+	$reached   = $remaining <= 0;
+	$percent   = $reached ? 100 : min( 100, max( 4, ( $subtotal / $threshold ) * 100 ) );
+
+	if ( $reached ) {
+		$message = '🎉 You’ve unlocked <strong>FREE shipping!</strong>';
+	} elseif ( $subtotal <= 0 ) {
+		$message = 'Enjoy <strong>free shipping</strong> on orders over <strong>' . wc_price( $threshold ) . '</strong>!';
+	} else {
+		$message = 'Spend only <strong>' . wc_price( $remaining ) . '</strong> more to reach <strong>free shipping!</strong>';
+	}
+
+	$classes = 'kjc-shipbar';
+	if ( $reached ) {
+		$classes .= ' is-reached';
+	}
+	if ( $context ) {
+		$classes .= ' kjc-shipbar--' . sanitize_html_class( $context );
+	}
+
+	$truck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="1.8"/><circle cx="18.5" cy="18.5" r="1.8"/></svg>';
+	$check = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+	?>
+	<div class="<?php echo esc_attr( $classes ); ?>">
+		<p class="kjc-shipbar__msg"><?php echo wp_kses_post( $message ); ?></p>
+		<div class="kjc-shipbar__track">
+			<div class="kjc-shipbar__fill" style="width: <?php echo esc_attr( $percent ); ?>%;"></div>
+			<span class="kjc-shipbar__goal" aria-hidden="true"><?php echo $reached ? $check : $truck; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG ?></span>
+		</div>
+		<div class="kjc-shipbar__labels"><span>Free Shipping</span></div>
+	</div>
+	<?php
+}
+
+// Surface the free-shipping bar on product pages (above add-to-cart) and the
+// shop/archive grid. Cart and checkout call kjc_render_free_shipping_bar()
+// directly from their templates.
+add_action( 'woocommerce_before_add_to_cart_form', function () { kjc_render_free_shipping_bar( 'product' ); }, 5 );
+add_action( 'woocommerce_before_shop_loop', function () { kjc_render_free_shipping_bar( 'shop' ); }, 5 );
+
+/**
  * ─────────────────────────────────────────────────────────────────────────────
  * ORDER STATUS & EMAIL FIXES
  * ─────────────────────────────────────────────────────────────────────────────

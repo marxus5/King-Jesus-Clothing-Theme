@@ -17,13 +17,6 @@
 defined( 'ABSPATH' ) || exit;
 
 do_action( 'woocommerce_before_cart' );
-
-// ── Free-shipping meter data ────────────────────────────────────────────────
-$kjc_threshold = function_exists( 'kjc_get_free_shipping_threshold' ) ? kjc_get_free_shipping_threshold() : 0;
-$kjc_subtotal  = (float) WC()->cart->get_subtotal();
-$kjc_remaining = function_exists( 'kjc_get_free_shipping_remaining' ) ? kjc_get_free_shipping_remaining() : 0;
-$kjc_reached   = $kjc_remaining <= 0;
-$kjc_percent   = ( $kjc_threshold > 0 ) ? min( 100, max( 4, ( $kjc_subtotal / $kjc_threshold ) * 100 ) ) : 100;
 ?>
 
 <style>
@@ -56,73 +49,8 @@ $kjc_percent   = ( $kjc_threshold > 0 ) ? min( 100, max( 4, ( $kjc_subtotal / $k
     color: var(--kjc-ink);
 }
 
-/* ── Free-shipping meter ─────────────────────────────────────────────────── */
-.kjc-ship {
-    background: #fff;
-    border: 1px solid var(--kjc-line);
-    border-radius: 14px;
-    padding: 1.1rem 1.25rem 1.25rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-}
-.kjc-ship__msg {
-    margin: 0 0 0.85rem;
-    font-size: 0.98rem;
-    line-height: 1.45;
-    text-align: center;
-    color: var(--kjc-ink);
-}
-.kjc-ship__msg strong { color: var(--kjc-deep); font-weight: 800; white-space: nowrap; }
-.kjc-ship__msg .woocommerce-Price-amount { font-weight: 800; }
-
-.kjc-ship__track {
-    position: relative;
-    height: 9px;
-    border-radius: 999px;
-    background: #eee;
-    margin: 0 6px 0.85rem;
-}
-.kjc-ship__fill {
-    position: absolute;
-    inset: 0 auto 0 0;
-    border-radius: 999px;
-    background: var(--kjc-grad);
-    transition: width 0.5s ease;
-}
-.kjc-ship__goal {
-    position: absolute;
-    top: 50%;
-    right: -6px;
-    transform: translateY(-50%);
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: #fff;
-    border: 2px solid #ddd;
-    color: #bbb;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
-}
-.kjc-ship__goal svg { width: 15px; height: 15px; display: block; }
-.kjc-ship.is-reached .kjc-ship__goal {
-    background: var(--kjc-deep);
-    border-color: var(--kjc-deep);
-    color: #fff;
-}
-.kjc-ship__labels {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--kjc-muted);
-}
-.kjc-ship.is-reached .kjc-ship__labels { color: var(--kjc-deep); }
+/* Free-shipping bar styles live in css/main.css (.kjc-shipbar), shared with the
+   product, shop and checkout pages. */
 
 /* ── Item cards ──────────────────────────────────────────────────────────── */
 .kjc-cart__items { margin: 0 0 1.5rem; }
@@ -390,29 +318,8 @@ $kjc_percent   = ( $kjc_threshold > 0 ) ? min( 100, max( 4, ( $kjc_subtotal / $k
 
     <h1 class="kjc-cart__title">Your Cart</h1>
 
-    <!-- ── Free-shipping progress meter ── -->
-    <div class="kjc-ship<?php echo $kjc_reached ? ' is-reached' : ''; ?>">
-        <p class="kjc-ship__msg">
-            <?php if ( $kjc_reached ) : ?>
-                🎉 You’ve unlocked <strong>FREE shipping!</strong>
-            <?php else : ?>
-                Spend only <strong><?php echo wp_kses_post( wc_price( $kjc_remaining ) ); ?></strong> more to reach <strong>free shipping!</strong>
-            <?php endif; ?>
-        </p>
-        <div class="kjc-ship__track">
-            <div class="kjc-ship__fill" style="width: <?php echo esc_attr( $kjc_percent ); ?>%;"></div>
-            <span class="kjc-ship__goal" aria-hidden="true">
-                <?php if ( $kjc_reached ) : ?>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                <?php else : ?>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="1.8"/><circle cx="18.5" cy="18.5" r="1.8"/></svg>
-                <?php endif; ?>
-            </span>
-        </div>
-        <div class="kjc-ship__labels">
-            <span>Free Shipping</span>
-        </div>
-    </div>
+    <!-- ── Free-shipping progress bar (shared component, see functions.php) ── -->
+    <?php kjc_render_free_shipping_bar( 'cart' ); ?>
 
     <!-- ── Cart items ── -->
     <form class="woocommerce-cart-form" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">
@@ -559,7 +466,7 @@ $kjc_percent   = ( $kjc_threshold > 0 ) ? min( 100, max( 4, ( $kjc_subtotal / $k
 
         <div class="kjc-summary__row is-total">
             <span><?php esc_html_e( 'Total', 'woocommerce' ); ?></span>
-            <span><?php wc_cart_totals_order_total_html(); ?></span>
+            <span><?php echo wp_kses_post( wc_price( kjc_get_cart_display_total() ) ); ?></span>
         </div>
 
         <p class="kjc-summary__note"><?php esc_html_e( 'Shipping &amp; taxes calculated at checkout.', 'woocommerce' ); ?></p>
