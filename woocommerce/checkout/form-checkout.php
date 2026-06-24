@@ -118,9 +118,38 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 
 .custom-order-item {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    gap: 0.85rem;
     padding: 1rem 0;
     border-bottom: 1px solid #f3f4f6;
+}
+
+.custom-order-item-media {
+    flex: 0 0 auto;
+    width: 46px;
+    height: 58px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #f6f6f7;
+}
+
+.custom-order-item-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.custom-order-item-info {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.custom-order-item-price {
+    flex: 0 0 auto;
+    font-weight: 700;
+    white-space: nowrap;
+    margin-left: 0.5rem;
 }
 
 .custom-order-item-name {

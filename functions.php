@@ -143,11 +143,14 @@ function custom_checkout_order_review_html() {
         $_product = apply_filters( 'woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key );
         if ( $_product && $_product->exists() && $cart_item['quantity'] > 0 ) : ?>
         <div class="custom-order-item">
-            <div>
+            <div class="custom-order-item-media">
+                <?php echo $_product->get_image( 'woocommerce_thumbnail' ); ?>
+            </div>
+            <div class="custom-order-item-info">
                 <span class="custom-order-item-name"><?php echo wp_kses_post( $_product->get_name() ); ?></span>
                 <span class="custom-order-item-quantity">× <?php echo esc_html( $cart_item['quantity'] ); ?></span>
             </div>
-            <span><?php echo apply_filters( 'woocommerce_cart_item_subtotal', $cart->get_product_subtotal( $_product, $cart_item['quantity'] ), $cart_item, $cart_item_key ); ?></span>
+            <span class="custom-order-item-price"><?php echo apply_filters( 'woocommerce_cart_item_subtotal', $cart->get_product_subtotal( $_product, $cart_item['quantity'] ), $cart_item, $cart_item_key ); ?></span>
         </div>
     <?php endif; endforeach; ?>
 
@@ -267,6 +270,17 @@ function printshop_enqueue_quick_checkout_script() {
         true // Load in footer
     );
     
+    // Quantity stepper (− / +) on the single-product add-to-cart.
+    if ( is_product() ) {
+        wp_enqueue_script(
+            'kjc-qty-stepper',
+            get_template_directory_uri() . '/js/qty-stepper.js',
+            array(),
+            filemtime( get_template_directory() . '/js/qty-stepper.js' ),
+            true
+        );
+    }
+
     // Only enqueue Stripe.js on product pages
     if ( is_product() || is_checkout() ) {
         // Enqueue Stripe.js library from CDN

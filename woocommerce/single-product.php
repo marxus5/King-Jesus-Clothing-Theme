@@ -383,20 +383,63 @@ iframe[name^="__privateStripeFrame"] {
     gap: 1rem;
 }
 
-.custom-product-add-to-cart .quantity input.qty {
-    width: 80px;
-    padding: 0.5rem;
+/* Quantity stepper — same - / value / + control as the cart page. The buttons
+   are injected by js/qty-stepper.js, which wraps the .quantity in a .kjc-qty. */
+.custom-product-add-to-cart .kjc-qty {
+    display: inline-flex !important;   /* beat form.cart > :not(.variations) */
+    align-items: center;
+    gap: 0 !important;
+    width: max-content;
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+}
+.custom-product-add-to-cart .kjc-qty .quantity {
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+}
+.custom-product-add-to-cart .kjc-qty__btn {
+    width: 42px;
+    height: 46px;
+    flex: 0 0 auto;
+    border: none;
+    background: #fff;
+    color: #1f2937;
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, color 0.15s;
+}
+.custom-product-add-to-cart .kjc-qty__btn:hover { background: #7A0E1A; color: #fff; }
+.custom-product-add-to-cart .kjc-qty input.qty {
+    width: 52px;
+    height: 46px;
     text-align: center;
-    border: 2px solid #e5e7eb;
-    border-radius: 10px;
-    font-size: 1.1rem;
+    border: none;
+    border-left: 1px solid #ededed;
+    border-right: 1px solid #ededed;
+    border-radius: 0;
+    padding: 0;
+    font-size: 1.05rem;
     font-weight: 700;
     color: #1f2937;
+    background: #fff;
+    -moz-appearance: textfield;
+    appearance: textfield;
 }
-
-.custom-product-add-to-cart .quantity input.qty:focus {
-    outline: none;
-    border-color: #7A0E1A;
+.custom-product-add-to-cart .kjc-qty input.qty:focus { outline: none; }
+.custom-product-add-to-cart .kjc-qty input.qty::-webkit-outer-spin-button,
+.custom-product-add-to-cart .kjc-qty input.qty::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+/* Fallback before the stepper JS runs (and if it doesn't). */
+.custom-product-add-to-cart .quantity input.qty {
+    text-align: center;
+    font-weight: 700;
+    color: #1f2937;
 }
 
 .custom-product-add-to-cart .single_add_to_cart_button {
