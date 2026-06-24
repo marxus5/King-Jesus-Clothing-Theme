@@ -73,27 +73,43 @@
         // Define modal functions early so they're available when elements load
       const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbz-uCZoMRAk0Y3asGnqiwpu3CxRy0PzIvg30eZzT6OfVaJH_VTEk7sPvnZKnQ6_r-Ba/exec';
       const MODAL_STORAGE_KEY = 'kj-modal-shown-session';
+      const STICKY_DISMISSED_KEY = 'kj-sticky-dismissed';
 
       function isCheckoutPage() {
         return window.location.pathname.includes('/checkout') || window.location.pathname.includes('/cart');
       }
 
       function initModalSystem() {
-
-        const promo = document.getElementById('stickyPromo');
         const modal = document.getElementById('modalOverlay');
 
-
-        if (promo) {
-          promo.classList.add('show');
-        }
-
-        if (!sessionStorage.getItem(MODAL_STORAGE_KEY) && modal) {
+        if (sessionStorage.getItem(MODAL_STORAGE_KEY)) {
+          // Popup already appeared earlier this session — the sticky tab can
+          // show right away (unless the shopper dismissed it).
+          showSticky();
+        } else if (modal) {
+          // First view this session: reveal the popup after a delay, and only
+          // then bring in the sticky 15% tab.
           setTimeout(() => {
             modal.classList.add('open');
             sessionStorage.setItem(MODAL_STORAGE_KEY, 'true');
+            showSticky();
           }, 10000);
         }
+      }
+
+      // Reveal the sticky 15% corner tab, unless the shopper dismissed it.
+      function showSticky() {
+        try { if (localStorage.getItem(STICKY_DISMISSED_KEY)) return; } catch (e) {}
+        const promo = document.getElementById('stickyPromo');
+        if (promo) promo.classList.add('show');
+      }
+
+      // Hide the sticky tab and remember the choice so it stays gone.
+      function dismissSticky(e) {
+        if (e) { e.stopPropagation(); e.preventDefault(); }
+        const promo = document.getElementById('stickyPromo');
+        if (promo) promo.classList.remove('show');
+        try { localStorage.setItem(STICKY_DISMISSED_KEY, '1'); } catch (err) {}
       }
 
       // Try to init immediately, or wait for DOM
@@ -149,8 +165,8 @@
       function closeModal() {
         const modal = document.getElementById('modalOverlay');
         if (modal) modal.classList.remove('open');
-        const promo = document.getElementById('stickyPromo');
-        if (promo) setTimeout(() => promo.classList.add('show'), 600);
+        // Bring the sticky tab back (respects a prior dismissal).
+        setTimeout(showSticky, 600);
       }
 
       let kjcModalSubmitting = false;
