@@ -194,37 +194,28 @@ defined( 'ABSPATH' ) || exit;
         
         <div class="custom-products-grid">
             <?php
-            // Get featured or recent products
-            $args = array(
-                'post_type' => 'product',
-                'posts_per_page' => 3,
-                'orderby' => 'rand', // Random products
-                'post_status' => 'publish',
-            );
-            
-            $products = new WP_Query( $args );
-            
-            if ( $products->have_posts() ) :
-                while ( $products->have_posts() ) : $products->the_post();
-                    global $product;
+            // Best-sellers (falls back to newest) via the shared cart helper.
+            $suggested = function_exists( 'kjc_get_cart_recommendations' ) ? kjc_get_cart_recommendations( 3 ) : array();
+
+            if ( ! empty( $suggested ) ) :
+                foreach ( $suggested as $suggested_id ) :
+                    $suggested_product = wc_get_product( $suggested_id );
+                    if ( ! $suggested_product ) {
+                        continue;
+                    }
                     ?>
-                    <a href="<?php echo esc_url( get_permalink() ); ?>" class="custom-product-card">
+                    <a href="<?php echo esc_url( get_permalink( $suggested_id ) ); ?>" class="custom-product-card">
                         <div class="custom-product-image">
-                            <?php if ( has_post_thumbnail() ) : ?>
-                                <?php the_post_thumbnail('full'); ?>
-                            <?php else : ?>
-                                👕
-                            <?php endif; ?>
+                            <?php echo $suggested_product->get_image( 'woocommerce_thumbnail' ); ?>
                         </div>
                         <div class="custom-product-content">
-                            <h3 class="custom-product-title"><?php the_title(); ?></h3>
-                            <p class="custom-product-price"><?php echo $product->get_price_html(); ?></p>
+                            <h3 class="custom-product-title"><?php echo esc_html( $suggested_product->get_name() ); ?></h3>
+                            <p class="custom-product-price"><?php echo wp_kses_post( $suggested_product->get_price_html() ); ?></p>
                             <span class="custom-view-product">View Product</span>
                         </div>
                     </a>
                     <?php
-                endwhile;
-                wp_reset_postdata();
+                endforeach;
             else :
                 // Fallback message if no products exist
                 ?>
