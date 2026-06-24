@@ -1,5 +1,19 @@
 
     <footer class="footer">
+
+    <!-- 15% OFF EMAIL SIGN-UP (uses the same welcome-coupon flow as the popup) -->
+    <div class="footer-signup">
+      <div class="footer-signup-text">
+        <h4>Get <span>15% Off</span> Your First Order</h4>
+        <p>Join the King Jesus Clothing family for a 15% welcome discount, early access to new drops, and updates.</p>
+      </div>
+      <form class="footer-signup-form" id="footerSignupForm" onsubmit="return submitFooterSignup(event)">
+        <input type="email" id="footerSignupEmail" class="footer-signup-input" placeholder="Your email address" autocomplete="email" required>
+        <button type="submit" class="footer-signup-btn" id="footerSignupBtn">Claim 15% Off</button>
+      </form>
+      <p class="footer-signup-msg" id="footerSignupMsg" hidden></p>
+    </div>
+
     <div class="footer-grid">
       <div>
         <div class="footer-brand">King Jesus Clothing</div>
@@ -50,13 +64,49 @@
       </div>
     </div>
 
-    <!-- STICKY 15% TRIANGLE — bottom left corner (on all pages except checkout) -->
-    <div class="sticky-promo" id="stickyPromo" onclick="openModal()">
-      <div class="sticky-triangle"><div class="sticky-triangle-text">15%<br>OFF</div></div>
+    <!-- STICKY 15% FOLDED CORNER — bottom-left; revealed after the popup shows -->
+    <div class="sticky-promo" id="stickyPromo" onclick="openModal()" role="button" tabindex="0" aria-label="Get 15% off your first order">
+      <div class="sticky-fold"></div>
+      <span class="sticky-fold-text">15%<br>OFF</span>
+      <button type="button" class="sticky-dismiss" onclick="dismissSticky(event)" aria-label="Dismiss 15% off tab">&times;</button>
     </div>
 
     <script>
-      // Note: All modal functions are defined in header.php for global scope and early availability
+      // Modal/sticky functions live in header.php (global scope). The footer
+      // sign-up reuses the same Google-Sheet + welcome-coupon helpers.
+      function submitFooterSignup(e) {
+        if (e) { e.preventDefault(); }
+        var input = document.getElementById('footerSignupEmail');
+        var btn   = document.getElementById('footerSignupBtn');
+        var msg   = document.getElementById('footerSignupMsg');
+        var email = input ? input.value.trim() : '';
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          if (msg) { msg.hidden = false; msg.style.color = '#ffb3b3'; msg.textContent = 'Please enter a valid email address.'; }
+          if (input) { input.focus(); }
+          return false;
+        }
+
+        if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+
+        // Same flow as the popup: log the email and stash the welcome coupon so
+        // it auto-applies at checkout (including express/Apple Pay).
+        if (typeof sendToGoogleSheet === 'function') {
+          sendToGoogleSheet({ email: email, source: 'footer-signup' });
+        }
+        if (typeof rememberWelcomeCoupon === 'function') {
+          rememberWelcomeCoupon();
+        }
+
+        if (msg) {
+          msg.hidden = false;
+          msg.style.color = '';
+          msg.innerHTML = '🙏 You\'re in! Code <strong>JesusIsKing15</strong> is saved to your cart — it applies at checkout.';
+        }
+        if (input) { input.value = ''; }
+        if (btn) { btn.textContent = 'Claimed ✓'; }
+        return false;
+      }
     </script>
 
     <?php wp_footer();?>

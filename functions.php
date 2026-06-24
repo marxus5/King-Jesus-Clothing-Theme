@@ -559,6 +559,7 @@ function kjc_render_free_shipping_bar( $context = '' ) {
 		$classes .= ' kjc-shipbar--' . sanitize_html_class( $context );
 	}
 
+	$shop_url  = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop' );
 	$truck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="1.8"/><circle cx="18.5" cy="18.5" r="1.8"/></svg>';
 	$check = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
 	?>
@@ -568,16 +569,16 @@ function kjc_render_free_shipping_bar( $context = '' ) {
 			<div class="kjc-shipbar__fill" style="width: <?php echo esc_attr( $percent ); ?>%;"></div>
 			<span class="kjc-shipbar__goal" aria-hidden="true"><?php echo $reached ? $check : $truck; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG ?></span>
 		</div>
-		<div class="kjc-shipbar__labels"><span>Free Shipping</span></div>
+		<div class="kjc-shipbar__labels">
+			<a class="kjc-shipbar__continue" href="<?php echo esc_url( $shop_url ); ?>">&larr; Continue shopping</a>
+			<span class="kjc-shipbar__tag">Free Shipping</span>
+		</div>
 	</div>
 	<?php
 }
 
-// Surface the free-shipping bar on product pages (above add-to-cart) and the
-// shop/archive grid. Cart and checkout call kjc_render_free_shipping_bar()
-// directly from their templates.
-add_action( 'woocommerce_before_add_to_cart_form', function () { kjc_render_free_shipping_bar( 'product' ); }, 5 );
-add_action( 'woocommerce_before_shop_loop', function () { kjc_render_free_shipping_bar( 'shop' ); }, 5 );
+// The free-shipping bar shows on the cart and checkout only; those templates
+// call kjc_render_free_shipping_bar() directly.
 
 /**
  * ─────────────────────────────────────────────────────────────────────────────
@@ -988,6 +989,33 @@ function kjc_maybe_auto_apply_coupon() {
 }
 add_action( 'woocommerce_cart_loaded_from_session', 'kjc_maybe_auto_apply_coupon', 20 );
 add_action( 'woocommerce_add_to_cart', 'kjc_maybe_auto_apply_coupon', 20 );
+
+/**
+ * Make a manual coupon removal stick.
+ *
+ * Without this, removing the welcome coupon on the cart/checkout just gets it
+ * re-applied on the next load by kjc_maybe_auto_apply_coupon() (the 30-day
+ * "pending" cookie is still set). When the shopper removes the welcome code we
+ * record that choice — session veto + clear the cookie — so it stays gone until
+ * they deliberately claim it again (popup / footer / checkout opt-in).
+ */
+add_action( 'woocommerce_removed_coupon', 'kjc_handle_removed_welcome_coupon' );
+function kjc_handle_removed_welcome_coupon( $removed_code ) {
+	if ( wc_format_coupon_code( (string) $removed_code ) !== wc_format_coupon_code( KJC_COUPON_CODE ) ) {
+		return;
+	}
+	if ( function_exists( 'WC' ) && WC()->session ) {
+		// 'no' makes kjc_wants_welcome_coupon() return false for this session.
+		WC()->session->set( 'kjc_checkout_optin', 'no' );
+		WC()->session->set( 'kjc_pending_coupon', 'no' );
+	}
+	// Clear the persistent claim cookie so a fresh visit doesn't re-add it.
+	// Path '/' matches how the front-end (header.php) sets the cookie.
+	if ( ! headers_sent() ) {
+		setcookie( 'kjc_pending_coupon', '', time() - 3600, '/' );
+	}
+	unset( $_COOKIE['kjc_pending_coupon'] ); // reflect immediately within this request
+}
 
 /**
  * Popup "Claim 15% off": remember the discount for this shopper and apply it
