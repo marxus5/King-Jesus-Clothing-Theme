@@ -653,3 +653,238 @@ add_filter( 'doing_it_wrong_trigger_error', function( $trigger, $function_name )
     }
     return $trigger;
 }, 10, 2 );
+
+
+/**
+ * ─────────────────────────────────────────────────────────────────────────────
+ * WELCOME DISCOUNT + EMAIL CAPTURE
+ * ─────────────────────────────────────────────────────────────────────────────
+ *
+ * Three connected pieces:
+ *
+ *   1. AUTO-APPLY  — When a shopper claims the popup discount (or ticks the
+ *      checkout opt-in box), the welcome coupon is saved to their cart/session
+ *      so it is already in the cart total before checkout — including express
+ *      (Apple Pay / Google Pay) checkouts, which have no coupon field.
+ *
+ *   2. CHECKOUT OPT-IN — A pre-checked checkbox at the very top of checkout
+ *      applies the same coupon and, once the order is placed, sends the buyer's
+ *      EMAIL ONLY to the Google Sheet mailing list (phone is collected only via
+ *      the manual popup sign-up).
+ *
+ *   3. SERVER-SIDE SHEET POST — Capture runs on the order, so it works for
+ *      express checkout too (there is no front-end form submit to hook into).
+ *
+ * NOTE: The discount only does something if a WooCommerce coupon with the code
+ *       below actually exists (WooCommerce → Marketing → Coupons). If it has
+ *       not been created yet, nothing breaks — the code simply has no effect.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+
+if ( ! defined( 'KJC_COUPON_CODE' ) ) {
+    define( 'KJC_COUPON_CODE', 'JesusIsKing15' );
+}
+if ( ! defined( 'KJC_SHEET_URL' ) ) {
+    define( 'KJC_SHEET_URL', 'https://script.google.com/macros/s/AKfycbz-uCZoMRAk0Y3asGnqiwpu3CxRy0PzIvg30eZzT6OfVaJH_VTEk7sPvnZKnQ6_r-Ba/exec' );
+}
+
+/**
+ * Apply the welcome coupon to the cart — but only if it really exists as a
+ * WooCommerce coupon. This avoids a "coupon does not exist" error notice when
+ * the code has not been set up in the store yet.
+ */
+function kjc_apply_welcome_coupon() {
+    if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
+        return;
+    }
+    $code = wc_format_coupon_code( KJC_COUPON_CODE );
+    if ( ! $code || WC()->cart->has_discount( $code ) ) {
+        return;
+    }
+    $coupon = new WC_Coupon( $code );
+    if ( ! $coupon->get_id() ) {
+        return; // Coupon not created in WooCommerce — do nothing.
+    }
+    WC()->cart->apply_coupon( $code );
+}
+
+/**
+ * Should the welcome discount be on the cart for this shopper?
+ * True when they claimed it via the popup (cookie / session) or ticked the
+ * checkout opt-in box. An explicit untick at checkout wins for the session.
+ */
+function kjc_wants_welcome_coupon() {
+    if ( function_exists( 'WC' ) && WC()->session && 'no' === WC()->session->get( 'kjc_checkout_optin' ) ) {
+        return false;
+    }
+    if ( isset( $_COOKIE['kjc_pending_coupon'] ) && '1' === $_COOKIE['kjc_pending_coupon'] ) {
+        return true;
+    }
+    if ( function_exists( 'WC' ) && WC()->session ) {
+        if ( 'yes' === WC()->session->get( 'kjc_pending_coupon' ) ) {
+            return true;
+        }
+        if ( 'yes' === WC()->session->get( 'kjc_checkout_optin' ) ) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Auto-apply the welcome coupon whenever the cart is loaded or an item is
+ * added, so it is baked into the total before an express payment sheet opens.
+ */
+function kjc_maybe_auto_apply_coupon() {
+    if ( is_admin() && ! wp_doing_ajax() ) {
+        return;
+    }
+    if ( ! function_exists( 'WC' ) || ! WC()->cart || WC()->cart->is_empty() ) {
+        return;
+    }
+    if ( ! kjc_wants_welcome_coupon() ) {
+        return;
+    }
+    kjc_apply_welcome_coupon();
+}
+add_action( 'woocommerce_cart_loaded_from_session', 'kjc_maybe_auto_apply_coupon', 20 );
+add_action( 'woocommerce_add_to_cart', 'kjc_maybe_auto_apply_coupon', 20 );
+
+/**
+ * Popup "Claim 15% off": remember the discount for this shopper and apply it
+ * now if they already have items in the cart.
+ */
+add_action( 'wp_ajax_kjc_apply_coupon', 'kjc_ajax_apply_coupon' );
+add_action( 'wp_ajax_nopriv_kjc_apply_coupon', 'kjc_ajax_apply_coupon' );
+function kjc_ajax_apply_coupon() {
+    check_ajax_referer( 'kjc_coupon', 'nonce' );
+    if ( function_exists( 'WC' ) && WC()->session ) {
+        WC()->session->set( 'kjc_pending_coupon', 'yes' );
+        // A fresh popup claim re-enables the discount even if it was unticked.
+        WC()->session->set( 'kjc_checkout_optin', null );
+    }
+    kjc_apply_welcome_coupon();
+    wp_send_json_success();
+}
+
+/**
+ * Checkout opt-in checkbox toggled: apply or remove the coupon and remember the
+ * choice so the email can be captured after the order is placed.
+ */
+add_action( 'wp_ajax_kjc_checkout_optin', 'kjc_ajax_checkout_optin' );
+add_action( 'wp_ajax_nopriv_kjc_checkout_optin', 'kjc_ajax_checkout_optin' );
+function kjc_ajax_checkout_optin() {
+    check_ajax_referer( 'kjc_coupon', 'nonce' );
+    $optin = isset( $_POST['optin'] ) && 'yes' === $_POST['optin'];
+
+    if ( function_exists( 'WC' ) && WC()->session ) {
+        WC()->session->set( 'kjc_checkout_optin', $optin ? 'yes' : 'no' );
+    }
+    if ( function_exists( 'WC' ) && WC()->cart ) {
+        if ( $optin ) {
+            kjc_apply_welcome_coupon();
+        } else {
+            $code = wc_format_coupon_code( KJC_COUPON_CODE );
+            if ( $code && WC()->cart->has_discount( $code ) ) {
+                WC()->cart->remove_coupon( $code );
+            }
+        }
+    }
+    wp_send_json_success();
+}
+
+/**
+ * Pre-checked opt-in checkbox at the very top of checkout, just above the
+ * billing details. On mobile the customer-details column stacks first, so this
+ * is the first thing the shopper sees.
+ */
+add_action( 'woocommerce_checkout_before_customer_details', 'kjc_render_checkout_optin' );
+function kjc_render_checkout_optin() {
+    // Pre-checked by default; respect an earlier untick this session.
+    $checked = true;
+    if ( function_exists( 'WC' ) && WC()->session && 'no' === WC()->session->get( 'kjc_checkout_optin' ) ) {
+        $checked = false;
+    }
+    ?>
+    <div class="kjc-checkout-optin">
+        <label class="kjc-optin-label">
+            <input type="checkbox" id="kjc_optin" name="kjc_optin" value="yes" <?php checked( $checked ); ?>>
+            <span>Email me exclusive offers &amp; apply my <strong>15% discount</strong></span>
+        </label>
+        <p class="kjc-optin-note">
+            By checking this box you agree to receive marketing emails from King Jesus Clothing. You can unsubscribe at any time.
+        </p>
+    </div>
+    <?php
+}
+
+/**
+ * After an order is placed, if the shopper opted in (and did not already sign
+ * up through the popup), send their email to the Google Sheet mailing list.
+ * Hooked for both classic checkout and the Store API (blocks / express), so it
+ * captures express (Apple/Google Pay) orders too. Email only.
+ */
+add_action( 'woocommerce_checkout_order_processed', 'kjc_capture_checkout_optin_email', 20, 1 );
+add_action( 'woocommerce_store_api_checkout_order_processed', 'kjc_capture_checkout_optin_email', 20, 1 );
+function kjc_capture_checkout_optin_email( $order ) {
+    if ( ! $order instanceof WC_Order ) {
+        $order = wc_get_order( $order );
+    }
+    if ( ! $order || $order->get_meta( '_kjc_optin_sent' ) ) {
+        return;
+    }
+
+    // Determine opt-in. Classic checkout posts the checkbox value (absent =
+    // unchecked); express / Store API has no form, so fall back to the session
+    // flag, treating "unknown" as opted-in because the box is pre-checked.
+    $is_classic_submit = isset( $_POST['woocommerce-process-checkout-nonce'] ) || isset( $_POST['billing_email'] );
+    if ( isset( $_POST['kjc_optin'] ) ) {
+        $opted_in = ( 'yes' === sanitize_text_field( wp_unslash( $_POST['kjc_optin'] ) ) );
+    } elseif ( $is_classic_submit ) {
+        $opted_in = false; // Classic submit with the box unchecked.
+    } else {
+        $flag     = ( function_exists( 'WC' ) && WC()->session ) ? WC()->session->get( 'kjc_checkout_optin' ) : '';
+        $opted_in = ( 'no' !== $flag );
+    }
+    if ( ! $opted_in ) {
+        return;
+    }
+
+    // If they already signed up through the popup, their details (incl. phone)
+    // were captured there — skip to avoid a duplicate checkout-only entry.
+    if ( isset( $_COOKIE['kjc_pending_coupon'] ) && '1' === $_COOKIE['kjc_pending_coupon'] ) {
+        return;
+    }
+
+    $email = $order->get_billing_email();
+    if ( ! $email ) {
+        return;
+    }
+
+    kjc_post_to_sheet( array(
+        'email'  => $email,
+        'source' => 'checkout-optin',
+    ) );
+
+    $order->update_meta_data( '_kjc_optin_sent', 'yes' );
+    $order->save();
+}
+
+/**
+ * Fire-and-forget POST to the Google Sheet web app. Non-blocking so it never
+ * holds up order processing.
+ */
+function kjc_post_to_sheet( array $payload ) {
+    if ( ! defined( 'KJC_SHEET_URL' ) || ! KJC_SHEET_URL ) {
+        return;
+    }
+    if ( empty( $payload['timestamp'] ) ) {
+        $payload['timestamp'] = gmdate( 'c' );
+    }
+    wp_remote_post( KJC_SHEET_URL, array(
+        'timeout'  => 8,
+        'blocking' => false,
+        'headers'  => array( 'Content-Type' => 'application/json' ),
+        'body'     => wp_json_encode( $payload ),
+    ) );
+}

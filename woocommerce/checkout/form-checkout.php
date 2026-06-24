@@ -280,6 +280,45 @@ background: linear-gradient(135deg, #f34040 0%, #830b15 100%);
     text-align: center;
 }
 
+/* Opt-in checkbox — sits at the top of checkout (above billing). */
+.kjc-checkout-optin {
+    background: #fff7f7;
+    border: 2px solid #f3d6d6;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.kjc-optin-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin: 0;
+    font-weight: 600;
+    color: #1f2937;
+    cursor: pointer;
+}
+
+.kjc-optin-label input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-top: 0.15rem;
+    flex: 0 0 auto;
+    accent-color: #7A0E1A;
+    cursor: pointer;
+}
+
+.kjc-optin-label strong {
+    color: #7A0E1A;
+}
+
+.kjc-optin-note {
+    margin: 0.5rem 0 0 1.85rem;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: #6b7280;
+}
+
 @media (max-width: 968px) {
     .custom-checkout-grid {
         grid-template-columns: 1fr;
@@ -505,6 +544,33 @@ jQuery(document).ready(function($) {
             $(document.body).trigger('update_checkout');
         }, 600);
     });
+
+    // Opt-in checkbox: apply/remove the 15% coupon server-side (so it also
+    // flows into express Apple/Google Pay totals), then refresh the checkout.
+    function kjcSyncOptin() {
+        var box = document.getElementById('kjc_optin');
+        if (!box || !window.kjcData) return;
+        var body = new URLSearchParams({
+            action: 'kjc_checkout_optin',
+            nonce:  window.kjcData.nonce,
+            optin:  box.checked ? 'yes' : 'no'
+        });
+        fetch(window.kjcData.ajaxUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: body,
+            credentials: 'same-origin'
+        }).then(function() {
+            $(document.body).trigger('update_checkout');
+        }).catch(function() {});
+    }
+    $(document).on('change', '#kjc_optin', kjcSyncOptin);
+
+    // Pre-checked by default → make sure the coupon is applied on first load.
+    var kjcOptinBox = document.getElementById('kjc_optin');
+    if (kjcOptinBox && kjcOptinBox.checked) {
+        kjcSyncOptin();
+    }
 
 
     // Fix navOverlay if present elsewhere on page
