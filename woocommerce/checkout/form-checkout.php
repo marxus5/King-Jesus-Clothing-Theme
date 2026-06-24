@@ -428,6 +428,8 @@ background: linear-gradient(135deg, #f34040 0%, #830b15 100%);
     <a href="cart" class="custom-back-to-cart">Back to Cart</a>
     <h1 class="custom-checkout-title">Checkout</h1>
 
+    <?php if ( function_exists( 'kjc_render_free_shipping_bar' ) ) { kjc_render_free_shipping_bar( 'checkout' ); } ?>
+
     <form name="checkout" method="post" class="checkout woocommerce-checkout" action="<?php echo esc_url( wc_get_checkout_url() ); ?>" enctype="multipart/form-data">
 
         <div class="custom-checkout-grid">
