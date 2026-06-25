@@ -116,6 +116,13 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
     color: #1f2937;
 }
 
+/* Order summary relocated to the top of the checkout (below the opt-in).
+   It sits in the scrolling details column, so don't let it stick. */
+.custom-order-summary-top {
+    position: static;
+    margin-bottom: 2rem;
+}
+
 .custom-order-item {
     display: flex;
     align-items: center;
@@ -470,6 +477,16 @@ background: linear-gradient(135deg, #f34040 0%, #830b15 100%);
 
                     <?php do_action( 'woocommerce_checkout_before_customer_details' ); ?>
 
+                    <!-- Order summary at the top, right below the email opt-in.
+                         .custom-order-review-inner is a WooCommerce AJAX fragment
+                         (registered in functions.php) so it refreshes on coupon /
+                         address / shipping changes wherever it lives in the DOM. -->
+                    <div class="custom-order-review custom-order-summary-top">
+                        <div class="custom-order-review-inner">
+                            <?php echo custom_checkout_order_review_html(); ?>
+                        </div>
+                    </div>
+
                     <!-- Billing Details -->
                     <div class="custom-checkout-section">
                         <h3>Billing Details</h3>
@@ -529,19 +546,9 @@ background: linear-gradient(135deg, #f34040 0%, #830b15 100%);
                 <?php endif; ?>
             </div>
 
-            <!-- Right Column: Order Review -->
+            <!-- Right Column: Payment (order summary now lives at the top) -->
             <div class="custom-checkout-right">
                 <div class="custom-order-review">
-
-                    <!--
-                        .custom-order-review-inner is registered as a WooCommerce AJAX fragment
-                        in functions.php via woocommerce_update_order_review_fragments.
-                        WooCommerce replaces this div automatically whenever the checkout
-                        recalculates (coupon apply/remove, address entry, shipping change, etc.)
-                    -->
-                    <div class="custom-order-review-inner">
-                        <?php echo custom_checkout_order_review_html(); ?>
-                    </div>
 
                     <!-- Payment Methods — WooCommerce manages its own fragment updates here -->
                     <div class="custom-payment-methods">
