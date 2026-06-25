@@ -372,33 +372,49 @@ iframe[name^="__privateStripeFrame"] {
 /* Override WC quantity + button */
 .custom-product-add-to-cart form.cart {
     display: flex;
-    flex-direction: column;
+    flex-flow: row wrap;
+    align-items: center;
     gap: 1rem;
     width: 100%;
 }
 
-.custom-product-add-to-cart form.cart > :not(.variations) {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+/* Variation dropdowns (size, etc.) take their own full-width row above. */
+.custom-product-add-to-cart form.cart > .variations {
+    flex: 1 1 100%;
+    width: 100%;
 }
 
-/* Stack the layout: variation info ("Coffee-M") above the quantity, the quantity
-   above the Add to Cart button, with room so they don't butt together. */
-.custom-product-add-to-cart .single_variation_wrap,
-.custom-product-add-to-cart .woocommerce-variation-add-to-cart {
+/* Quantity + Add to Cart sit on one row (simple products: direct children of
+   form.cart; variable products: inside .woocommerce-variation-add-to-cart). */
+.custom-product-add-to-cart form.cart > .quantity,
+.custom-product-add-to-cart form.cart > .kjc-qty {
+    flex: 0 0 auto;
+}
+
+/* Variation info ("Coffee-M") / price stays full-width above; the quantity and
+   Add to Cart button share the row below it. */
+.custom-product-add-to-cart .single_variation_wrap {
     display: flex !important;
     flex-direction: column !important;
     align-items: stretch !important;
     gap: 1.1rem !important;
+    flex: 1 1 100% !important;
+    width: 100%;
+}
+.custom-product-add-to-cart .woocommerce-variation-add-to-cart {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 1rem !important;
 }
 
-/* Quantity stepper — same - / value / + control as the cart, now full width to
-   match the Add to Cart button and a touch thinner. Buttons are injected by
+/* Quantity stepper — same - / value / + control as the cart: compact, sits to
+   the left of the Add to Cart button. Buttons are injected by
    js/qty-stepper.js, which wraps the .quantity in a .kjc-qty. */
 .custom-product-add-to-cart .kjc-qty {
-    display: flex !important;   /* beat form.cart > :not(.variations) */
-    width: 100%;
+    display: flex !important;
+    flex: 0 0 auto;
+    width: auto;
     align-items: stretch;
     gap: 0 !important;
     border: 1px solid #d9d9d9;
@@ -408,13 +424,13 @@ iframe[name^="__privateStripeFrame"] {
 }
 .custom-product-add-to-cart .kjc-qty .quantity {
     margin: 0;
-    flex: 1 1 auto;
+    flex: 0 0 auto;
     min-width: 0;
     display: flex;
     align-items: stretch;
 }
 .custom-product-add-to-cart .kjc-qty__btn {
-    width: 48px;
+    width: 38px;
     height: 40px;
     flex: 0 0 auto;
     border: none;
@@ -430,8 +446,8 @@ iframe[name^="__privateStripeFrame"] {
 }
 .custom-product-add-to-cart .kjc-qty__btn:hover { background: #7A0E1A; color: #fff; }
 .custom-product-add-to-cart .kjc-qty input.qty {
-    flex: 1 1 auto;
-    width: 100%;
+    flex: 0 0 auto;
+    width: 44px;
     min-width: 0;
     height: 40px;
     text-align: center;
@@ -456,11 +472,9 @@ iframe[name^="__privateStripeFrame"] {
     font-weight: 700;
     color: #1f2937;
 }
-/* Make the Add to Cart button span the full width under the quantity. */
-.custom-product-add-to-cart .single_add_to_cart_button { width: 100%; }
 
 .custom-product-add-to-cart .single_add_to_cart_button {
-    flex: 1;
+    flex: 1 1 auto;
     padding: 0.5rem 2rem;
     background: #252525;
     color: white;

@@ -267,10 +267,6 @@ if ( empty( $product ) || ! $product->is_visible() ) {
 
         <div class="custom-product-price">
             <?php echo $product->get_price_html(); ?>
-            <?php
-            // Add to cart button
-            woocommerce_template_loop_add_to_cart( array( 'quantity' => 1 ) );
-            ?>
         </div>
 
     </div>
