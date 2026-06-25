@@ -514,6 +514,19 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.kjc-qty input.qty').forEach(function (input) {
         input.addEventListener('change', submitUpdate);
     });
+
+    // Coupon "[Remove]" link: WooCommerce removes it via AJAX, but that updates
+    // its own fragments — not this custom totals box — so the coupon line would
+    // linger until a reload. Intercept in the capture phase to skip WC's AJAX
+    // and do a full navigation to the remove URL instead, refreshing the page.
+    document.addEventListener('click', function (e) {
+        var link = e.target.closest('.woocommerce-remove-coupon');
+        if (!link) { return; }
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        var href = link.getAttribute('href');
+        window.location.href = href ? href : window.location.href;
+    }, true);
 });
 </script>
 

@@ -727,5 +727,7 @@ body.page-template-page-homepage {
 .footer-signup-msg strong { color: #FF5A5A; }
 @media (max-width: 640px) {
     .footer-signup { flex-direction: column; align-items: stretch; }
-    .footer-signup-form { max-width: none; }
+    /* In the column layout the 320px flex-basis would become a HEIGHT — reset it
+       so the input/button keep their natural height instead of ballooning. */
+    .footer-signup-form { flex: 0 0 auto; max-width: none; width: 100%; }
 }
