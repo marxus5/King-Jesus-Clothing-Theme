@@ -209,13 +209,13 @@ body:not(.page-template-page-homepage) .navbar .hamburger span { background: var
     position: fixed;
     bottom: 0;
     left: 0;
-    width: 116px;
-    height: 116px;
+    width: 76px;
+    height: 76px;
     z-index: 500;
     cursor: pointer;
     opacity: 0;
     pointer-events: none;
-    transform: translate(-10px, 10px);
+    transform: translate(-8px, 8px);
     transition: opacity 0.35s ease, transform 0.35s ease;
     filter: drop-shadow(3px -3px 6px rgba(0,0,0,0.28));
 }
@@ -231,22 +231,24 @@ body:not(.page-template-page-homepage) .navbar .hamburger span { background: var
 }
 .sticky-fold-text {
     position: absolute;
-    left: 12px;
-    bottom: 11px;
-    width: 62px;
+    left: 8px;
+    bottom: 7px;
+    width: 42px;
     color: #fff;
-    font-size: 13px;
+    font-size: 10px;
     font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: 0.03em;
+    line-height: 1.05;
+    letter-spacing: 0.02em;
     text-shadow: 0 1px 1px rgba(0,0,0,0.25);
     pointer-events: none;
 }
-/* Small "x" to dismiss the tab, set inside the fold above the label. */
+/* Dismiss "x" — pinned to its original spot (now sitting at the fold's tip,
+   partly outside the smaller ribbon, which is fine). */
 .sticky-dismiss {
     position: absolute;
-    top: 34px;
-    left: 10px;
+    top: auto;
+    bottom: 60px;
+    left: 9px;
     width: 20px;
     height: 20px;
     padding: 0;
@@ -254,7 +256,7 @@ body:not(.page-template-page-homepage) .navbar .hamburger span { background: var
     border-radius: 50%;
     background: rgba(255,255,255,0.22);
     color: #fff;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1;
     font-weight: 700;
     cursor: pointer;

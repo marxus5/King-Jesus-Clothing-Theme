@@ -383,13 +383,24 @@ iframe[name^="__privateStripeFrame"] {
     gap: 1rem;
 }
 
-/* Quantity stepper — same - / value / + control as the cart page. The buttons
-   are injected by js/qty-stepper.js, which wraps the .quantity in a .kjc-qty. */
+/* Stack the layout: variation info ("Coffee-M") above the quantity, the quantity
+   above the Add to Cart button, with room so they don't butt together. */
+.custom-product-add-to-cart .single_variation_wrap,
+.custom-product-add-to-cart .woocommerce-variation-add-to-cart {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 1.1rem !important;
+}
+
+/* Quantity stepper — same - / value / + control as the cart, now full width to
+   match the Add to Cart button and a touch thinner. Buttons are injected by
+   js/qty-stepper.js, which wraps the .quantity in a .kjc-qty. */
 .custom-product-add-to-cart .kjc-qty {
-    display: inline-flex !important;   /* beat form.cart > :not(.variations) */
-    align-items: center;
+    display: flex !important;   /* beat form.cart > :not(.variations) */
+    width: 100%;
+    align-items: stretch;
     gap: 0 !important;
-    width: max-content;
     border: 1px solid #d9d9d9;
     border-radius: 8px;
     overflow: hidden;
@@ -397,17 +408,19 @@ iframe[name^="__privateStripeFrame"] {
 }
 .custom-product-add-to-cart .kjc-qty .quantity {
     margin: 0;
-    display: inline-flex;
-    align-items: center;
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: stretch;
 }
 .custom-product-add-to-cart .kjc-qty__btn {
-    width: 42px;
-    height: 46px;
+    width: 48px;
+    height: 40px;
     flex: 0 0 auto;
     border: none;
     background: #fff;
     color: #1f2937;
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     line-height: 1;
     cursor: pointer;
     display: flex;
@@ -417,15 +430,17 @@ iframe[name^="__privateStripeFrame"] {
 }
 .custom-product-add-to-cart .kjc-qty__btn:hover { background: #7A0E1A; color: #fff; }
 .custom-product-add-to-cart .kjc-qty input.qty {
-    width: 52px;
-    height: 46px;
+    flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;
+    height: 40px;
     text-align: center;
     border: none;
     border-left: 1px solid #ededed;
     border-right: 1px solid #ededed;
     border-radius: 0;
     padding: 0;
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 700;
     color: #1f2937;
     background: #fff;
@@ -441,6 +456,8 @@ iframe[name^="__privateStripeFrame"] {
     font-weight: 700;
     color: #1f2937;
 }
+/* Make the Add to Cart button span the full width under the quantity. */
+.custom-product-add-to-cart .single_add_to_cart_button { width: 100%; }
 
 .custom-product-add-to-cart .single_add_to_cart_button {
     flex: 1;
