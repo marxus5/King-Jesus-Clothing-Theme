@@ -1152,3 +1152,87 @@ function kjc_post_to_sheet( array $payload ) {
         'body'     => wp_json_encode( $payload ),
     ) );
 }
+
+/**
+ * ─────────────────────────────────────────────────────────────────────────────
+ * WHOLESALE PRICING — per-product editable box + product-page dropdown
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Adds a rich-text "Wholesale Pricing" box to each product in the admin. The
+ * content renders as the LAST accordion dropdown on the single-product page —
+ * but only when the box has actual content. Empty box → no dropdown.
+ */
+
+// Admin meta box (rich text editor below the product editor).
+add_action( 'add_meta_boxes', function () {
+    add_meta_box(
+        'kjc_wholesale_pricing',
+        __( 'Wholesale Pricing', 'kjc' ),
+        'kjc_render_wholesale_metabox',
+        'product',
+        'normal',
+        'default'
+    );
+} );
+
+function kjc_render_wholesale_metabox( $post ) {
+    wp_nonce_field( 'kjc_wholesale_save', 'kjc_wholesale_nonce' );
+    $content = get_post_meta( $post->ID, '_kjc_wholesale_pricing', true );
+    echo '<p style="margin:0 0 .75rem;color:#555;">Add wholesale / bulk pricing details for this product. '
+       . 'If you leave this empty, the <strong>Wholesale Pricing</strong> dropdown will not appear on the product page.</p>';
+    wp_editor( $content, 'kjc_wholesale_pricing_editor', array(
+        'textarea_name' => 'kjc_wholesale_pricing',
+        'media_buttons' => false,
+        'textarea_rows' => 8,
+        'teeny'         => true,
+    ) );
+}
+
+// Save handler.
+add_action( 'save_post_product', function ( $post_id ) {
+    if ( ! isset( $_POST['kjc_wholesale_nonce'] )
+        || ! wp_verify_nonce( $_POST['kjc_wholesale_nonce'], 'kjc_wholesale_save' ) ) {
+        return;
+    }
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+        return;
+    }
+    if ( ! current_user_can( 'edit_post', $post_id ) ) {
+        return;
+    }
+    if ( ! isset( $_POST['kjc_wholesale_pricing'] ) ) {
+        return;
+    }
+
+    $value = wp_kses_post( $_POST['kjc_wholesale_pricing'] );
+
+    // Treat a box with no real text (and no image) as empty so the dropdown stays hidden.
+    if ( '' === trim( wp_strip_all_tags( $value ) ) && false === strpos( $value, '<img' ) ) {
+        delete_post_meta( $post_id, '_kjc_wholesale_pricing' );
+    } else {
+        update_post_meta( $post_id, '_kjc_wholesale_pricing', $value );
+    }
+} );
+
+// Add the Wholesale Pricing tab (last) when the product has wholesale content.
+add_filter( 'woocommerce_product_tabs', function ( $tabs ) {
+    global $product;
+
+    if ( ! $product instanceof WC_Product ) {
+        return $tabs;
+    }
+
+    $wholesale = get_post_meta( $product->get_id(), '_kjc_wholesale_pricing', true );
+    if ( ! $wholesale || '' === trim( wp_strip_all_tags( $wholesale ) ) ) {
+        return $tabs;
+    }
+
+    $tabs['kjc_wholesale'] = array(
+        'title'    => __( 'Wholesale Pricing', 'woocommerce' ),
+        'priority' => 100, // keep it last
+        'callback' => function () use ( $wholesale ) {
+            echo '<div class="kjc-wholesale-content">' . wp_kses_post( wpautop( $wholesale ) ) . '</div>';
+        },
+    );
+
+    return $tabs;
+}, 98 );

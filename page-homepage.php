@@ -185,6 +185,90 @@ if ( ! empty( $kjc_reviews ) ) :
     </div>
   </section>
 
+  <!-- AFFILIATE / REFERRAL -->
+  <section class="affiliate-section">
+    <style>
+      .affiliate-section {
+        padding: 5rem 2rem;
+        display: flex;
+        justify-content: center;
+      }
+      .affiliate-card {
+        max-width: 1000px;
+        width: 100%;
+        background: linear-gradient(135deg, #f34040 0%, #830b15 100%);
+        color: #fff;
+        border-radius: 24px;
+        padding: 3.5rem 3rem;
+        text-align: center;
+        box-shadow: 0 20px 50px rgba(122, 14, 26, 0.25);
+      }
+      .affiliate-eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-size: 0.85rem;
+        font-weight: 700;
+        opacity: 0.9;
+        margin-bottom: 1rem;
+      }
+      .affiliate-card h2 {
+        font-size: 2.25rem;
+        font-weight: 800;
+        line-height: 1.2;
+        margin: 0 0 1rem;
+      }
+      .affiliate-card .affiliate-highlight {
+        display: block;
+        font-size: 2.75rem;
+        font-weight: 900;
+      }
+      .affiliate-card p {
+        font-size: 1.15rem;
+        line-height: 1.7;
+        max-width: 620px;
+        margin: 0 auto 2rem;
+        opacity: 0.97;
+      }
+      .affiliate-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 1rem 2.5rem;
+        background: #fff;
+        color: #830b15;
+        font-size: 1.1rem;
+        font-weight: 800;
+        text-decoration: none;
+        border-radius: 50px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+      }
+      .affiliate-cta:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+        color: #830b15;
+      }
+      @media (max-width: 640px) {
+        .affiliate-section { padding: 3rem 1.25rem; }
+        .affiliate-card { padding: 2.5rem 1.5rem; border-radius: 18px; }
+        .affiliate-card h2 { font-size: 1.75rem; }
+        .affiliate-card .affiliate-highlight { font-size: 2.1rem; }
+        .affiliate-card p { font-size: 1.05rem; }
+      }
+    </style>
+    <div class="affiliate-card reveal">
+      <div class="affiliate-eyebrow">Become an Affiliate Marketer</div>
+      <h2>Share the Gospel &amp; Get Rewarded
+        <span class="affiliate-highlight">Earn 15% on Every Referral</span>
+      </h2>
+      <p><strong>Join our affiliate program and earn a bold 15% commission on every sale you refer.</strong> Spread the message of King Jesus, grow your community, and get paid for doing it.</p>
+      <a href="https://kingjesusclothing.goaffpro.com/" target="_blank" rel="noopener noreferrer" class="affiliate-cta">
+        Become an Affiliate
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </section>
+
   <!-- FAQ -->
   <div class="faq-outer">
     <div class="faq-inner">

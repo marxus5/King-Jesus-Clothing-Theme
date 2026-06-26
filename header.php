@@ -21,6 +21,7 @@
             <a href="<?php echo esc_url( home_url('/blog') ); ?>">Blog</a>
             <a href="<?php echo esc_url( home_url('/about-us') ); ?>">About</a>
             <a href="<?php echo esc_url( home_url('/contact') ); ?>">Contact</a>
+            <a href="https://kingjesusclothing.goaffpro.com/" target="_blank" rel="noopener noreferrer">Affiliates</a>
         </div>
         <div class="nav-center">
             <img src="<?php echo get_template_directory_uri(); ?>/assets/images/king-jesus-clothing-logo.png"
@@ -61,6 +62,7 @@
         <a href="<?php echo esc_url( home_url('/blog') ); ?>" onclick="toggleMenu()">Blog</a>
         <a href="<?php echo esc_url( home_url('/about-us') ); ?>" onclick="toggleMenu()">About</a>
         <a href="<?php echo esc_url( home_url('/contact') ); ?>" onclick="toggleMenu()">Contact</a>
+        <a href="https://kingjesusclothing.goaffpro.com/" target="_blank" rel="noopener noreferrer" onclick="toggleMenu()">Affiliates</a>
     </div>
 
     <script>
