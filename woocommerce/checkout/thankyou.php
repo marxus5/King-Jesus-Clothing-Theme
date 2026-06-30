@@ -286,6 +286,160 @@ add_filter( 'woocommerce_order_details_after_order_table', '__return_false' );
 }
 }
 
+/* ── Affiliate / Referral card ─────────────────────────────── */
+.ty-affiliate-card {
+    margin-top: 3rem;
+    background: linear-gradient(135deg, #f34040 0%, #830b15 100%);
+    color: #fff;
+    border-radius: 16px;
+    padding: 3rem 2.5rem;
+    text-align: center;
+    box-shadow: 0 12px 35px rgba(122, 14, 26, 0.22);
+}
+
+.ty-affiliate-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.8rem;
+    font-weight: 700;
+    opacity: 0.9;
+    margin-bottom: 0.85rem;
+}
+
+.ty-affiliate-card h2 {
+    font-size: 1.85rem;
+    font-weight: 800;
+    line-height: 1.25;
+    margin: 0 0 1rem;
+    color: #fff;
+}
+
+.ty-affiliate-highlight {
+    display: block;
+    font-size: 2.2rem;
+    font-weight: 900;
+    margin-top: 0.25rem;
+}
+
+.ty-affiliate-card p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    max-width: 580px;
+    margin: 0 auto 1.75rem;
+    opacity: 0.97;
+}
+
+.ty-affiliate-cta {
+    display: inline-block;
+    padding: 0.95rem 2.5rem;
+    background: #fff;
+    color: #830b15;
+    font-size: 1.05rem;
+    font-weight: 800;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+}
+
+.ty-affiliate-cta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+    color: #830b15;
+}
+
+/* ── Follow Us (social) ────────────────────────────────────── */
+.ty-social-section {
+    margin-top: 2rem;
+    background: #f9fafb;
+    padding: 2.5rem;
+    border-radius: 16px;
+}
+
+.ty-social-section h3 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0 0 1.75rem;
+    text-align: center;
+}
+
+.ty-social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 560px;
+    margin: 0 auto;
+}
+
+.ty-social-link {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.25rem 1.75rem;
+    background: #fff;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.3s;
+    border: 2px solid transparent;
+}
+
+.ty-social-link:hover {
+    transform: translateX(8px);
+    border-color: #7A0E1A;
+    box-shadow: 0 4px 20px rgba(122, 14, 26, 0.12);
+}
+
+.ty-social-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.ty-social-icon.facebook { background: #1877f2; color: #fff; }
+.ty-social-icon.instagram {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    color: #fff;
+}
+.ty-social-icon.tiktok { background: #000; color: #fff; }
+
+.ty-social-content { flex-grow: 1; }
+
+.ty-social-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1f2937;
+    display: block;
+    margin-bottom: 0.2rem;
+}
+
+.ty-social-handle {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.ty-social-arrow {
+    color: #7A0E1A;
+    font-size: 1.5rem;
+    transition: transform 0.3s;
+}
+
+.ty-social-link:hover .ty-social-arrow { transform: translateX(5px); }
+
+@media (max-width: 640px) {
+    .ty-affiliate-card { padding: 2.25rem 1.5rem; }
+    .ty-affiliate-card h2 { font-size: 1.5rem; }
+    .ty-affiliate-highlight { font-size: 1.85rem; }
+    .ty-social-section { padding: 1.75rem 1.25rem; }
+    .ty-social-link { padding: 1rem 1.25rem; gap: 1rem; }
+    .ty-social-handle { font-size: 0.7rem; }
+}
+
 </style>
 
 <div class="custom-thankyou-container">
@@ -431,6 +585,47 @@ add_filter( 'woocommerce_order_details_after_order_table', '__return_false' );
                     View Orders
                 </a> -->
             <?php endif; ?>
+        </div>
+
+        <!-- Affiliate / Referral -->
+        <div class="ty-affiliate-card">
+            <div class="ty-affiliate-eyebrow">Become an Affiliate Marketer</div>
+            <h2>Love your order? <span class="ty-affiliate-highlight">Earn 15% on Every Referral</span></h2>
+            <p><strong>Join our affiliate program and earn a bold 15% commission on every sale you refer.</strong> Share King Jesus Clothing with your friends and community — and get paid for spreading the message.</p>
+            <a href="https://kingjesusclothing.goaffpro.com/" target="_blank" rel="noopener noreferrer" class="ty-affiliate-cta">
+                Become an Affiliate →
+            </a>
+        </div>
+
+        <!-- Follow Us -->
+        <div class="ty-social-section">
+            <h3>Follow Us</h3>
+            <div class="ty-social-links">
+                <a href="https://facebook.com/kingjesusclothingbrand" target="_blank" rel="noopener noreferrer" class="ty-social-link">
+                    <div class="ty-social-icon facebook fab fa-facebook-f"></div>
+                    <div class="ty-social-content">
+                        <span class="ty-social-name">Facebook</span>
+                        <span class="ty-social-handle">@kingjesusclothingbrand</span>
+                    </div>
+                    <span class="ty-social-arrow">→</span>
+                </a>
+                <a href="https://instagram.com/kingjesusclothingbrand" target="_blank" rel="noopener noreferrer" class="ty-social-link">
+                    <div class="ty-social-icon instagram fab fa-instagram"></div>
+                    <div class="ty-social-content">
+                        <span class="ty-social-name">Instagram</span>
+                        <span class="ty-social-handle">@kingjesusclothingbrand</span>
+                    </div>
+                    <span class="ty-social-arrow">→</span>
+                </a>
+                <a href="https://www.tiktok.com/@kingjesusclothing" target="_blank" rel="noopener noreferrer" class="ty-social-link">
+                    <div class="ty-social-icon tiktok fab fa-tiktok"></div>
+                    <div class="ty-social-content">
+                        <span class="ty-social-name">TikTok</span>
+                        <span class="ty-social-handle">@kingjesusclothing</span>
+                    </div>
+                    <span class="ty-social-arrow">→</span>
+                </a>
+            </div>
         </div>
 
     <?php else : ?>

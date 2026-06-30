@@ -907,6 +907,118 @@ ul.products li.product button.button:hover {
     }
 }
 
+/* ── Product info dropdowns (accordion) — replaces the old tab row ───────── */
+.custom-product-tabs .kjc-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.custom-product-tabs .kjc-accordion-item {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #fff;
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.custom-product-tabs .kjc-accordion-item[open] {
+    border-color: #7A0E1A;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+}
+
+.custom-product-tabs .kjc-accordion-header {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.15rem 1.5rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1f2937;
+    user-select: none;
+    transition: color 0.2s, background 0.2s;
+}
+
+/* Hide the default <details> disclosure triangle across browsers */
+.custom-product-tabs .kjc-accordion-header::-webkit-details-marker { display: none; }
+.custom-product-tabs .kjc-accordion-header::marker { content: ''; }
+
+.custom-product-tabs .kjc-accordion-header:hover { color: #7A0E1A; }
+.custom-product-tabs .kjc-accordion-item[open] .kjc-accordion-header { color: #7A0E1A; }
+
+/* Plus / minus chevron */
+.custom-product-tabs .kjc-accordion-icon {
+    position: relative;
+    width: 14px;
+    height: 14px;
+    flex: 0 0 auto;
+}
+.custom-product-tabs .kjc-accordion-icon::before,
+.custom-product-tabs .kjc-accordion-icon::after {
+    content: '';
+    position: absolute;
+    background: currentColor;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+}
+.custom-product-tabs .kjc-accordion-icon::before {
+    top: 50%; left: 0; right: 0; height: 2px; transform: translateY(-50%);
+}
+.custom-product-tabs .kjc-accordion-icon::after {
+    left: 50%; top: 0; bottom: 0; width: 2px; transform: translateX(-50%);
+}
+.custom-product-tabs .kjc-accordion-item[open] .kjc-accordion-icon::after {
+    transform: translateX(-50%) scaleY(0);
+    opacity: 0;
+}
+
+.custom-product-tabs .kjc-accordion-panel {
+    padding: 0 1.5rem 1.5rem;
+    font-size: 1rem;
+    color: #374151;
+    line-height: 1.8;
+}
+
+.custom-product-tabs .kjc-accordion-panel table.shop_attributes {
+    width: 100%;
+    border-collapse: collapse;
+}
+.custom-product-tabs .kjc-accordion-panel table.shop_attributes th,
+.custom-product-tabs .kjc-accordion-panel table.shop_attributes td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 0.95rem;
+    text-align: left;
+}
+.custom-product-tabs .kjc-accordion-panel table.shop_attributes th {
+    font-weight: 700;
+    color: #1f2937;
+    width: 35%;
+}
+
+/* Wholesale dropdown content */
+.custom-product-tabs .kjc-wholesale-content :first-child { margin-top: 0; }
+.custom-product-tabs .kjc-wholesale-content :last-child  { margin-bottom: 0; }
+
+/* Reviews inside a panel */
+.custom-product-tabs .kjc-accordion-panel #reviews #comments ol.commentlist {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+}
+.custom-product-tabs .kjc-accordion-panel #reviews #comments ol.commentlist li {
+    padding: 1.25rem 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+.custom-product-tabs .kjc-accordion-panel #reviews #respond { margin-top: 2rem; }
+
+@media (max-width: 640px) {
+    .custom-product-tabs .kjc-accordion-header { padding: 1rem 1.15rem; font-size: 1rem; }
+    .custom-product-tabs .kjc-accordion-panel { padding: 0 1.15rem 1.15rem; }
+}
+
 /* Hide the WooCommerce color select row — swatches handle color selection instead */
 .variations tr.color-row,
 .variations tr:has(select[name*="color"]),
@@ -1493,6 +1605,59 @@ ul.products li.product button.button:hover {
         }
     });
 
+})();
+</script>
+
+<script>
+/* Product info dropdowns: open one at a time (close the others). */
+(function () {
+    var accordion = document.getElementById('kjc-product-accordion');
+    if (!accordion) return;
+
+    /* Collapse siblings when a panel is opened. */
+    document.addEventListener('click', function (e) {
+        var summary = e.target.closest('#kjc-product-accordion summary');
+        if (!summary) return;
+        var item = summary.parentNode; // the <details> being toggled
+        // <details> flips its own [open] after this handler; if it's currently
+        // closed it's about to open, so collapse every sibling now.
+        if (!item.open) {
+            accordion.querySelectorAll('details[open]').forEach(function (d) {
+                if (d !== item) d.removeAttribute('open');
+            });
+        }
+    });
+
+    /* Open (and scroll to) the dropdown that contains an in-page anchor target,
+       e.g. the "3 reviews" link pointing at #reviews. */
+    function openForHash(hash) {
+        if (!hash || hash.length < 2) return;
+        var target;
+        try { target = accordion.querySelector(hash); } catch (e) { return; }
+        if (!target) return;
+        var item = target.closest('details');
+        if (!item) return;
+        accordion.querySelectorAll('details[open]').forEach(function (d) {
+            if (d !== item) d.removeAttribute('open');
+        });
+        item.open = true;
+        setTimeout(function () {
+            item.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 60);
+    }
+
+    document.addEventListener('click', function (e) {
+        var link = e.target.closest('a[href*="#"]');
+        if (!link) return;
+        var hash = link.hash;
+        if (hash && accordion.querySelector(hash)) {
+            openForHash(hash);
+        }
+    });
+
+    if (window.location.hash) {
+        openForHash(window.location.hash);
+    }
 })();
 </script>
 
