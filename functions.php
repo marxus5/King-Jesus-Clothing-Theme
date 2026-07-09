@@ -976,12 +976,16 @@ function kjc_wants_welcome_coupon() {
  */
 function kjc_coupon_can_be_used( $code ) {
     $coupon = new WC_Coupon( $code );
-    if ( ! $coupon->get_id() ) return false;
-
-    if ( $coupon->get_usage_limit() > 0 && $coupon->get_usage_count() >= $coupon->get_usage_limit() ) {
+    if ( ! $coupon->get_id() ) {
         return false;
     }
-    return true;
+    // is_valid() runs WooCommerce's full checkout-time validation — global
+    // usage limit, per-user usage limit, expiry, min/max spend, etc. — and
+    // returns false silently. It does NOT emit a wc_notice; that only
+    // happens if you go ahead and call WC()->cart->apply_coupon() on an
+    // invalid coupon. So checking this first means the "usage limit
+    // reached" notice never gets generated for auto-apply at all.
+    return $coupon->is_valid();
 }
 
 /**
