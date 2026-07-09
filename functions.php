@@ -938,9 +938,12 @@ function kjc_apply_welcome_coupon() {
     if ( ! $code || WC()->cart->has_discount( $code ) ) {
         return;
     }
+    if ( ! kjc_coupon_can_be_used( $code ) ) {
+        return; // silently skip if usage limit reached
+    }
     $coupon = new WC_Coupon( $code );
     if ( ! $coupon->get_id() ) {
-        return; // Coupon not created in WooCommerce — do nothing.
+        return;
     }
     WC()->cart->apply_coupon( $code );
 }
