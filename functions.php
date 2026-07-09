@@ -969,24 +969,55 @@ function kjc_wants_welcome_coupon() {
 }
 
 /**
- * Auto-apply the welcome coupon whenever the cart is loaded or an item is
- * added, so it is baked into the total before an express payment sheet opens.
+ * Check if the welcome coupon still has uses left before trying to apply it.
+ */
+function kjc_coupon_can_be_used( $code ) {
+    $coupon = new WC_Coupon( $code );
+    if ( ! $coupon->get_id() ) return false;
+
+    if ( $coupon->get_usage_limit() > 0 && $coupon->get_usage_count() >= $coupon->get_usage_limit() ) {
+        return false;
+    }
+    return true;
+}
+
+/**
+ * Auto-apply the welcome coupon (silent). Only applies if it still has uses left.
+ * This keeps express checkout (Apple Pay / Google Pay) working without coupon fields.
  */
 function kjc_maybe_auto_apply_coupon() {
-    if ( is_admin() && ! wp_doing_ajax() ) {
-        return;
-    }
-    if ( ! function_exists( 'WC' ) || ! WC()->cart || WC()->cart->is_empty() ) {
-        return;
-    }
-    if ( ! kjc_wants_welcome_coupon() ) {
-        return;
-    }
-    kjc_apply_welcome_coupon();
+    if ( is_admin() && ! wp_doing_ajax() ) return;
+    if ( ! function_exists( 'WC' ) || ! WC()->cart || WC()->cart->is_empty() ) return;
+    if ( ! kjc_wants_welcome_coupon() ) return;
+
+    $code = wc_format_coupon_code( KJC_COUPON_CODE );
+    if ( WC()->cart->has_discount( $code ) ) return;
+
+    if ( ! kjc_coupon_can_be_used( $code ) ) return; // silently skip if limit reached
+
+    WC()->cart->apply_coupon( $code );
 }
 add_action( 'woocommerce_cart_loaded_from_session', 'kjc_maybe_auto_apply_coupon', 20 );
 add_action( 'woocommerce_add_to_cart', 'kjc_maybe_auto_apply_coupon', 20 );
+add_action( 'woocommerce_before_checkout_process', 'kjc_maybe_auto_apply_coupon' );
 
+/**
+ * Suppress usage limit / invalid notices for the welcome coupon when it was auto-applied.
+ * Manual coupon form entries will still show the normal error.
+ */
+add_filter( 'woocommerce_coupon_message', 'kjc_suppress_auto_coupon_notices', 10, 3 );
+function kjc_suppress_auto_coupon_notices( $msg, $msg_code, $coupon ) {
+    $target = wc_format_coupon_code( KJC_COUPON_CODE );
+    if ( $coupon && $coupon->get_code() === $target ) {
+        if ( in_array( $msg_code, array(
+            WC_Coupon::E_WC_COUPON_USAGE_LIMIT_REACHED,
+            WC_Coupon::E_WC_COUPON_INVALID,
+        ), true ) ) {
+            return ''; // silent
+        }
+    }
+    return $msg;
+}
 /**
  * Make a manual coupon removal stick.
  *
