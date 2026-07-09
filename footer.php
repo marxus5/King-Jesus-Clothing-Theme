@@ -43,7 +43,7 @@
       </div>
     </div>
         <div class="footer-bottom">
-            <div class="footer-copy">© 2025 King Jesus Clothing. All rights reserved.</div>
+            <div class="footer-copy">© 2026 King Jesus Clothing. All rights reserved.</div>
             <div class="footer-copy">Privacy Policy &nbsp;·&nbsp; Terms of Service</div>
         </div>
     </footer>
