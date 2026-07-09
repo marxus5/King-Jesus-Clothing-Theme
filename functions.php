@@ -1005,22 +1005,39 @@ add_action( 'woocommerce_add_to_cart', 'kjc_maybe_auto_apply_coupon', 20 );
 add_action( 'woocommerce_before_checkout_process', 'kjc_maybe_auto_apply_coupon' );
 
 /**
- * Suppress usage limit / invalid notices for the welcome coupon when it was auto-applied.
- * Manual coupon form entries will still show the normal error.
+ * Suppress + aggressively clear any usage limit errors for the welcome coupon.
+ * This catches cases where notices get added via fragments/AJAX on product pages.
  */
-add_filter( 'woocommerce_coupon_message', 'kjc_suppress_auto_coupon_notices', 10, 3 );
+add_filter( 'woocommerce_coupon_message', 'kjc_suppress_auto_coupon_notices', 5, 3 );
 function kjc_suppress_auto_coupon_notices( $msg, $msg_code, $coupon ) {
     $target = wc_format_coupon_code( KJC_COUPON_CODE );
-    if ( $coupon && $coupon->get_code() === $target ) {
+    if ( $coupon && strtolower( $coupon->get_code() ) === strtolower( $target ) ) {
         if ( in_array( $msg_code, array(
             WC_Coupon::E_WC_COUPON_USAGE_LIMIT_REACHED,
             WC_Coupon::E_WC_COUPON_INVALID,
         ), true ) ) {
-            return ''; // silent
+            return '';
         }
     }
     return $msg;
 }
+
+// Extra safety net: clear any persisted error notices for this coupon on frontend loads
+add_action( 'wp', function() {
+    if ( is_admin() || ! function_exists( 'WC' ) || ! WC()->session ) return;
+
+    $code = strtolower( wc_format_coupon_code( KJC_COUPON_CODE ) );
+    $notices = WC()->session->get( 'wc_notices', array() );
+
+    if ( ! empty( $notices['error'] ) ) {
+        foreach ( $notices['error'] as $key => $notice ) {
+            if ( is_string( $notice ) && stripos( $notice, $code ) !== false ) {
+                unset( $notices['error'][ $key ] );
+            }
+        }
+        WC()->session->set( 'wc_notices', $notices );
+    }
+}, 1 );
 /**
  * Make a manual coupon removal stick.
  *
