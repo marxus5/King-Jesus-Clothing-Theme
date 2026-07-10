@@ -971,77 +971,56 @@ function kjc_wants_welcome_coupon() {
     return false;
 }
 
-/**
- * Check if the welcome coupon still has uses left before trying to apply it.
- */
+ 
 function kjc_coupon_can_be_used( $code ) {
     $coupon = new WC_Coupon( $code );
-    if ( ! $coupon->get_id() ) {
-        return false;
-    }
+    if ( ! $coupon->get_id() ) return false;
+ 
     // is_valid() runs WooCommerce's full checkout-time validation — global
     // usage limit, per-user usage limit, expiry, min/max spend, etc. — and
-    // returns false silently. It does NOT emit a wc_notice; that only
-    // happens if you go ahead and call WC()->cart->apply_coupon() on an
-    // invalid coupon. So checking this first means the "usage limit
-    // reached" notice never gets generated for auto-apply at all.
+    // returns false silently. It never emits a wc_notice on its own (that
+    // only happens if apply_coupon() is called on an invalid coupon), so
+    // it's safe to use as a pre-check before auto-applying.
     return $coupon->is_valid();
 }
-
+ 
 /**
- * Auto-apply the welcome coupon (silent). Only applies if it still has uses left.
- * This keeps express checkout (Apple Pay / Google Pay) working without coupon fields.
+ * Auto-apply the welcome coupon (silent). Only applies if it's still valid
+ * for this customer. This keeps express checkout (Apple Pay / Google Pay)
+ * working without coupon fields.
  */
 function kjc_maybe_auto_apply_coupon() {
     if ( is_admin() && ! wp_doing_ajax() ) return;
     if ( ! function_exists( 'WC' ) || ! WC()->cart || WC()->cart->is_empty() ) return;
     if ( ! kjc_wants_welcome_coupon() ) return;
-
+ 
     $code = wc_format_coupon_code( KJC_COUPON_CODE );
     if ( WC()->cart->has_discount( $code ) ) return;
-
-    if ( ! kjc_coupon_can_be_used( $code ) ) return; // silently skip if limit reached
-
+ 
+    if ( ! kjc_coupon_can_be_used( $code ) ) return; // silently skip if not valid for this customer
+ 
     WC()->cart->apply_coupon( $code );
 }
 add_action( 'woocommerce_cart_loaded_from_session', 'kjc_maybe_auto_apply_coupon', 20 );
 add_action( 'woocommerce_add_to_cart', 'kjc_maybe_auto_apply_coupon', 20 );
 add_action( 'woocommerce_before_checkout_process', 'kjc_maybe_auto_apply_coupon' );
-
+ 
 /**
- * Suppress + aggressively clear any usage limit errors for the welcome coupon.
- * This catches cases where notices get added via fragments/AJAX on product pages.
+ * Suppress the usage-limit notice for the welcome coupon specifically, in
+ * case it ever surfaces (e.g. a customer manually re-enters the code after
+ * already using it).
  */
 add_filter( 'woocommerce_coupon_message', 'kjc_suppress_auto_coupon_notices', 5, 3 );
 function kjc_suppress_auto_coupon_notices( $msg, $msg_code, $coupon ) {
     $target = wc_format_coupon_code( KJC_COUPON_CODE );
     if ( $coupon && strtolower( $coupon->get_code() ) === strtolower( $target ) ) {
-        if ( in_array( $msg_code, array(
-            WC_Coupon::E_WC_COUPON_USAGE_LIMIT_REACHED,
-            WC_Coupon::E_WC_COUPON_INVALID,
-        ), true ) ) {
+        if ( WC_Coupon::E_WC_COUPON_USAGE_LIMIT_REACHED === $msg_code ) {
             return '';
         }
     }
     return $msg;
 }
 
-// Extra safety net: clear any persisted error notices for this coupon on frontend loads
-add_action( 'wp', function() {
-    if ( is_admin() || ! function_exists( 'WC' ) || ! WC()->session ) return;
-
-    $code = strtolower( wc_format_coupon_code( KJC_COUPON_CODE ) );
-    $notices = WC()->session->get( 'wc_notices', array() );
-
-    if ( ! empty( $notices['error'] ) ) {
-        foreach ( $notices['error'] as $key => $notice ) {
-            if ( is_string( $notice ) && stripos( $notice, $code ) !== false ) {
-                unset( $notices['error'][ $key ] );
-            }
-        }
-        WC()->session->set( 'wc_notices', $notices );
-    }
-}, 1 );
 /**
  * Make a manual coupon removal stick.
  *
