@@ -628,6 +628,18 @@ add_filter( 'woocommerce_order_details_after_order_table', '__return_false' );
             </div>
         </div>
 
+    <!-- Actions -->
+        <div class="custom-actions">
+            <a href="<?php echo esc_url( wc_get_page_permalink( 'home' ) ); ?>" class="custom-action-button custom-action-primary">
+                Back to Home
+            </a>
+            <?php if ( is_user_logged_in() ) : ?>
+                <!-- <a href="<?php echo esc_url( wc_get_account_endpoint_url( 'orders' ) ); ?>" class="custom-action-button custom-action-secondary">
+                    View Orders
+                </a> -->
+            <?php endif; ?>
+        </div>
+
     <?php else : ?>
 
         <div class="custom-thankyou-header">
