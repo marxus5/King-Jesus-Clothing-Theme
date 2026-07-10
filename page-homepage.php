@@ -181,7 +181,7 @@ if ( ! empty( $kjc_reviews ) ) :
       <div class="section-label">Our Story</div>
       <h2 class="section-title">Born from a<br>Calling, Not a Trend</h2>
       <p>We exist to focus on, teach, and spread the living words and teachings of Christ and His Kingdom. Our ultimate goal is to proclaim the gospel of the Kingdom, create fresh opportunities for evangelism and discipleship, draw people into deeper intimacy with God, and literally clothe them in Christ through every garment we create.</p>
-      <a href="<?php echo home_url('/about'); ?>" class="btn-outline">Our Full Story →</a>
+      <a href="<?php echo home_url('/about-us'); ?>" class="btn-outline">Our Full Story →</a>
     </div>
   </section>
 
