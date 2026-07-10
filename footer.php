@@ -22,7 +22,7 @@
       <div class="footer-col">
         <h4>Shop</h4>
         <a href="<?php echo home_url('/shop'); ?>">Shop</a>
-        <a href="<?php echo home_url('/about'); ?>">About</a>
+        <a href="<?php echo home_url('/about-us'); ?>">About</a>
         <a href="<?php echo home_url('/returns-refunds-policy'); ?>">Returns & Refunds</a>
         <a href="<?php echo home_url('/privacy-policy'); ?>">Privacy Policy</a>
        
