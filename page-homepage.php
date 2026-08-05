@@ -38,6 +38,8 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
       $args = array(
         'post_type'      => 'product',
         'posts_per_page' => 8,
+        'orderby'        => 'menu_order',
+        'order'          => 'ASC',
         'tax_query'      => array(
           array(
             'taxonomy' => 'product_visibility',
