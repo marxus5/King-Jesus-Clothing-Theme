@@ -36,10 +36,15 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
     <div class="products-grid">
       <?php
       $args = array(
-        'post_type' => 'product',
+        'post_type'      => 'product',
         'posts_per_page' => 8,
-        'orderby' => 'date',
-        'order' => 'DESC',
+        'tax_query'      => array(
+          array(
+            'taxonomy' => 'product_visibility',
+            'field'    => 'name',
+            'terms'    => 'featured',
+          ),
+        ),
       );
       $products = new WP_Query( $args );
 
