@@ -266,9 +266,9 @@ if ( ! empty( $kjc_reviews ) ) :
     <div class="affiliate-card reveal">
       <div class="affiliate-eyebrow">Become an Affiliate Marketer</div>
       <h2>Share the Gospel &amp; Get Rewarded
-        <span class="affiliate-highlight">Earn 15% on Every Referral</span>
+        <span class="affiliate-highlight">Earn 10% on Every Referral</span>
       </h2>
-      <p><strong>Join our affiliate program and earn a bold 15% commission on every sale you refer.</strong> Spread the message of King Jesus, grow your community, and get paid for doing it.</p>
+      <p><strong>Join our affiliate program and earn a 10% commission on every sale you refer.</strong> Spread the message of King Jesus, grow your community, and get paid for doing it.</p>
       <a href="https://kingjesusclothing.goaffpro.com/" target="_blank" rel="noopener noreferrer" class="affiliate-cta">
         Become an Affiliate
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
