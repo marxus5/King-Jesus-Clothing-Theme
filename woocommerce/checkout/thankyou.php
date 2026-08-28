@@ -610,8 +610,8 @@ add_filter( 'woocommerce_order_details_after_order_table', '__return_false' );
         <!-- Affiliate / Referral -->
         <div class="ty-affiliate-card">
             <div class="ty-affiliate-eyebrow">Become an Affiliate Marketer</div>
-            <h2>Love your order? <span class="ty-affiliate-highlight">Earn 15% on Every Referral</span></h2>
-            <p><strong>Join our affiliate program and earn a bold 15% commission on every sale you refer.</strong> Share King Jesus Clothing with your friends and community — and get paid for spreading the message.</p>
+            <h2>Love your order? <span class="ty-affiliate-highlight">Earn 10% on Every Referral</span></h2>
+            <p><strong>Join our affiliate program and earn a 10% commission on every sale you refer.</strong> Share King Jesus Clothing with your friends and community — and get paid for spreading the message.</p>
             <a href="https://kingjesusclothing.goaffpro.com/" target="_blank" rel="noopener noreferrer" class="ty-affiliate-cta">
                 Become an Affiliate →
             </a>
