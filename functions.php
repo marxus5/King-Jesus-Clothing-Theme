@@ -1,5 +1,20 @@
 <?php
-
+define( 'KJC_AUTO_COMPLETE_TAPSTITCH_ORDERS', false );
+/**
+ * ─────────────────────────────────────────────────────────────────────────────
+ * SUPPRESS "TEXTDOMAIN LOADED TOO EARLY" NOTICE
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Known WP 6.7+ ecosystem issue — plugins (Printful included) loading their
+ * translations before `init`. Harmless, but silences it without hiding other
+ * doing_it_wrong() notices that might actually matter.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+add_filter( 'doing_it_wrong_trigger_error', function( $trigger, $function_name, $message, $version ) {
+    if ( '_load_textdomain_just_in_time' === $function_name ) {
+        return false;
+    }
+    return $trigger;
+}, 10, 4 );
 /**
  * ─────────────────────────────────────────────────────────────────────────────
  * POST/REDIRECT/GET FOR ADD-TO-CART
@@ -739,13 +754,16 @@ function kjc_tapstitch_handle_tracking_note( $note_id, $order ) {
     $order->save();
 
     // ── Move order to completed ─────────────────────────────────────────────
-    // Remove our own hook temporarily to avoid any loops, then update status
-    remove_action( 'woocommerce_order_note_added', 'kjc_tapstitch_handle_tracking_note', 10 );
-    $order->update_status( 'completed', 'Tapstitch confirmed shipment. Customer notified.' );
-    add_action( 'woocommerce_order_note_added', 'kjc_tapstitch_handle_tracking_note', 10, 2 );
+    if ( KJC_AUTO_COMPLETE_TAPSTITCH_ORDERS ) {
+        remove_action( 'woocommerce_order_note_added', 'kjc_tapstitch_handle_tracking_note', 10 );
+        $order->update_status( 'completed', 'Tapstitch confirmed shipment. Customer notified.' );
+        add_action( 'woocommerce_order_note_added', 'kjc_tapstitch_handle_tracking_note', 10, 2 );
 
-    // ── Send customer shipping email ────────────────────────────────────────
-    kjc_send_shipping_email( $order, $tracking_url, $carrier );
+        // ── Send customer shipping email ────────────────────────────────────
+        kjc_send_shipping_email( $order, $tracking_url, $carrier );
+    } else {
+        $order->add_order_note( 'Tapstitch tracking received — awaiting manual review/completion.' );
+    }
 }
 
 
