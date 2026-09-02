@@ -94,7 +94,7 @@ wp_enqueue_script('homepage-v2', get_template_directory_uri() . '/js/homepage-v2
       <div class="value-card"><span class="value-icon">🔥</span><div class="value-title">Bold Witness</div><div class="value-desc">Our clothing is a conversation starter. Wear it, share it, spark faith in others.</div></div>
     </div>
     <div class="perks-row">
-      <div class="perk-item"><span class="perk-icon">📦</span><div class="perk-label">Free Shipping $80+</div></div>
+      <div class="perk-item"><span class="perk-icon">📦</span><div class="perk-label">Free US Shipping $99+</div></div>
       <div class="perk-item"><span class="perk-icon">↩</span><div class="perk-label">Easy Returns</div></div>
       <div class="perk-item"><span class="perk-icon">🔒</span><div class="perk-label">Secure Checkout</div></div>
       <div class="perk-item"><span class="perk-icon">🙏</span><div class="perk-label">Supporting Missionaries</div></div>
@@ -283,7 +283,7 @@ if ( ! empty( $kjc_reviews ) ) :
         <div class="section-label">FAQ</div>
         <h2 class="section-title">Common Questions</h2>
       </div>
-      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How long does shipping take? <div class="faq-arrow"></div></div><div class="faq-a">International orders typically arrive in 7–14 business days. Free shipping on all orders over $80.</div></div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How long does shipping take? <div class="faq-arrow"></div></div><div class="faq-a">International orders typically arrive in 7–14 business days. Free US shipping on all orders over $99.</div></div>
       <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">What is your return policy? <div class="faq-arrow"></div></div><div class="faq-a">We offer easy 30-day returns on all unworn, unwashed items in original condition. Simply contact us and we'll walk you through the process! Look at our Return Policy page for more details.</div></div>
       <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How do your sizes run? <div class="faq-arrow"></div></div><div class="faq-a">Our garments are true to size with a slightly relaxed fit. We recommend checking the size chart on each product page. If you're between sizes, size up for a more comfortable fit.</div></div>
       <!-- <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How do you support missionaries? <div class="faq-arrow"></div></div><div class="faq-a">A portion of every purchase is donated to vetted missionary organizations working in unreached people groups. We partner with field missionaries personally and report transparently on how funds are used each quarter.</div></div> -->
