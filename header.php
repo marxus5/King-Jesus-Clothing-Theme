@@ -12,7 +12,7 @@
     <!-- Global chrome + homepage styles now live in css/main.css (enqueued in functions.php) -->
 
     <!-- FIXED TOP BANNER -->
-    <div class="top-banner">✈ Free International Shipping on orders $80+</div>
+    <div class="top-banner">✈ Free US Shipping on orders $99+</div>
 
     <!-- STICKY NAVBAR (just below banner) -->
     <nav class="navbar at-top" id="navbar">
